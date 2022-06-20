@@ -1,387 +1,248 @@
 #pragma once
-
-struct out_of_range
+// https://tfetimes.com/wp-content/uploads/2015/11/Accelerated_C-_Practical_Programming_by_Example_-_Andrew_Koenig_Barbara_E._Moo_-_Addison-Wesley_-_2000.pdf
+namespace ft
 {
-};
+	template <class T, class Allocator = std::allocator<T> >
+	class Vector
+	{
+	public: //typedefs
+		typedef T value_type;
+		typedef Allocator allocator_type;
+		typedef std::size_t size_type;
+		typedef std::ptrdiff_t diff;
+		typedef typename Allocator::reference reference;
+		typedef typename Allocator::const_reference const_reference;
+		typedef typename Allocator::pointer pointer;
+		typedef typename Allocator::const_pointer const_pointer;
+		typedef typename Allocator::reference reference;
+		typedef typename Allocator::const_reference const_reference;
+		typedef typename Allocator::pointer pointer;
+		typedef typename Allocator::const_pointer const_pointer;
+		typedef T* iterator;
+		typedef const T* const_iterator;
+	private: //variables
+		size_type _occupied_size;
+		size_type _max_capacity;
+
+		iterator _data; // first element in the Vec
+		iterator _availaible; // (one past) the last element in the Vec
+		iterator _limit; // (one past) the allocated memory
+		allocator_type _alloc;
+
+		void _create(void)
+		{
+			data = avail = limit = 0;
+		};
+		void _create(size_type size, const T &value)
+		{
+			_data = _alloc.allocate(size);
+			_limit = _last = _data + size;
+			uninitialized_fill(_data, _limit, value);
+		};
+		void _create(const_iterator first, const_iterator last)
+		{
+			_data = _alloc.allocate(last - first);
+			_limit = _last = uninitialized_copy(start, end, _data);
+		};
+		void _delete(void)
+		{
+			if (_data)
+			{
+				iterator it = _availabale;
+				while (it != _data)
+					_alloc.destroy(--it); // might leek ?
+				_alloc.deallocate(_data, _limit - _data);
+			}
+			_data = _limit = _avail = 0;
+		};
+
+	public:
+		Vector(void) {_create();};
+		//When we say that a constructor is explicit, we're saying that the compiler will use the
+		//constructor only in contexts in which the user expressly invokes the constructor, and not otherwise:
+		explicit Vector(size_type s)
+		{
+
+		};
+		Vector(const Vector &arg)
+		{
+
+		};
+		Vector<T> &operator=(const Vector<T> &arg)
+		{
+
+		};
+		~Vector() {_delete();};
+
+		iterator begin() {return _data;};
+		const_iterator begin() const {return _data;};
+		iterator end() {return _last;};
+		const_iterator end() const {return _last;};
+
+	    // const iterator cbegin() const;
+		//
+	    // const iterator cend() const;
+
+	    /*----------------------------*/
+
+	    /* -------- CAPACITY -------- */
+
+	    bool empty() const
+		{
+
+		};
+
+	    // Returns size of allocated storage capacity
+		// size_t capacity() const
+		// {
+		//
+		// }
+
+	    // Requests a change in capacity
+	    // reserve() will never decrase the capacity.
+	    // void reserve(int newmalloc)
+		// {
+		//
+		// }
+
+	    // Changes the Vector's size.
+	    // If the newsize is smaller, the last elements will be lost.
+	    // Has a default value param for custom values when resizing.
+	    // void resize(int newsize, T val = T())
+		// {
+		//
+		// }
+
+		// Returns the size of the Vector (number of elements).
+
+
+	    // Returns the maximum number of elements the Vector can hold
+		// size_t max_size() const
+		// {
+		// 	_limit - _data;
+		// };
+
+	    // Reduces capcity to fit the size
+	    // void shrink_to_fit()
+		// {
+		//
+		// }
+
+	    /*----------------------------*/
+
+	    /* -------- MODIFIERS --------*/
+
+	    // Removes all elements from the Vector
+	    // Capacity is not changed.
+	    // void clear()
+		// {
+		//
+		// }
+		//
+	    // // Inserts element at the back
+	    // void push_back(const T &d)
+		// {
+		//
+		// }
+		//
+	    // // Removes the last element from the Vector
+	    // void pop_back()
+		// {
+		//
+		// }
+
+	    /*----------------------------*/
+
+	    /* ----- ELEMENT ACCESS ----- */
+
+	    // // Access elements with bounds checking
+	    // T &at(int n);
+		//
+	    // // Access elements with bounds checking for constant Vectors.
+	    // const T &at(int n) const;
+		//
+	    // // Access elements, no bounds checking
+	    // T &operator[](int i)
+		// {
+		// 	return _data[i];
+		// }
+		//
+	    // // Access elements, no bounds checking
+	    // const T &operator[](int i) const
+		// {
+		// 	return _data[i];
+		// }
+		//
+	    // // Returns a reference to the first element
+	    // T &front()
+		// {
+		// 	return iterator(&_data);
+		// }
+	    // // Returns a reference to the first element
+	    // const T &front() const
+		// {
+		// 	return iterator(&_data);
+		// }
+		//
+	    // // Returns a reference to the last element
+	    // T &back();
+		//
+	    // // Returns a reference to the last element
+	    // const T &back() const;
+
+	};
+
+	// template <class T>
+	// class Vector<T>::iterator
+	// {
+	// private:
+	// 	T *_curr;
+	// public:
+	// 	iterator(T *p) : _curr(p)
+	// 	{
+	// 	}
+	//
+	// 	iterator &operator++(void) // pre-incrementation
+	// 	{
+	// 		_curr++;
+	// 		return *this;
+	// 	}
+	//
+	// 	iterator &operator--(void) // pre-decrementation
+	// 	{
+	// 		_curr--;
+	// 		return *this;
+	// 	}
+	// 	iterator &operator++(int)// post-incrementation
+	// 	{
+	// 		iterator tmp(&_curr);
+	// 		_curr++;
+	// 		return tmp;
+	// 	}
+	//
+	// 	iterator &operator--(int)// post-decrementation
+	// 	{
+	// 		iterator tmp(&_curr);
+	// 		_curr--;
+	// 		return tmp;
+	// 	}
+	//
+	// 	T &operator*()
+	// 	{
+	// 		return *_curr;
+	// 	}
+	//
+	// 	bool operator==(const iterator &b) const
+	// 	{
+	// 		return *_curr == *b._curr;
+	// 	}
+	//
+	// 	bool operator!=(const iterator &b) const
+	// 	{
+	// 		return *_curr != *b._curr;
+	// 	}
+	//
+	//
+	// };
 
-template <class T>
-class Vector
-{
-public:
-    /* ----- Constructors ----- */
-
-    // Default constructor
-    Vector();
-
-    explicit Vector(int s);
-
-    // Copy constructor
-    Vector(const Vector &arg);
-
-    // Copy Assingment
-    Vector<T> &operator=(const Vector<T> &arg);
-
-    // Destructor
-    ~Vector();
-
-    /*----------------------------*/
-
-    /* -------- ITERATORS --------*/
-
-    class iterator;
-
-    iterator begin();
-
-    const iterator begin() const;
-
-    iterator end();
-
-    const iterator end() const;
-
-    const iterator cbegin() const;
-
-    const iterator cend() const;
-
-    /*----------------------------*/
-
-    /* -------- CAPACITY -------- */
-
-    bool empty() const;
-
-    // Returns size of allocated storate capacity
-    size_t capacity() const;
-
-    // Requests a change in capacity
-    // reserve() will never decrase the capacity.
-    void reserve(int newmalloc);
-
-    // Changes the Vector's size.
-    // If the newsize is smaller, the last elements will be lost.
-    // Has a default value param for custom values when resizing.
-    void resize(int newsize, T val = T());
-
-    // Returns the size of the Vector (number of elements).
-    size_t size() const;
-
-    // Returns the maximum number of elements the Vector can hold
-    size_t max_size() const;
-
-    // Reduces capcity to fit the size
-    void shrink_to_fit();
-
-    /*----------------------------*/
-
-    /* -------- MODIFIERS --------*/
-
-    // Removes all elements from the Vector
-    // Capacity is not changed.
-    void clear();
-
-    // Inserts element at the back
-    void push_back(const T &d);
-
-    // Removes the last element from the Vector
-    void pop_back();
-
-    /*----------------------------*/
-
-    /* ----- ELEMENT ACCESS ----- */
-
-    // Access elements with bounds checking
-    T &at(int n);
-
-    // Access elements with bounds checking for constant Vectors.
-    const T &at(int n) const;
-
-    // Access elements, no bounds checking
-    T &operator[](int i);
-
-    // Access elements, no bounds checking
-    const T &operator[](int i) const;
-
-    // Returns a reference to the first element
-    T &front();
-
-    // Returns a reference to the first element
-    const T &front() const;
-
-    // Returns a reference to the last element
-    T &back();
-
-    // Returns a reference to the last element
-    const T &back() const;
-
-    // Returns a pointer to the array used by Vector
-    T *data();
-
-    // Returns a pointer to the array used by Vector
-    const T *data() const;
-
-    /*----------------------------*/
-
-private:
-    size_t _size;  // Number of elements in Vector
-    T *_elements;  // Pointer to first element of Vector
-    size_t _space; // Total space used by Vector including
-                   // elements and free space.
-};
-
-template <class T>
-class Vector<T>::iterator
-{
-public:
-    iterator(T *p) : _curr(p)
-    {
-    }
-
-    iterator &operator++()
-    {
-        _curr++;
-        return *this;
-    }
-
-    iterator &operator--()
-    {
-        _curr--;
-        return *this;
-    }
-
-    T &operator*()
-    {
-        return *_curr;
-    }
-
-    bool operator==(const iterator &b) const
-    {
-        return *_curr == *b._curr;
-    }
-
-    bool operator!=(const iterator &b) const
-    {
-        return *_curr != *b._curr;
-    }
-
-private:
-    T *_curr;
-};
-
-// Constructors/Destructor
-template <class T>
-Vector<T>::Vector(): _size(0), _elements(0), _space(0)
-{
-}
-
-template <class T>
-inline Vector<T>::Vector(int s)
-    : _size(s), _elements(new T[s], _space(s))
-{
-    for (int index = 0; index < _size; ++index)
-        _elements[index] = T();
-}
-
-template <class T>
-inline Vector<T>::Vector(const Vector &arg)
-    : _size(arg._size), _elements(new T[arg._size])
-{
-    for (int index = 0; index < arg._size; ++index)
-        _elements[index] = arg._elements[index];
-}
-
-template <class T>
-inline Vector<T> &Vector<T>::operator=(const Vector<T> &a)
-{
-    if (this == &a)
-        return *this; // Self-assingment not work needed
-
-    // Current Vector has enough space, so there is no need for new allocation
-    if (a._size <= _space)
-    {
-        for (int index = 0; index < a._size; ++index)
-        {
-            _elements[index] = a._elements[index];
-            _size = a._size;
-            return *this;
-        }
-    }
-
-    T *p = new T[a._size];
-
-    for (int index = 0; index < a._size; ++index)
-        p[index] = a._elements[index];
-
-    delete[] _elements;
-    _size = a._size;
-    _space = a._size;
-    _elements = p;
-    return *this;
-}
-
-template <class T>
-Vector<T>::~Vector()
-{
-    delete[] _elements;
-}
-
-// Iterators
-template <class T>
-inline typename Vector<T>::iterator Vector<T>::begin()
-{
-    return Vector<T>::iterator(&_elements[0]);
-}
-
-template <class T>
-inline typename const Vector<T>::iterator Vector<T>::begin() const
-{
-    return Vector<T>::iterator(&_elements[0]);
-}
-
-template <class T>
-inline typename Vector<T>::iterator Vector<T>::end()
-{
-    return Vector<T>::iterator(&_elements[_size]);
-}
-
-template <class T>
-inline typename const Vector<T>::iterator Vector<T>::end() const
-{
-    return Vector<T>::iterator(&_elements[_size]);
-}
-
-template <class T>
-inline typename const Vector<T>::iterator Vector<T>::cbegin() const
-{
-    return Vector<T>::iterator(&_elements[0]);
-}
-
-template <class T>
-inline typename const Vector<T>::iterator Vector<T>::cend() const
-{
-    return Vector<T>::iterator(&_elements[_size]);
-}
-
-// Capacity
-template <class T>
-inline bool Vector<T>::empty() const
-{
-    return (_size == 0);
-}
-
-template <class T>
-inline size_t Vector<T>::capacity() const
-{
-    return _space;
-}
-
-template <class T>
-inline void Vector<T>::reserve(int newalloc)
-{
-    if (newalloc <= _space)
-        return;
-
-    T *p = new T[newalloc];
-
-    for (int i = 0; i < _size; ++i)
-        p[i] = _elements[i];
-
-    delete[] _elements;
-
-    _elements = p;
-
-    _space = newalloc;
-}
-
-template <class T>
-inline void Vector<T>::resize(int newsize, T val)
-{
-    reserve(newsize);
-
-    for (int index = _size; index < newsize; ++index)
-        _elements[i] = T();
-
-    _size = newsize;
-}
-
-template <class T>
-inline size_t Vector<T>::size() const
-{
-    return _size;
-}
-
-// Modifiers
-template <class T>
-inline void Vector<T>::push_back(const T &d)
-{
-    if (_space == 0)
-        reserve(8);
-    else if (_size == _space)
-        reserve(2 * _space);
-
-    _elements[_size] = d;
-
-    ++_size;
-}
-
-// Accessors
-template <class T>
-inline T &Vector<T>::at(int n)
-{
-    if (n < 0 || _size <= n)
-        throw out_of_range();
-    return _elements[n];
-}
-
-template <class T>
-inline const T &Vector<T>::at(int n) const
-{
-    if (n < 0 || _size <= n)
-        throw out_of_range();
-    return _elements[n];
-}
-
-template <class T>
-inline T &Vector<T>::operator[](int i)
-{
-    return _elements[i];
-}
-
-template <class T>
-inline const T &Vector<T>::operator[](int i) const
-{
-    return _elements[i];
-}
-
-template <class T>
-inline T &Vector<T>::front()
-{
-    return _elements[0];
-}
-
-template <class T>
-inline const T &Vector<T>::front() const
-{
-    return _elements[0];
-}
-
-template <class T>
-inline T &Vector<T>::back()
-{
-    return _elements[_size - 1];
-}
-
-template <class T>
-inline const T &Vector<T>::back() const
-{
-    return _elements[_size - 1];
-}
-
-template <class T>
-inline T *Vector<T>::data()
-{
-    return _elements;
-}
-
-template <class T>
-inline const T *Vector<T>::data() const
-{
-    return _elements;
 }

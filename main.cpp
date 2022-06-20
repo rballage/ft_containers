@@ -1,4 +1,3 @@
-#include "containers/deque.hpp"
 #include "containers/list.hpp"
 #include "containers/map.hpp"
 #include "containers/queue.hpp"
@@ -7,6 +6,9 @@
 
 int main(int ac, const char **av)
 {
+	{
+		using std;
 
-    return 0;
+	}
+	return 0;
 }

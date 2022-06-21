@@ -1,83 +1,92 @@
 #pragma once
+#include <memory>
+#include <exception>
+#include "utils.hpp"
 // https://tfetimes.com/wp-content/uploads/2015/11/Accelerated_C-_Practical_Programming_by_Example_-_Andrew_Koenig_Barbara_E._Moo_-_Addison-Wesley_-_2000.pdf
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T> >
-	class Vector
+	template <class T, class Alloc = std::allocator<T> >
+	class vector
 	{
 	public: //typedefs
-		typedef T value_type;
-		typedef Allocator allocator_type;
-		typedef std::size_t size_type;
-		typedef std::ptrdiff_t diff;
-		typedef typename Allocator::reference reference;
-		typedef typename Allocator::const_reference const_reference;
-		typedef typename Allocator::pointer pointer;
-		typedef typename Allocator::const_pointer const_pointer;
-		typedef typename Allocator::reference reference;
-		typedef typename Allocator::const_reference const_reference;
-		typedef typename Allocator::pointer pointer;
-		typedef typename Allocator::const_pointer const_pointer;
-		typedef T* iterator;
-		typedef const T* const_iterator;
+		typedef Alloc										allocator_type;
+		typedef T											value_type;
+		typedef std::ptrdiff_t								diff;
+		typedef typename allocator_type::size_type			size_type;
+		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
+		typedef pointer										iterator;
+		typedef const_pointer 								const_iterator;
 	private: //variables
 		size_type _occupied_size;
 		size_type _max_capacity;
 
-		iterator _data; // first element in the Vec
-		iterator _availaible; // (one past) the last element in the Vec
-		iterator _limit; // (one past) the allocated memory
+		pointer _data_start; // first element in the Vec
+		pointer _data_max; // (one past) the last element in the Vec
+		pointer _data_end; // (one past) the allocated memory
 		allocator_type _alloc;
 
-		void _create(void)
-		{
-			data = avail = limit = 0;
-		};
-		void _create(size_type size, const T &value)
-		{
-			_data = _alloc.allocate(size);
-			_limit = _last = _data + size;
-			uninitialized_fill(_data, _limit, value);
-		};
-		void _create(const_iterator first, const_iterator last)
-		{
-			_data = _alloc.allocate(last - first);
-			_limit = _last = uninitialized_copy(start, end, _data);
-		};
-		void _delete(void)
-		{
-			if (_data)
+		void _delete(void) {
+			if (_data_start)
 			{
-				iterator it = _availabale;
-				while (it != _data)
+				pointer it = _data_max;
+				while (it != _data_start)
 					_alloc.destroy(--it); // might leek ?
-				_alloc.deallocate(_data, _limit - _data);
+				_alloc.deallocate(_data_start, _data_max - _data_start);
 			}
-			_data = _limit = _avail = 0;
+			_data_start = _data_max = _data_end = 0;
 		};
 
 	public:
-		Vector(void) {_create();};
+		explicit vector(const allocator_type &newAllocator = allocator_type()) :
+		_alloc(newAllocator)
+		{
+			_data_start = _data_end = _data_max = 0;
+		};
 		//When we say that a constructor is explicit, we're saying that the compiler will use the
 		//constructor only in contexts in which the user expressly invokes the constructor, and not otherwise:
-		explicit Vector(size_type s)
+		explicit vector(size_type s, const value_type &value = value_type(), const allocator_type &newAllocator = allocator_type()) :
+		_alloc(newAllocator)
 		{
-
+			_data_start = _alloc.allocate(s);
+			_data_max = _data_end = _data_start + s;
+			std::uninitialized_fill(_data_start, _data_max, value);
 		};
-		Vector(const Vector &arg)
+
+		vector(const vector &v, const allocator_type &newAllocator = allocator_type()) :
+		_alloc(newAllocator)
 		{
-
+			_data_start = _alloc.allocate(v.end() - v.begin());
+			_data_max = _data_end = std::uninitialized_copy(static_cast<const_pointer>(v.begin()), static_cast<const_pointer>(v.end()), _data_start);
 		};
-		Vector<T> &operator=(const Vector<T> &arg)
+
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
+		_alloc(newAllocator)
 		{
-
+			_data_start = _alloc.allocate(last - first);
+			_data_max = _data_end = std::uninitialized_copy(static_cast<const_iterator>(first), static_cast<const_iterator>(last), _data_start);
 		};
-		~Vector() {_delete();};
 
-		iterator begin() {return _data;};
-		const_iterator begin() const {return _data;};
-		iterator end() {return _last;};
-		const_iterator end() const {return _last;};
+		vector &operator=(const value_type &v) {
+			if (v == *this)
+				return *this;
+			_delete();
+			_data_start = _alloc.allocate(v.end() - v.begin());
+			_data_max = _data_end = std::uninitialized_copy(v.begin(), v.end(), _data_start);
+			return *this;
+		};
+
+		~vector() {
+			_delete();
+		};
+
+		iterator begin() {return _data_start;};
+		const_iterator begin() const {return _data_start;};
+		iterator end() {return _data_end;};
+		const_iterator end() const {return _data_end;};
 
 	    // const iterator cbegin() const;
 		//
@@ -89,14 +98,15 @@ namespace ft
 
 	    bool empty() const
 		{
-
+			return _data_end - _data_start ? false : true;
 		};
 
 	    // Returns size of allocated storage capacity
-		// size_t capacity() const
-		// {
-		//
-		// }
+		size_type capacity() const
+		{
+			return _data_max - _data_start;
+		}
+
 
 	    // Requests a change in capacity
 	    // reserve() will never decrase the capacity.
@@ -105,7 +115,7 @@ namespace ft
 		//
 		// }
 
-	    // Changes the Vector's size.
+	    // Changes the vector's size.
 	    // If the newsize is smaller, the last elements will be lost.
 	    // Has a default value param for custom values when resizing.
 	    // void resize(int newsize, T val = T())
@@ -113,14 +123,14 @@ namespace ft
 		//
 		// }
 
-		// Returns the size of the Vector (number of elements).
+		// Returns the size of the vector (number of elements).
 
 
-	    // Returns the maximum number of elements the Vector can hold
-		// size_t max_size() const
-		// {
-		// 	_limit - _data;
-		// };
+	    // Returns the maximum number of elements the vector can hold
+		size_type max_size(void) const
+		{
+			return allocator_type().max_size();
+		};
 
 	    // Reduces capcity to fit the size
 	    // void shrink_to_fit()
@@ -132,7 +142,7 @@ namespace ft
 
 	    /* -------- MODIFIERS --------*/
 
-	    // Removes all elements from the Vector
+	    // Removes all elements from the vector
 	    // Capacity is not changed.
 	    // void clear()
 		// {
@@ -145,7 +155,7 @@ namespace ft
 		//
 		// }
 		//
-	    // // Removes the last element from the Vector
+	    // // Removes the last element from the vector
 	    // void pop_back()
 		// {
 		//
@@ -158,14 +168,30 @@ namespace ft
 	    // // Access elements with bounds checking
 	    // T &at(int n);
 		//
-	    // // Access elements with bounds checking for constant Vectors.
+	    // // Access elements with bounds checking for constant vectors.
 	    // const T &at(int n) const;
 		//
 	    // // Access elements, no bounds checking
-	    // T &operator[](int i)
-		// {
-		// 	return _data[i];
-		// }
+		reference &operator[](size_type i)
+		{
+			return _data_start[i];
+		};
+		const_reference &operator[](size_type i) const
+		{
+			if (i >= static_cast<size_type>(_data_end - _data_start))
+				throw std::exception();
+			return _data_start[i];
+		};
+		reference &at(size_type i)
+		{
+			if (i >= static_cast<size_type>(_data_end - _data_start))
+				throw std::exception();
+			return _data_start[i];
+		};
+		const_reference &at(size_type i) const
+		{
+			return _data_start[i];
+		};
 		//
 	    // // Access elements, no bounds checking
 	    // const T &operator[](int i) const
@@ -193,7 +219,7 @@ namespace ft
 	};
 
 	// template <class T>
-	// class Vector<T>::iterator
+	// class vector<T>::iterator
 	// {
 	// private:
 	// 	T *_curr;

@@ -96,9 +96,13 @@ namespace ft
 
 	    /* -------- CAPACITY -------- */
 
-	    bool empty() const
+		bool empty() const
 		{
-			return _data_end - _data_start ? false : true;
+			return !(_data_end - _data_start);
+		};
+		size_type size() const
+		{
+			return _data_end - _data_start;
 		};
 
 	    // Returns size of allocated storage capacity
@@ -144,10 +148,16 @@ namespace ft
 
 	    // Removes all elements from the vector
 	    // Capacity is not changed.
-	    // void clear()
-		// {
-		//
-		// }
+		void clear()
+		{
+			if (_data_start)
+			{
+				pointer it = _data_end;
+				while (it != _data_start)
+					_alloc.destroy(--it);
+			}
+			_data_end = _data_start;
+		};
 		//
 	    // // Inserts element at the back
 	    // void push_back(const T &d)

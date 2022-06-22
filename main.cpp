@@ -2,6 +2,7 @@
 // #include "containers/map.hpp"
 // #include "containers/queue.hpp"
 // #include "containers/stack.hpp"
+#include <cassert>
 #include "containers/vector.hpp"
 #include "Test.hpp"
 #include <vector>
@@ -145,14 +146,15 @@ std::string vector_empty_test_std(void)
 	return res;
 }
 
+
 int main(void)
 {
 	Test construction_test(&vector_constructions_test_ft, &vector_constructions_test_std);
-	std::cout << construction_test.diff() << std::endl;
+	assert(construction_test.is_same());
 	Test clear_test(&vector_clear_test_ft, &vector_clear_test_std);
-	std::cout << clear_test.diff() << std::endl;
+	assert(clear_test.is_same());
 	Test empty_test(&vector_empty_test_ft, &vector_empty_test_std);
-	std::cout << empty_test.diff() << std::endl;
+	assert(empty_test.is_same());
 
 	return 0;
 }

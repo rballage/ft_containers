@@ -8,7 +8,7 @@
 #include <vector>
 #include <sstream>
 
-std::string vector_constructions_test_ft(void)
+std::string vector_constructions_ft(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -30,7 +30,7 @@ std::string vector_constructions_test_ft(void)
 	res = out.str();
 	return res;
 }
-std::string vector_constructions_test_std(void)
+std::string vector_constructions_std(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -53,7 +53,7 @@ std::string vector_constructions_test_std(void)
 	res = out.str();
 	return res;
 }
-std::string vector_clear_test_ft(void)
+std::string vector_clear_ft(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -76,7 +76,7 @@ std::string vector_clear_test_ft(void)
 	res = out.str();
 	return res;
 }
-std::string vector_clear_test_std(void)
+std::string vector_clear_std(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -98,7 +98,7 @@ std::string vector_clear_test_std(void)
 	res = out.str();
 	return res;
 }
-std::string vector_empty_test_ft(void)
+std::string vector_empty_ft(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -121,7 +121,7 @@ std::string vector_empty_test_ft(void)
 	res = out.str();
 	return res;
 }
-std::string vector_empty_test_std(void)
+std::string vector_empty_std(void)
 {
 	std::string res;
 	std::ostringstream out;
@@ -149,11 +149,11 @@ std::string vector_empty_test_std(void)
 
 int main(void)
 {
-	Test construction_test(&vector_constructions_test_ft, &vector_constructions_test_std);
+	Test construction_test(&vector_constructions_ft, &vector_constructions_std);
 	assert(construction_test.is_same());
-	Test clear_test(&vector_clear_test_ft, &vector_clear_test_std);
+	Test clear_test(&vector_clear_ft, &vector_clear_std);
 	assert(clear_test.is_same());
-	Test empty_test(&vector_empty_test_ft, &vector_empty_test_std);
+	Test empty_test(&vector_empty_ft, &vector_empty_std);
 	assert(empty_test.is_same());
 
 	return 0;

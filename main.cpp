@@ -235,7 +235,6 @@ int main(void)
 	Test empty_test(&vector_empty_ft, &vector_empty_std);
 	assert(empty_test.is_same());
 	Test at_test(&vector_at_ft, &vector_at_std);
-	at_test.printAll();
 	assert(at_test.is_same());
 
 	return 0;

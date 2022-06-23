@@ -24,8 +24,8 @@ namespace ft
 		size_type _max_capacity;
 
 		pointer _data_start; // first element in the Vec
-		pointer _data_max; // (one past) the last element in the Vec
-		pointer _data_end; // (one past) the allocated memory
+		pointer _data_max; // end of the allocated memory
+		pointer _data_end; // end of the constructed memory
 		allocator_type _alloc;
 
 		void _delete(void) {
@@ -142,11 +142,8 @@ namespace ft
 		//
 		// }
 
-	    /*----------------------------*/
 
-	    /* -------- MODIFIERS --------*/
-
-	    // Removes all elements from the vector
+	    // deconstuct all elements from the vector
 	    // Capacity is not changed.
 		void clear()
 		{
@@ -166,10 +163,16 @@ namespace ft
 		// }
 		//
 	    // // Removes the last element from the vector
-	    // void pop_back()
-		// {
-		//
-		// }
+		void pop_back()
+		{
+			if (_data_end)
+			{
+				_alloc.destroy(_data_end - 1);
+				if (_data_end - 1 != _data_start)
+					_data_end--;
+				else _data_end = _data_start = 0;
+			}
+		}
 
 	    /*----------------------------*/
 
@@ -188,8 +191,6 @@ namespace ft
 		};
 		const_reference &operator[](size_type i) const
 		{
-			if (i >= static_cast<size_type>(_data_end - _data_start))
-				throw std::exception();
 			return _data_start[i];
 		};
 		reference &at(size_type i)
@@ -200,6 +201,8 @@ namespace ft
 		};
 		const_reference &at(size_type i) const
 		{
+			if (i >= static_cast<size_type>(_data_end - _data_start))
+				throw std::exception();
 			return _data_start[i];
 		};
 		//

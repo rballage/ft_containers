@@ -13,7 +13,7 @@ namespace ft
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
 	{
-	public: //typedefs
+	public:
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
 		typedef std::ptrdiff_t								diff;
@@ -24,7 +24,7 @@ namespace ft
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef pointer										iterator;
 		typedef const_pointer 								const_iterator;
-	private: //variables
+	private:
 		size_type _occupied_size;
 		size_type _max_capacity;
 
@@ -111,10 +111,18 @@ namespace ft
 
 	    // Requests a change in capacity
 	    // reserve() will never decrase the capacity.
-	    // void reserve(int newmalloc)
-		// {
-		//
-		// }
+		void reserve(size_type i)
+		{
+			if (i > max_size() || i <= capacity())
+				return;
+			pointer new_data_start = _alloc.allocate(i);
+			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
+			pointer new_data_max = new_data_start +  i;
+			_delete();
+			_data_start = new_data_start;
+			_data_end = new_data_end;
+			_data_max = new_data_max;
+		};
 
 	    // Changes the vector's size.
 	    // If the newsize is smaller, the last elements will be lost.

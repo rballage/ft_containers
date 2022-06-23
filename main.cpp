@@ -8,6 +8,40 @@
 #include <vector>
 #include <sstream>
 
+std::string vector_reserve_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+	vector<int> vec(10, 255);
+	// vector<int> vec2;
+	// int i = 0;
+	out << vec.capacity() << endl;
+
+	vec.reserve(10);
+	out << vec.capacity() << endl;
+
+	res = out.str();
+	return res;
+}
+std::string vector_reserve_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::endl;
+	vector<int> vec(10, 255);
+	// vector<int> vec2;
+	// int i = 0;
+	out << vec.capacity() << endl;
+
+	vec.reserve(10);
+	out << vec.capacity() << endl;
+
+	res = out.str();
+	return res;
+}
 std::string vector_at_ft(void)
 {
 	std::string res;
@@ -24,25 +58,25 @@ std::string vector_at_ft(void)
 		out << "vec: "<< vec.at(-1) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec.at(100) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec2.at(0) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec2.at(100) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	res = out.str();
 	return res;
@@ -63,25 +97,25 @@ std::string vector_at_std(void)
 		out << "vec: "<< vec.at(-1) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec.at(100) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec2.at(0) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	try {
 		out << "vec: "<< vec2.at(100) << std::endl;
 	}
 	catch (const std::exception& e) {
-		out << e.what() << endl;
+		(void)e;out << "test" << endl;
 	}
 	res = out.str();
 	return res;
@@ -236,6 +270,10 @@ int main(void)
 	assert(empty_test.is_same());
 	Test at_test(&vector_at_ft, &vector_at_std);
 	assert(at_test.is_same());
+	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
+	assert(reserve_test.is_same());
+
+	// at_test.printAll();
 
 	return 0;
 }

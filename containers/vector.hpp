@@ -58,8 +58,7 @@ namespace ft
 		{
 			_data_start = _data_end = _data_max = 0;
 		};
-		//When we say that a constructor is explicit, we're saying that the compiler will use the
-		//constructor only in contexts in which the user expressly invokes the constructor, and not otherwise:
+
 		explicit vector(size_type s, const value_type &value = value_type(), const allocator_type &newAllocator = allocator_type()) :
 		_alloc(newAllocator)
 		{
@@ -100,30 +99,15 @@ namespace ft
 		const_iterator begin() const {return _data_start;};
 		iterator end() {return _data_end;};
 		const_iterator end() const {return _data_end;};
+		iterator rend() {return _data_start - 1;};
+		const_iterator rend() const {return _data_start - 1;};
+		iterator rbegin() {return _data_end - 1;};
+		const_iterator rbegin() const {return _data_end - 1;};
 
-	    // const iterator cbegin() const;
-		//
-	    // const iterator cend() const;
-
-	    /*----------------------------*/
-
-	    /* -------- CAPACITY -------- */
-
-		bool empty() const
-		{
-			return !(_data_end - _data_start);
-		};
-		size_type size() const
-		{
-			return _data_end - _data_start;
-		};
-
-	    // Returns size of allocated storage capacity
-		size_type capacity() const
-		{
-			return _data_max - _data_start;
-		}
-
+		bool empty() const {return !(_data_end - _data_start);};
+		size_type size() const {return _data_end - _data_start;};
+		size_type capacity() const {return _data_max - _data_start;}
+		size_type max_size(void) const {return allocator_type().max_size();};
 
 	    // Requests a change in capacity
 	    // reserve() will never decrase the capacity.
@@ -140,21 +124,11 @@ namespace ft
 		//
 		// }
 
-		// Returns the size of the vector (number of elements).
-
-
-	    // Returns the maximum number of elements the vector can hold
-		size_type max_size(void) const
-		{
-			return allocator_type().max_size();
-		};
-
 	    // Reduces capcity to fit the size
 	    // void shrink_to_fit()
 		// {
 		//
 		// }
-
 
 	    // deconstuct all elements from the vector
 	    // Capacity is not changed.
@@ -187,21 +161,12 @@ namespace ft
 			}
 		}
 
-	    /*----------------------------*/
-
-	    /* ----- ELEMENT ACCESS ----- */
-
-
-
-		reference &operator[](size_type i)
-		{
-			return _data_start[i];
-		};
-
-		const_reference &operator[](size_type i) const
-		{
-			return _data_start[i];
-		};
+		reference &operator[](size_type i) {return _data_start[i];};
+		const_reference &operator[](size_type i) const {return _data_start[i];};
+		reference front() { return &(*_data_start); };
+		const_reference front() const { return &(*_data_start); };
+		reference back() { return &(*(_data_end - 1)); };
+		const_reference back() const { return &(*(_data_end - 1)); };
 
 		reference &at(size_type i)
 		{
@@ -215,30 +180,6 @@ namespace ft
 				throw std::out_of_range(_range_err_message(i));
 			return _data_start[i];
 		};
-		//
-	    // // Access elements, no bounds checking
-	    // const T &operator[](int i) const
-		// {
-		// 	return _data[i];
-		// }
-		//
-	    // // Returns a reference to the first element
-	    // T &front()
-		// {
-		// 	return iterator(&_data);
-		// }
-	    // // Returns a reference to the first element
-	    // const T &front() const
-		// {
-		// 	return iterator(&_data);
-		// }
-		//
-	    // // Returns a reference to the last element
-	    // T &back();
-		//
-	    // // Returns a reference to the last element
-	    // const T &back() const;
-
 	};
 
 	// template <class T>

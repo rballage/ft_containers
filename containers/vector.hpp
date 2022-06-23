@@ -157,7 +157,6 @@ namespace ft
 		//
 		// }
 		//
-	    // // Removes the last element from the vector
 		void pop_back()
 		{
 			if (_data_end)

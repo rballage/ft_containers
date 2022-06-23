@@ -8,6 +8,85 @@
 #include <vector>
 #include <sstream>
 
+std::string vector_at_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+	vector<int> vec(10, 255);
+	vector<int> vec2;
+	int i = 0;
+	while (i != 10) {
+		out << "vec: "<< vec.at(i++) << std::endl;
+	}
+	try {
+		out << "vec: "<< vec.at(-1) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec.at(100) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec2.at(0) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec2.at(100) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	res = out.str();
+	return res;
+}
+std::string vector_at_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::endl;
+	vector<int> vec(10, 255);
+	vector<int> vec2;
+	int i = 0;
+	while (i != 10) {
+		out << "vec: "<< vec.at(i++) << std::endl;
+	}
+	try {
+		out << "vec: "<< vec.at(-1) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec.at(100) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec2.at(0) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	try {
+		out << "vec: "<< vec2.at(100) << std::endl;
+	}
+	catch (const std::exception& e) {
+		out << e.what() << endl;
+	}
+	res = out.str();
+	return res;
+}
+
 std::string vector_constructions_ft(void)
 {
 	std::string res;
@@ -155,6 +234,9 @@ int main(void)
 	assert(clear_test.is_same());
 	Test empty_test(&vector_empty_ft, &vector_empty_std);
 	assert(empty_test.is_same());
+	Test at_test(&vector_at_ft, &vector_at_std);
+	at_test.printAll();
+	assert(at_test.is_same());
 
 	return 0;
 }

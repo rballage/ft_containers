@@ -43,6 +43,14 @@ namespace ft
 			}
 			_data_start = _data_max = _data_end = 0;
 		};
+		std::string _range_err_message(size_type val)
+		{
+			std::string message;
+			std::ostringstream out;
+			out << "vector::_M_range_check: __n (which is " << val << ") >= this->size() (which is " << size() << ")";
+			message = out.str();
+			return message;
+		}
 
 	public:
 		explicit vector(const allocator_type &newAllocator = allocator_type()) :
@@ -183,21 +191,8 @@ namespace ft
 
 	    /* ----- ELEMENT ACCESS ----- */
 
-		std::string _range_err_message(size_type val)
-		{
-			std::string message;
-			std::ostringstream out;
-			out << "vector::_M_range_check: __n (which is " << val << ") >= this->size() (which is " << size() << ")";
-			message = out.str();
-			return message;
-		}
-	    // // Access elements with bounds checking
-	    // T &at(int n);
-		//
-	    // // Access elements with bounds checking for constant vectors.
-	    // const T &at(int n) const;
-		//
-	    // // Access elements, no bounds checking
+
+
 		reference &operator[](size_type i)
 		{
 			return _data_start[i];
@@ -211,13 +206,13 @@ namespace ft
 		reference &at(size_type i)
 		{
 			if (i >= static_cast<size_type>(_data_end - _data_start))
-				throw std::out_of_range(_range_err_message(i).c_str());
+				throw std::out_of_range(_range_err_message(i));
 			return _data_start[i];
 		};
 		const_reference &at(size_type i) const
 		{
 			if (i >= static_cast<size_type>(_data_end - _data_start))
-				throw std::out_of_range(_range_err_message(i).c_str());
+				throw std::out_of_range(_range_err_message(i));
 			return _data_start[i];
 		};
 		//

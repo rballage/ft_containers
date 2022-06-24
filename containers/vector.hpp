@@ -113,8 +113,10 @@ namespace ft
 	    // reserve() will never decrase the capacity.
 		void reserve(size_type i)
 		{
-			if (i > max_size() || i <= capacity())
+			if ( i <= capacity())
 				return;
+			if (i > max_size() || i <= capacity())
+				throw(std::length_error(""));
 			pointer new_data_start = _alloc.allocate(i);
 			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
 			pointer new_data_max = new_data_start +  i;
@@ -133,14 +135,15 @@ namespace ft
 		// }
 
 	    // Reduces capcity to fit the size
-	    // void shrink_to_fit()
-		// {
-		//
-		// }
+		void shrink_to_fit(void)
+		{
+			_alloc.deallocate(_data_end, _data_max - _data_end);
+			_data_max = _data_end;
+		};
 
 	    // deconstuct all elements from the vector
 	    // Capacity is not changed.
-		void clear()
+		void clear(void)
 		{
 			if (_data_start)
 			{
@@ -151,13 +154,16 @@ namespace ft
 			_data_end = _data_start;
 		};
 		//
-	    // // Inserts element at the back
-	    // void push_back(const T &d)
-		// {
+		// Inserts element at the back
+		void push_back(const_reference val)
+		{
+			if (_data_end == _data_max)
+				reserve(capacity() * 2);
+			_alloc.construct(_data_end, val);
+			_data_end++;
+		};
 		//
-		// }
-		//
-		void pop_back()
+		void pop_back(void)
 		{
 			if (_data_end)
 			{

@@ -211,6 +211,7 @@ std::string vector_clear_std(void)
 	res = out.str();
 	return res;
 }
+
 std::string vector_empty_ft(void)
 {
 	std::string res;
@@ -259,6 +260,96 @@ std::string vector_empty_std(void)
 	return res;
 }
 
+std::string vector_push_back_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+
+	{
+		vector<int> vec(10, 255);
+	// vec.clear();
+		vec.push_back(5);
+		vec.push_back(5);
+		vec.push_back(5);
+		out << vec.capacity() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	{
+		vector<int> vec(10, 255);
+		vec.clear();
+		vec.push_back(5);
+		out << vec.capacity() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	// out << vec.empty() << endl;
+	// vector<int> vec2(1, 255);
+	// out << vec2.empty() << endl;
+	// vec2.clear();
+	// out << vec2.empty() << endl;
+	// vector<int> vec3;
+	// out << vec3.empty() << endl;
+	// vec3.clear();
+	// out << vec3.empty() << endl;
+
+	res = out.str();
+	return res;
+}
+std::string vector_push_back_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::cout;
+	using std::endl;
+
+	{
+		vector<int> vec(10, 255);
+	// vec.clear();
+		vec.push_back(5);
+		vec.push_back(5);
+		vec.push_back(5);
+		out << vec.capacity() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	{
+		vector<int> vec(10, 255);
+		vec.clear();
+		vec.push_back(5);
+		out << vec.capacity() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	// out << vec.empty() << endl;
+	// vector<int> vec2(1, 255);
+	// out << vec2.empty() << endl;
+	// vec2.clear();
+	// out << vec2.empty() << endl;
+	// vector<int> vec3;
+	// out << vec3.empty() << endl;
+	// vec3.clear();
+	// out << vec3.empty() << endl;
+
+	res = out.str();
+	return res;
+}
+
 
 int main(void)
 {
@@ -272,6 +363,9 @@ int main(void)
 	assert(at_test.is_same());
 	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
 	assert(reserve_test.is_same());
+	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
+	// push_back_test.printAll();
+	assert(push_back_test.is_same());
 
 	// at_test.printAll();
 

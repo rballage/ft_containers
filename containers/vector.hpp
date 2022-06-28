@@ -135,14 +135,26 @@ namespace ft
 			{
 				pointer it = _data_start + n;
 				while (it != _data_end)
-					_alloc.destroy(it++);
+				{
+					std::cout << *it <<"\n";
+
+					_alloc.destroy(it);
+					it++;
+				}
 				_data_end = _data_start + n;
-				shrink_to_fit();
+				// std::cout << *_data_end <<"\n";
+				std::cout << capacity() <<"\n";
+				std::cout << "size:" <<  _data_max - _data_end << std::endl;
+				_alloc.deallocate(_data_end, _data_max - _data_end);
+				_data_max = _data_end;
+
+				// shrink_to_fit();
+				std::cout << "coucou\n";
 			}
 			else if (size() < n)
 			{
 				reserve(n);
-				std::uninitialized_fill_n(_data_end, n - size(), val);
+				std::uninitialized_fill(static_cast<pointer>(end()), _data_max, val);
 				_data_end = _data_start + n;
 			}
 		};

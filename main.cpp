@@ -349,6 +349,106 @@ std::string vector_push_back_std(void)
 	res = out.str();
 	return res;
 }
+std::string vector_resize_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::cout;
+	using std::endl;
+
+	{
+		vector<int> vec(1, 0);
+	// vec.clear();
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	vec.push_back(6);
+	vec.push_back(7);
+	vec.push_back(8);
+	vec.push_back(9);
+	vec.push_back(10);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		out << "resizing to smaller size.\n";
+		vec.resize(2);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	{
+		vector<int> vec(10, 255);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		out << "resizing to bigger size.\n";
+		vec.resize(20);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	res = out.str();
+	return res;
+}
+std::string vector_resize_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::cout;
+	using std::endl;
+
+	{
+		vector<int> vec(1,0);
+	// vec.clear();
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	vec.push_back(6);
+	vec.push_back(7);
+	vec.push_back(8);
+	vec.push_back(9);
+	vec.push_back(10);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		out << "resizing to smaller size.\n";
+		vec.resize(2);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	{
+		vector<int> vec(10, 255);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		out << "resizing to bigger size.\n";
+		vec.resize(20);
+		out << "capacity: "<< vec.capacity() << endl;
+		out << "size: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		while (it != end) {
+			out << "vec: "<< *it << std::endl; it++;
+		}
+	}
+	res = out.str();
+	return res;
+}
 
 
 int main(void)
@@ -366,6 +466,9 @@ int main(void)
 	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
 	// push_back_test.printAll();
 	assert(push_back_test.is_same());
+	Test resize_test(&vector_resize_ft, &vector_resize_std);
+	resize_test.printAll();
+	assert(resize_test.is_same());
 
 	// at_test.printAll();
 

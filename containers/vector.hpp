@@ -169,10 +169,28 @@ namespace ft
 			_data_end = _data_start;
 		};
 		//
-		iterator insert( iterator pos, const T& value );
-		void insert( iterator pos, size_type count, const T& value );
-		template< class InputIt >
-void insert( iterator pos, InputIt first, InputIt last );
+		iterator insert(iterator pos, const T& value)
+		{
+			if (size() + 1 <= capacity()) // if the container has enough space for insertion
+			{
+				if (static_cast<pointer>(pos) == _data_end)
+				{
+					push_back(value);
+					return _data_end;
+				}
+				pointer end = _data_end - 1;
+				while (end >= pos)
+				{
+					std::uninitialized_fill(static_cast<const_pointer>(end + 1), 1, *end);
+					_alloc.destroy(end--);
+				}
+				_data_end++;
+				
+			}
+		};
+		void insert(iterator pos, size_type count, const T& value);
+		template<class InputIt>
+		void insert(iterator pos, InputIt first, InputIt last);
 		// Inserts element at the back
 		void push_back(const_reference val)
 		{

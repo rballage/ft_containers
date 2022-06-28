@@ -113,13 +113,13 @@ namespace ft
 	    // reserve() will never decrase the capacity.
 		void reserve(size_type i)
 		{
-			if ( i <= capacity())
+			if (i <= capacity())
 				return;
-			if (i > max_size() || i <= capacity())
+			if (i > max_size())
 				throw(std::length_error(""));
 			pointer new_data_start = _alloc.allocate(i);
 			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
-			pointer new_data_max = new_data_start +  i;
+			pointer new_data_max = new_data_start + i;
 			_delete();
 			_data_start = new_data_start;
 			_data_end = new_data_end;
@@ -129,10 +129,23 @@ namespace ft
 	    // Changes the vector's size.
 	    // If the newsize is smaller, the last elements will be lost.
 	    // Has a default value param for custom values when resizing.
-	    // void resize(int newsize, T val = T())
-		// {
-		//
-		// }
+		void resize(size_type n, value_type val = value_type())
+		{
+			if (size() > n)
+			{
+				pointer it = _data_start + n;
+				while (it != _data_end)
+					_alloc.destroy(it++);
+				_data_end = _data_start + n;
+				shrink_to_fit();
+			}
+			else if (size() < n)
+			{
+				reserve(n);
+				std::uninitialized_fill(_data_end, _data_start + n, val);
+				_data_end = _data_start + n;
+			}
+		}
 
 	    // Reduces capcity to fit the size
 		void shrink_to_fit(void)

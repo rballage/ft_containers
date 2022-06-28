@@ -178,19 +178,20 @@ namespace ft
 					push_back(value);
 					return _data_end;
 				}
-				pointer end = _data_end - 1;
-				while (end >= pos)
+				pointer end = _data_end;
+				while (end-- >= pos)
 				{
 					std::uninitialized_fill(static_cast<const_pointer>(end + 1), 1, *end);
-					_alloc.destroy(end--);
+					_alloc.destroy(end);
 				}
+				std::uninitialized_fill(static_cast<const_pointer>(pos), 1, value);
 				_data_end++;
-				
+				return pos;
 			}
 		};
-		void insert(iterator pos, size_type count, const T& value);
-		template<class InputIt>
-		void insert(iterator pos, InputIt first, InputIt last);
+		// void insert(iterator pos, size_type count, const T& value);
+		// template<class InputIt>
+		// void insert(iterator pos, InputIt first, InputIt last);
 		// Inserts element at the back
 		void push_back(const_reference val)
 		{

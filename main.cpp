@@ -523,7 +523,7 @@ std::string vector_insert_std(void)
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		// out << "resizing to smaller size.\n";
-		vec.insert(vec.end()+1, 999);
+		vec.insert(vec.end(), 999);
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		vector<int>::iterator it = vec.begin();

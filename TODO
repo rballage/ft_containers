@@ -3,3 +3,4 @@ implementer uninitialized_fill
 tester construction vector avec iterator (range)
 tester plus amplement vector::reserve
 tester iterator et reverse iterator
+vector::insert should segfault when passing end passed iterator

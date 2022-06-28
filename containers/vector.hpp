@@ -171,25 +171,10 @@ namespace ft
 		//
 		iterator insert(iterator pos, const T& value)
 		{
-			if (size() + 1 <= capacity()) // if the container has enough space for insertion
-			{
-				if (_data_start == _data_end || static_cast<pointer>(pos) == _data_end)
-				{
-					push_back(value);
-					return _data_end;
-				}
-				pointer end = _data_end;
-				while (end-- >= pos)
-				{
-					std::uninitialized_fill_n((end + 1), 1, *end);
-					_alloc.destroy(end);
-				}
-				std::uninitialized_fill_n((pos), 1, value);
-				_data_end++;
-				return pos;
-			}
+			insert(pos, 1, value);
 			return pos;
 		};
+
 		void insert(iterator pos, size_type count, const T& value)
 		{
 			if (count && size() + count <= capacity()) // if the container has enough space for insertion

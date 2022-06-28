@@ -173,7 +173,7 @@ namespace ft
 		{
 			if (size() + 1 <= capacity()) // if the container has enough space for insertion
 			{
-				if (static_cast<pointer>(pos) == _data_end)
+				if (_data_start == _data_end || static_cast<pointer>(pos) == _data_end)
 				{
 					push_back(value);
 					return _data_end;
@@ -181,13 +181,14 @@ namespace ft
 				pointer end = _data_end;
 				while (end-- >= pos)
 				{
-					std::uninitialized_fill(static_cast<const_pointer>(end + 1), 1, *end);
+					std::uninitialized_fill_n((end + 1), 1, *end);
 					_alloc.destroy(end);
 				}
-				std::uninitialized_fill(static_cast<const_pointer>(pos), 1, value);
+				std::uninitialized_fill_n((pos), 1, value);
 				_data_end++;
 				return pos;
 			}
+			return pos;
 		};
 		// void insert(iterator pos, size_type count, const T& value);
 		// template<class InputIt>

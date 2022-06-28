@@ -142,10 +142,10 @@ namespace ft
 			else if (size() < n)
 			{
 				reserve(n);
-				std::uninitialized_fill(_data_end, _data_start + n, val);
+				std::uninitialized_fill_n(_data_end, n - size(), val);
 				_data_end = _data_start + n;
 			}
-		}
+		};
 
 	    // Reduces capcity to fit the size
 		void shrink_to_fit(void)

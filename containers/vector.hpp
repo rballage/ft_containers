@@ -190,7 +190,38 @@ namespace ft
 			}
 			return pos;
 		};
-		// void insert(iterator pos, size_type count, const T& value);
+		void insert(iterator pos, size_type count, const T& value)
+		{
+			if (count && size() + count <= capacity()) // if the container has enough space for insertion
+			{
+				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
+				{
+					pointer end = _data_end;
+					while (end-- >= pos)
+					{
+						std::uninitialized_fill_n((end + count), 1, *end);
+						_alloc.destroy(end);
+					}
+				}
+				std::uninitialized_fill_n(pos , count, value);
+				_data_end += count;
+			}
+			else if (count && size() + count > capacity())
+			{
+				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
+				{
+					pointer new_data_start = _alloc.allocate(count + size());
+					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
+					std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
+					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+					_delete();
+					_data_start = new_data_start;
+					_data_end = new_data_end;
+					_data_max = new_data_end;
+				}
+			}
+			return ;
+		};
 		// template<class InputIt>
 		// void insert(iterator pos, InputIt first, InputIt last);
 		// Inserts element at the back

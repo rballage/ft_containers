@@ -473,9 +473,16 @@ std::string vector_insert_ft(void)
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		// out << "resizing to smaller size.\n";
-		vec.insert(vec.begin(),2, 111);
+		out << "capacity: "<< vec.capacity() << endl;
+
+		vec.insert(vec.begin()+1,2, 111);
+		out << "capacity: "<< vec.capacity() << endl;
+
 		vec.insert(vec.begin()+2,2, 222);
-		vec.insert(vec.begin()+4,2, 444);
+		out << "capacity: "<< vec.capacity() << endl;
+
+		vec.insert(vec.begin()+4,15, 444);
+		out << "capacity: "<< vec.capacity() << endl;
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		vector<int>::iterator it = vec.begin();
@@ -483,6 +490,7 @@ std::string vector_insert_ft(void)
 		while (it != end) {
 			out << "vec: "<< *it << std::endl; it++;
 		}
+
 	}
 	// {
 	// 	vector<int> vec(10, 255);
@@ -525,9 +533,16 @@ std::string vector_insert_std(void)
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		// out << "resizing to smaller size.\n";
-		vec.insert(vec.begin(),2, 111);
+		out << "capacity: "<< vec.capacity() << endl;
+
+		vec.insert(vec.begin()+1,2, 111);
+		out << "capacity: "<< vec.capacity() << endl;
+
 		vec.insert(vec.begin()+2,2, 222);
-		vec.insert(vec.begin()+4,2, 444);
+		out << "capacity: "<< vec.capacity() << endl;
+
+		vec.insert(vec.begin()+4,15, 444);
+		out << "capacity: "<< vec.capacity() << endl;
 		// out << "capacity: "<< vec.capacity() << endl;
 		// out << "size: "<< vec.size() << endl;
 		vector<int>::iterator it = vec.begin();
@@ -535,6 +550,7 @@ std::string vector_insert_std(void)
 		while (it != end) {
 			out << "vec: "<< *it << std::endl; it++;
 		}
+
 	}
 	// {
 	// 	vector<int> vec(10, 255);

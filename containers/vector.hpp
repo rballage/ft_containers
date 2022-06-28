@@ -210,14 +210,15 @@ namespace ft
 			{
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
 				{
-					pointer new_data_start = _alloc.allocate(count + size());
+					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
+					pointer new_data_start = _alloc.allocate(total_size);
 					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
 					std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
 					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
 					_delete();
 					_data_start = new_data_start;
 					_data_end = new_data_end;
-					_data_max = new_data_end;
+					_data_max = new_data_start + total_size;
 				}
 			}
 			return ;

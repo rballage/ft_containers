@@ -95,6 +95,9 @@ namespace ft
 			_delete();
 		};
 
+		T *data(void) {return static_cast<T*>(_data_start);};
+		const T *data(void) const {return static_cast<T*>(_data_start);};
+
 		iterator begin() {return _data_start;};
 		const_iterator begin() const {return _data_start;};
 		iterator end() {return _data_end;};
@@ -135,21 +138,8 @@ namespace ft
 			{
 				pointer it = _data_start + n;
 				while (it != _data_end)
-				{
-					std::cout << *it <<"\n";
-
-					_alloc.destroy(it);
-					it++;
-				}
+					_alloc.destroy(it++);
 				_data_end = _data_start + n;
-				// std::cout << *_data_end <<"\n";
-				std::cout << capacity() <<"\n";
-				std::cout << "size:" <<  _data_max - _data_end << std::endl;
-				_alloc.deallocate(_data_end, _data_max - _data_end);
-				_data_max = _data_end;
-
-				// shrink_to_fit();
-				std::cout << "coucou\n";
 			}
 			else if (size() < n)
 			{
@@ -179,6 +169,10 @@ namespace ft
 			_data_end = _data_start;
 		};
 		//
+		iterator insert( iterator pos, const T& value );
+		void insert( iterator pos, size_type count, const T& value );
+		template< class InputIt >
+void insert( iterator pos, InputIt first, InputIt last );
 		// Inserts element at the back
 		void push_back(const_reference val)
 		{

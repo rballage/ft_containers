@@ -116,10 +116,13 @@ namespace ft
 	    // reserve() will never decrase the capacity.
 		void reserve(size_type i)
 		{
+			if (!i)
+				i = 1;
 			if (i <= capacity())
 				return;
 			if (i > max_size())
 				throw(std::length_error(""));
+
 			pointer new_data_start = _alloc.allocate(i);
 			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
 			pointer new_data_max = new_data_start + i;
@@ -171,13 +174,14 @@ namespace ft
 		//
 		iterator insert(iterator pos, const T& value)
 		{
+			const size_type distance = pos - _data_start; // necessary when reallocating is necessary
 			insert(pos, 1, value);
-			return pos;
+			return _data_start + distance;
 		};
 
 		void insert(iterator pos, size_type count, const T& value)
 		{
-			if (count && size() + count <= capacity()) // if the container has enough space for insertion
+			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
 				{
@@ -191,7 +195,7 @@ namespace ft
 				std::uninitialized_fill_n(pos , count, value);
 				_data_end += count;
 			}
-			else if (count && size() + count > capacity())
+			else if (count && size() && size() + count > capacity())
 			{
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
 				{
@@ -206,6 +210,8 @@ namespace ft
 					_data_max = new_data_start + total_size;
 				}
 			}
+			else if (count && size() == 0)
+				push_back(value);
 			return ;
 		};
 		// template<class InputIt>

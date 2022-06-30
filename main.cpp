@@ -13,7 +13,7 @@ std::string vector_reserve_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	// vector<int> vec2;
 	// int i = 0;
@@ -30,7 +30,7 @@ std::string vector_reserve_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	// vector<int> vec2;
 	// int i = 0;
@@ -47,33 +47,33 @@ std::string vector_at_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2;
 	int i = 0;
 	while (i != 10) {
-		out << "vec: "<< vec.at(i++) << std::endl;
+		out << "vec: "<< vec.at(i++) << endl;
 	}
 	try {
-		out << "vec: "<< vec.at(-1) << std::endl;
+		out << "vec: "<< vec.at(-1) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec.at(100) << std::endl;
+		out << "vec: "<< vec.at(100) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec2.at(0) << std::endl;
+		out << "vec: "<< vec2.at(0) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec2.at(100) << std::endl;
+		out << "vec: "<< vec2.at(100) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
@@ -86,33 +86,33 @@ std::string vector_at_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2;
 	int i = 0;
 	while (i != 10) {
-		out << "vec: "<< vec.at(i++) << std::endl;
+		out << "vec: "<< vec.at(i++) << endl;
 	}
 	try {
-		out << "vec: "<< vec.at(-1) << std::endl;
+		out << "vec: "<< vec.at(-1) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec.at(100) << std::endl;
+		out << "vec: "<< vec.at(100) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec2.at(0) << std::endl;
+		out << "vec: "<< vec2.at(0) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
 	}
 	try {
-		out << "vec: "<< vec2.at(100) << std::endl;
+		out << "vec: "<< vec2.at(100) << endl;
 	}
 	catch (const std::exception& e) {
 		(void)e;out << "test" << endl;
@@ -126,19 +126,19 @@ std::string vector_constructions_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2(vec);
 
 	vector<int>::iterator it = vec.begin();
 	vector<int>::iterator end = vec.end();
 	while (it != end) {
-		out << "vec: "<< *it << std::endl; it++;
+		out << "vec: "<< *it << endl; it++;
 	}
 	it = vec2.begin();
 	end = vec2.end();
 	while (it != end) {
-		out << "vec2: " << *it << std::endl; it++;
+		out << "vec2: " << *it << endl; it++;
 	}
 	res = out.str();
 	return res;
@@ -149,19 +149,19 @@ std::string vector_constructions_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2(vec);
 
 	vector<int>::iterator it = vec.begin();
 	vector<int>::iterator end = vec.end();
 	while (it != end) {
-		out << "vec: "<< *it << std::endl; it++;
+		out << "vec: "<< *it << endl; it++;
 	}
 	it = vec2.begin();
 	end = vec2.end();
 	while (it != end) {
-		out << "vec2: " << *it << std::endl; it++;
+		out << "vec2: " << *it << endl; it++;
 	}
 	res = out.str();
 	return res;
@@ -171,7 +171,7 @@ std::string vector_clear_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 
 	vector<int> vec(10, 255);
 	out << vec.size() << endl;
@@ -195,7 +195,7 @@ std::string vector_clear_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 	vector<int> vec(10, 255);
 	out << vec.size() << endl;
 	vec.clear();
@@ -217,7 +217,7 @@ std::string vector_empty_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 
 	vector<int> vec(10, 255);
 	out << vec.empty() << endl;
@@ -241,7 +241,7 @@ std::string vector_empty_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	vector<int> vec(10, 255);
 	out << vec.empty() << endl;
@@ -265,7 +265,7 @@ std::string vector_push_back_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(10, 255);
@@ -277,7 +277,7 @@ std::string vector_push_back_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	{
@@ -288,7 +288,7 @@ std::string vector_push_back_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	// out << vec.empty() << endl;
@@ -310,7 +310,7 @@ std::string vector_push_back_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(10, 255);
@@ -322,7 +322,7 @@ std::string vector_push_back_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	{
@@ -333,7 +333,7 @@ std::string vector_push_back_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	// out << vec.empty() << endl;
@@ -355,7 +355,7 @@ std::string vector_resize_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(1, 0);
@@ -379,7 +379,7 @@ std::string vector_resize_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	{
@@ -393,7 +393,7 @@ std::string vector_resize_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	res = out.str();
@@ -405,7 +405,7 @@ std::string vector_resize_ft(void)
 	std::ostringstream out;
 	using ft::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(1,0);
@@ -429,7 +429,7 @@ std::string vector_resize_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	{
@@ -443,7 +443,7 @@ std::string vector_resize_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 	}
 	res = out.str();
@@ -455,7 +455,7 @@ std::string vector_insert_ft(void)
 	std::ostringstream out;
 	using ft::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(5,0);
@@ -470,7 +470,7 @@ std::string vector_insert_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
@@ -487,7 +487,7 @@ std::string vector_insert_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
@@ -500,7 +500,7 @@ std::string vector_insert_ft(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
@@ -513,7 +513,7 @@ std::string vector_insert_std(void)
 	std::ostringstream out;
 	using std::vector;
 	using std::cout;
-	using std::endl;
+	using endl;
 
 	{
 		vector<int> vec(5,0);
@@ -528,7 +528,7 @@ std::string vector_insert_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
@@ -545,7 +545,7 @@ std::string vector_insert_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
@@ -559,7 +559,7 @@ std::string vector_insert_std(void)
 		vector<int>::iterator it = vec.begin();
 		vector<int>::iterator end = vec.end();
 		while (it != end) {
-			out << "vec: "<< *it << std::endl; it++;
+			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}

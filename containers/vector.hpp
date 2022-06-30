@@ -38,7 +38,7 @@ namespace ft
 			{
 				pointer it = _data_max;
 				while (it != _data_start)
-					_alloc.destroy(--it); // might leek ?
+					_alloc.destroy(--it);
 				_alloc.deallocate(_data_start, _data_max - _data_start);
 			}
 			_data_start = _data_max = _data_end = 0;

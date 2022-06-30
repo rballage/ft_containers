@@ -7,7 +7,6 @@
 #include <string>
 #include <exception>
 
-// https://tfetimes.com/wp-content/uploads/2015/11/Accelerated_C-_Practical_Programming_by_Example_-_Andrew_Koenig_Barbara_E._Moo_-_Addison-Wesley_-_2000.pdf
 namespace ft
 {
 	template <class T, class Alloc = std::allocator<T> >
@@ -24,16 +23,13 @@ namespace ft
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef pointer										iterator;
 		typedef const_pointer 								const_iterator;
-	private:
-		size_type _occupied_size;
-		size_type _max_capacity;
 
-		pointer _data_start; // first element in the Vec
-		pointer _data_max; // end of the allocated memory
-		pointer _data_end; // end of the constructed memory
+	private:
+		pointer _data_start, _data_max, _data_end;
 		allocator_type _alloc;
 
-		void _delete(void) {
+		void _delete(void)
+		{
 			if (_data_start)
 			{
 				pointer it = _data_max;
@@ -43,6 +39,7 @@ namespace ft
 			}
 			_data_start = _data_max = _data_end = 0;
 		};
+
 		std::string _range_err_message(size_type val)
 		{
 			std::string message;
@@ -64,7 +61,7 @@ namespace ft
 		{
 			_data_start = _alloc.allocate(s);
 			_data_max = _data_end = _data_start + s;
-			std::uninitialized_fill(_data_start, _data_max, value);
+			std::uninitialized_fill(_data_start, _data_end, value);
 		};
 
 		vector(const vector &v, const allocator_type &newAllocator = allocator_type()) :

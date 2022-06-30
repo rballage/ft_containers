@@ -1,5 +1,15 @@
 namespace ft
 {
+
+// 	Le trait enable_if est une technique permettant de contrôler l'application de SFINAE. Cette technique est due à Andrew Lumsdaine. L'idée générale va comme suit :
+//
+// Ce trait exprime un type interne et public type
+// Sa signature est enable_if<bool,T=void> ce qui signifie qu'il est défini sur la base d'une condition statique de d'un type (qui sera void par défaut)
+// L'expression std::enable_if<true,T>::type équivaut à T
+// L'expression std::enable_if<false,T>::type est indéfinie (le type résultant est incomplet), ce qui peut (selon les circonstances) éliminer un template de ceux
+// examinés pour la génération du code ou tout simplement bloquer la compilation
+
+
 	template<bool condition, class T = void>
 		struct enable_if {};
 

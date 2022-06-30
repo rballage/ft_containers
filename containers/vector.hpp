@@ -47,7 +47,7 @@ namespace ft
 			out << "vector::_M_range_check: __n (which is " << val << ") >= this->size() (which is " << size() << ")";
 			message = out.str();
 			return message;
-		}
+		};
 
 	public:
 		explicit vector(const allocator_type &newAllocator = allocator_type()) :
@@ -253,7 +253,6 @@ namespace ft
 			return _data_start[i];
 		};
 	};
-
 	// template <class T>
 	// class vector<T>::iterator
 	// {

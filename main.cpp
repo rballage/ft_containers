@@ -13,7 +13,7 @@ std::string vector_reserve_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	// vector<int> vec2;
 	// int i = 0;
@@ -30,7 +30,7 @@ std::string vector_reserve_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	// vector<int> vec2;
 	// int i = 0;
@@ -47,7 +47,7 @@ std::string vector_at_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2;
 	int i = 0;
@@ -86,7 +86,7 @@ std::string vector_at_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2;
 	int i = 0;
@@ -126,7 +126,7 @@ std::string vector_constructions_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2(vec);
 
@@ -148,8 +148,7 @@ std::string vector_constructions_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	vector<int> vec2(vec);
 
@@ -171,7 +170,7 @@ std::string vector_clear_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 
 	vector<int> vec(10, 255);
 	out << vec.size() << endl;
@@ -194,8 +193,7 @@ std::string vector_clear_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 	vector<int> vec(10, 255);
 	out << vec.size() << endl;
 	vec.clear();
@@ -217,7 +215,7 @@ std::string vector_empty_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 
 	vector<int> vec(10, 255);
 	out << vec.empty() << endl;
@@ -240,8 +238,7 @@ std::string vector_empty_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	vector<int> vec(10, 255);
 	out << vec.empty() << endl;
@@ -265,7 +262,7 @@ std::string vector_push_back_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(10, 255);
@@ -309,8 +306,7 @@ std::string vector_push_back_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(10, 255);
@@ -354,8 +350,7 @@ std::string vector_resize_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(1, 0);
@@ -404,8 +399,7 @@ std::string vector_resize_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(1,0);
@@ -454,8 +448,7 @@ std::string vector_insert_ft(void)
 	std::string res;
 	std::ostringstream out;
 	using ft::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(5,0);
@@ -512,8 +505,7 @@ std::string vector_insert_std(void)
 	std::string res;
 	std::ostringstream out;
 	using std::vector;
-	using std::cout;
-	using endl;
+	using std::endl;
 
 	{
 		vector<int> vec(5,0);

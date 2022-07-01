@@ -732,7 +732,6 @@ std::string vector_erase_ft(void)
 	res = out.str();
 	return res;
 }
-
 std::string vector_erase_range_ft(void)
 {
 	std::string res;

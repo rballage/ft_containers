@@ -558,6 +558,261 @@ std::string vector_insert_std(void)
 	res = out.str();
 	return res;
 }
+std::string vector_erase_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::endl;
+
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin() + 1);
+		vec.erase(vec.begin() + 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);//vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	// { // should segfault
+	// 	vector<int> vec; 	//vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+	//
+	// 	out << "erase first elem \nsize: "<< vec.size() << endl;
+	// 	vec.erase(vec.begin());
+	// 	out << "size after erase: "<< vec.size() << endl;
+	// 	vector<int>::iterator it = vec.begin();
+	// 	vector<int>::iterator end = vec.end();
+	// 	out << "vec: ";
+	//
+	// 	while (it != end) {
+	// 		out << ", " << *it++;
+	// 	}
+	// 	out << endl;
+	// }
+	// {
+	// 	vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+	//
+	// 	out << "erase end elem \nsize: "<< vec.size() << endl;
+	// 	vec.erase(vec.end());
+	// 	out << "size after erase: "<< vec.size() << endl;
+	// 	vector<int>::iterator it = vec.begin();
+	// 	vector<int>::iterator end = vec.end();
+	// 	out << "vec: ";
+	//
+	// 	while (it != end) {
+	// 		out << " " << *it++;
+	// 	}
+	// 	out << endl;
+	// }
+
+	res = out.str();
+	return res;
+}
+std::string vector_erase_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin() + 1);
+		vec.erase(vec.begin() + 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);//vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	// {// should segfault
+	// 	vector<int> vec; 	//vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+	//
+	// 	out << "erase first elem \nsize: "<< vec.size() << endl;
+	// 	vec.erase(vec.begin());
+	// 	out << "size after erase: "<< vec.size() << endl;
+	// 	vector<int>::iterator it = vec.begin();
+	// 	vector<int>::iterator end = vec.end();
+	// 	out << "vec: ";
+	//
+	// 	while (it != end) {
+	// 		out << ", " << *it++;
+	// 	}
+	// 	out << endl;
+	// }
+	// {// must segfault
+	// 	vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+	//
+	// 	out << "erase end elem \nsize: "<< vec.size() << endl;
+	// 	vec.erase(vec.end());
+	// 	out << "size after erase: "<< vec.size() << endl;
+	// 	vector<int>::iterator it = vec.begin();
+	// 	vector<int>::iterator end = vec.end();
+	// 	out << "vec: ";
+	//
+	// 	while (it != end) {
+	// 		out << " " << *it++;
+	// 	}
+	// 	out << endl;
+	// }
+
+	res = out.str();
+	return res;
+}
+
+std::string vector_erase_range_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.begin() + 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.end() - 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	res = out.str();
+	return res;
+}
+std::string vector_erase_range_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::endl;
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.begin() + 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.end() - 3);
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
+
+	res = out.str();
+	return res;
+}
 
 
 int main(void)
@@ -579,8 +834,14 @@ int main(void)
 	// resize_test.printAll();
 	assert(resize_test.is_same());
 	Test insert_test(&vector_insert_ft, &vector_insert_std);
-	insert_test.printAll();
+	// insert_test.printAll();
 	assert(insert_test.is_same());
+	Test erase_test(&vector_erase_ft, &vector_erase_std);
+	erase_test.printAll();
+	assert(erase_test.is_same());
+	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
+	erase_range_test.printAll();
+	assert(erase_range_test.is_same());
 
 	// at_test.printAll();
 

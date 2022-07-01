@@ -160,7 +160,7 @@ namespace ft
 	    // Capacity is not changed.
 		void clear(void)
 		{
-			if (_data_start)
+			if (_data_start != _data_end)
 			{
 				pointer it = _data_end;
 				while (it != _data_start)
@@ -168,7 +168,38 @@ namespace ft
 			}
 			_data_end = _data_start;
 		};
-		//
+
+		iterator erase(iterator pos)
+		{
+			// if (pos == _data_end || _data_start == _data_end)
+			// 	return end();
+			_alloc.destroy(pos);
+			iterator ret = ++pos;
+			while (pos != _data_end)
+			{
+				std::uninitialized_copy_n(pos, 1, pos - 1);
+				_alloc.destroy(pos++);
+			}
+			_data_end = pos - 1;
+			return ret;
+		};
+
+		iterator erase(iterator first, iterator last)
+		{
+			iterator pos = first;
+			ptrdiff_t distance = last - first;
+			while (pos < last)
+				_alloc.destroy(pos++);
+			while (pos < _data_end)
+			{
+				std::uninitialized_copy_n(pos, 1, pos - distance);
+				_alloc.destroy(pos);
+				pos++;
+			}
+			_data_end = pos - distance;
+			return last + 1;
+		};
+
 		iterator insert(iterator pos, const T& value)
 		{
 			const size_type distance = pos - _data_start; // necessary when reallocating is necessary

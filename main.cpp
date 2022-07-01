@@ -770,6 +770,21 @@ std::string vector_erase_range_ft(void)
 		}
 		out << endl;
 	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.end());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
 	res = out.str();
 	return res;
 }
@@ -809,6 +824,21 @@ std::string vector_erase_range_std(void)
 		}
 		out << endl;
 	}
+	{
+		vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
+
+		out << "erase first elem \nsize: "<< vec.size() << endl;
+		vec.erase(vec.begin(), vec.end());
+		out << "size after erase: "<< vec.size() << endl;
+		vector<int>::iterator it = vec.begin();
+		vector<int>::iterator end = vec.end();
+		out << "vec: ";
+
+		while (it != end) {
+			out << ", " << *it++;
+		}
+		out << endl;
+	}
 
 	res = out.str();
 	return res;
@@ -819,28 +849,37 @@ int main(void)
 {
 	Test construction_test(&vector_constructions_ft, &vector_constructions_std);
 	assert(construction_test.is_same());
+
 	Test clear_test(&vector_clear_ft, &vector_clear_std);
 	assert(clear_test.is_same());
+
 	Test empty_test(&vector_empty_ft, &vector_empty_std);
 	assert(empty_test.is_same());
+
 	Test at_test(&vector_at_ft, &vector_at_std);
 	assert(at_test.is_same());
+
 	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
 	assert(reserve_test.is_same());
+	
 	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
 	// push_back_test.printAll();
 	assert(push_back_test.is_same());
+
 	Test resize_test(&vector_resize_ft, &vector_resize_std);
 	// resize_test.printAll();
 	assert(resize_test.is_same());
+
 	Test insert_test(&vector_insert_ft, &vector_insert_std);
 	// insert_test.printAll();
 	assert(insert_test.is_same());
+
 	Test erase_test(&vector_erase_ft, &vector_erase_std);
-	erase_test.printAll();
+	// erase_test.printAll();
 	assert(erase_test.is_same());
+
 	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
-	erase_range_test.printAll();
+	// erase_range_test.printAll();
 	assert(erase_range_test.is_same());
 
 	// at_test.printAll();

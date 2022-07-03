@@ -283,6 +283,10 @@ namespace ft
 				throw std::out_of_range(_range_err_message(i));
 			return _data_start[i];
 		};
+		allocator_type get_allocator() const
+		{
+			return allocator_type();
+		};
 	};
 	// template <class T>
 	// class vector<T>::iterator

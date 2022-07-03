@@ -1,6 +1,4 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "modernize-use-auto"
-#pragma ide diagnostic ignored "modernize-redundant-void-arg"
+
 // #include "containers/list.hpp"
 // #include "containers/map.hpp"
 // #include "containers/queue.hpp"
@@ -863,7 +861,7 @@ int main(void)
 
 	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
 	assert(reserve_test.is_same());
-	
+
 	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
 	// push_back_test.printAll();
 	assert(push_back_test.is_same());
@@ -888,5 +886,3 @@ int main(void)
 
 	return 0;
 }
-
-#pragma clang diagnostic pop

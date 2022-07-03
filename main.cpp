@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "modernize-use-auto"
+#pragma ide diagnostic ignored "modernize-redundant-void-arg"
 // #include "containers/list.hpp"
 // #include "containers/map.hpp"
 // #include "containers/queue.hpp"
@@ -8,7 +11,7 @@
 #include <vector>
 #include <sstream>
 
-std::string vector_reserve_ft(void)
+std::string vector_reserve_ft()
 {
 	std::string res;
 	std::ostringstream out;
@@ -885,3 +888,5 @@ int main(void)
 
 	return 0;
 }
+
+#pragma clang diagnostic pop

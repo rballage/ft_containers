@@ -444,6 +444,52 @@ std::string vector_resize_ft(void)
 	res = out.str();
 	return res;
 }
+std::string vector_size_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+
+		vector<int> vec(0);
+	// vec.clear();
+    out << "0. size: " << vec.size() << '\n';
+
+    for (int i=0; i<10; i++) vec.push_back(i);
+    out << "1. size: " << vec.size() << '\n';
+
+    vec.insert (vec.end()-1,10,100);
+    out << "2. size: " << vec.size() << '\n';
+
+    vec.pop_back();
+	out << "3. size: " << vec.size() << '\n';
+
+	res = out.str();
+	return res;
+}
+std::string vector_size_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+
+	vector<int> vec(0);
+	// vec.clear();
+    out << "0. size: " << vec.size() << '\n';
+
+    for (int i=0; i<10; i++) vec.push_back(i);
+    out << "1. size: " << vec.size() << '\n';
+
+    vec.insert (vec.end()-1,10,100);
+    out << "2. size: " << vec.size() << '\n';
+
+    vec.pop_back();
+	out << "3. size: " << vec.size() << '\n';
+
+	res = out.str();
+	return res;
+}
 std::string vector_insert_ft(void)
 {
 	std::string res;
@@ -612,36 +658,6 @@ std::string vector_erase_std(void)
 		}
 		out << endl;
 	}
-	// { // should segfault
-	// 	vector<int> vec; 	//vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
-	//
-	// 	out << "erase first elem \nsize: "<< vec.size() << endl;
-	// 	vec.erase(vec.begin());
-	// 	out << "size after erase: "<< vec.size() << endl;
-	// 	vector<int>::iterator it = vec.begin();
-	// 	vector<int>::iterator end = vec.end();
-	// 	out << "vec: ";
-	//
-	// 	while (it != end) {
-	// 		out << ", " << *it++;
-	// 	}
-	// 	out << endl;
-	// }
-	// {
-	// 	vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
-	//
-	// 	out << "erase end elem \nsize: "<< vec.size() << endl;
-	// 	vec.erase(vec.end());
-	// 	out << "size after erase: "<< vec.size() << endl;
-	// 	vector<int>::iterator it = vec.begin();
-	// 	vector<int>::iterator end = vec.end();
-	// 	out << "vec: ";
-	//
-	// 	while (it != end) {
-	// 		out << " " << *it++;
-	// 	}
-	// 	out << endl;
-	// }
 
 	res = out.str();
 	return res;
@@ -881,6 +897,10 @@ int main(void)
 	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
 	// erase_range_test.printAll();
 	assert(erase_range_test.is_same());
+
+	Test size_test(&vector_size_ft, &vector_size_std);
+	size_test.printAll();
+	assert(size_test.is_same());
 
 	// at_test.printAll();
 

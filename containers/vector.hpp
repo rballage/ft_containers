@@ -177,7 +177,7 @@ namespace ft
 			iterator ret = ++pos;
 			while (pos != _data_end)
 			{
-				std::uninitialized_copy_n(pos, 1, pos - 1);
+				std::uninitialized_copy(pos, pos+1, pos - 1);
 				_alloc.destroy(pos++);
 			}
 			_data_end = pos - 1;
@@ -187,12 +187,12 @@ namespace ft
 		iterator erase(iterator first, iterator last)
 		{
 			iterator pos = first;
-			ptrdiff_t distance = last - first;
+			std::ptrdiff_t distance = last - first;
 			while (pos < last)
 				_alloc.destroy(pos++);
 			while (pos < _data_end)
 			{
-				std::uninitialized_copy_n(pos, 1, pos - distance);
+				std::uninitialized_copy(pos, pos+1, pos - distance);
 				_alloc.destroy(pos);
 				pos++;
 			}

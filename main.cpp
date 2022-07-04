@@ -572,6 +572,29 @@ std::string vector_insert_ft(void)
 		}
 		out << "size: "<< vec.size() << endl<< endl;
 	}
+	{
+		vector<int> myvector (3,100);
+		vector<int>::iterator it;
+
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+
+		// myvector.insert (it,2,300);
+		//
+		// // "it" no longer valid, get a new one:
+		it = myvector.begin();
+		//
+		vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+		//
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+
+		out << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+		  out << ' ' << *it;
+		out << '\n';
+	}
 	res = out.str();
 	return res;
 }
@@ -629,6 +652,29 @@ std::string vector_insert_std(void)
 			out << "vec: "<< *it << endl; it++;
 		}
 		out << "size: "<< vec.size() << endl<< endl;
+	}
+	{
+		vector<int> myvector (3,100);
+		vector<int>::iterator it;
+
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+
+		myvector.insert (it,2,300);
+
+		// "it" no longer valid, get a new one:
+		it = myvector.begin();
+
+		vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+
+		out << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+		  out << ' ' << *it;
+		out << '\n';
 	}
 	res = out.str();
 	return res;
@@ -891,48 +937,49 @@ std::string vector_erase_range_std(void)
 
 int main(void)
 {
-	Test construction_test(&vector_constructions_ft, &vector_constructions_std);
-	assert(construction_test.is_same());
-
-	Test clear_test(&vector_clear_ft, &vector_clear_std);
-	assert(clear_test.is_same());
-
-	Test empty_test(&vector_empty_ft, &vector_empty_std);
-	empty_test.printAll();
-
-	assert(empty_test.is_same());
-
-	Test at_test(&vector_at_ft, &vector_at_std);
-	assert(at_test.is_same());
-
-	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
-	assert(reserve_test.is_same());
-
-	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
-	// push_back_test.printAll();
-	assert(push_back_test.is_same());
-
-	Test resize_test(&vector_resize_ft, &vector_resize_std);
-	// resize_test.printAll();
-	assert(resize_test.is_same());
+	// Test construction_test(&vector_constructions_ft, &vector_constructions_std);
+	// assert(construction_test.is_same());
+	//
+	// Test clear_test(&vector_clear_ft, &vector_clear_std);
+	// assert(clear_test.is_same());
+	//
+	// Test empty_test(&vector_empty_ft, &vector_empty_std);
+	// empty_test.printAll();
+	//
+	// assert(empty_test.is_same());
+	//
+	// Test at_test(&vector_at_ft, &vector_at_std);
+	// assert(at_test.is_same());
+	//
+	// Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
+	// assert(reserve_test.is_same());
+	//
+	// Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
+	// // push_back_test.printAll();
+	// assert(push_back_test.is_same());
+	//
+	// Test resize_test(&vector_resize_ft, &vector_resize_std);
+	// // resize_test.printAll();
+	// assert(resize_test.is_same());
 
 	Test insert_test(&vector_insert_ft, &vector_insert_std);
-	// insert_test.printAll();
-	assert(insert_test.is_same());
+	insert_test.printAll();
+	// assert(insert_test.is_same());
 
-	Test erase_test(&vector_erase_ft, &vector_erase_std);
-	// erase_test.printAll();
-	assert(erase_test.is_same());
-
-	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
-	// erase_range_test.printAll();
-	assert(erase_range_test.is_same());
-
-	Test size_test(&vector_size_ft, &vector_size_std);
-	size_test.printAll();
-	assert(size_test.is_same());
+	// Test erase_test(&vector_erase_ft, &vector_erase_std);
+	// // erase_test.printAll();
+	// assert(erase_test.is_same());
+	//
+	// Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
+	// // erase_range_test.printAll();
+	// assert(erase_range_test.is_same());
+	//
+	// Test size_test(&vector_size_ft, &vector_size_std);
+	// // size_test.printAll();
+	// assert(size_test.is_same());
 
 	// at_test.printAll();
+
 
 	return 0;
 }

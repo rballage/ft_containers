@@ -262,7 +262,7 @@ namespace ft
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
 				{
 					pointer end = _data_end;
-					while (end-- >= pos)
+					while (end-- >= pos) // make place
 					{
 						std::uninitialized_fill_n((end + count), 1, *end);
 						_alloc.destroy(end);
@@ -292,7 +292,7 @@ namespace ft
 		};
 
 
-		template<InputIterator>
+		template<class InputIterator>
 		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			const size_type count = last - first;
@@ -301,13 +301,13 @@ namespace ft
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
 				{
 					pointer end = _data_end;
-					while (end-- >= pos)
+					while (end-- >= pos) // make place
 					{
 						std::uninitialized_fill_n((end + count), 1, *end);
 						_alloc.destroy(end);
 					}
 				}
-				std::uninitialized_fill_n(pos , count, value);
+				std::uninitialized_copy(first , last, pos);
 				_data_end += count;
 			}
 			else if (count && size() && size() + count > capacity())
@@ -317,7 +317,7 @@ namespace ft
 					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
 					pointer new_data_start = _alloc.allocate(total_size);
 					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
-					std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
+					std::uninitialized_copy(first , last, new_data_start + (pos - _data_start));
 					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
 					_delete();
 					_data_start = new_data_start;
@@ -326,8 +326,11 @@ namespace ft
 				}
 			}
 			else if (count && size() == 0)
-				push_back(value);
-			return ;
+			{
+				reserve(count);
+				std::uninitialized_copy(first, last, _data_start);
+				_data_end = _data_start + count;
+			}
 		};
 		// template<class InputIt>
 		// void insert(iterator pos, InputIt first, InputIt last);

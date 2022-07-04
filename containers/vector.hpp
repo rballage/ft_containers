@@ -30,13 +30,14 @@ namespace ft
 
 		void _delete(void)
 		{
-			if (_data_start)
+			if (_data_start != _data_end)
 			{
-				pointer it = _data_max;
-				while (it != _data_start)
-					_alloc.destroy(--it);
-				_alloc.deallocate(_data_start, _data_max - _data_start);
+				pointer it = _data_start;
+				while (it != _data_end)
+					_alloc.destroy(it++);
 			}
+			if (_data_max - _data_start)
+				_alloc.deallocate(_data_start, _data_max - _data_start);
 			_data_start = _data_max = _data_end = 0;
 		};
 
@@ -79,14 +80,14 @@ namespace ft
 			_data_max = _data_end = std::uninitialized_copy(static_cast<const_iterator>(first), static_cast<const_iterator>(last), _data_start);
 		};
 
-		vector &operator=(const value_type &v) {
-			if (v == *this)
-				return *this;
-			_delete();
-			_data_start = _alloc.allocate(v.end() - v.begin());
-			_data_max = _data_end = std::uninitialized_copy(v.begin(), v.end(), _data_start);
-			return *this;
-		};
+		vector &operator=(const vector& x)
+		{
+			if (x == *this)
+				return (*this);
+			clear();
+			_data_end = std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
+			return (*this);
+		}
 
 		~vector() {
 			_delete();
@@ -118,7 +119,7 @@ namespace ft
 			if (i <= capacity())
 				return;
 			if (i > max_size())
-				throw(std::length_error(""));
+				throw(std::length_error("vector::reserve"));
 
 			pointer new_data_start = _alloc.allocate(i);
 			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
@@ -200,15 +201,101 @@ namespace ft
 			return last + 1;
 		};
 
-		iterator insert(iterator pos, const T& value)
+		void assign(size_type n, const value_type& value)
+		{
+			if (!n)
+				return;
+			if (size() >= n)
+			{
+				const_pointer end = _data_start + n;
+				pointer it = _data_start;
+				while (it != end)
+					_alloc.destroy(it++);
+				std::uninitialized_fill_n(_data_start, n, value);
+			}
+			else if (size() < n)
+			{
+				reserve(n);
+				pointer it = _data_start;
+				while (it != _data_start + n)
+					_alloc.destroy(it++);
+				std::uninitialized_fill_n(_data_start, n, value);
+				_data_end = _data_start + n;
+			}
+		};
+
+		template<class InputIterator>
+		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		{
+			const size_type n = last - first;
+			if (!n)
+				return;
+			if (size() >= n)
+			{
+				pointer it = _data_start;
+				while (it != _data_start + n)
+					_alloc.destroy(it++);
+				std::uninitialized_copy(first, last, _data_start);
+			}
+			else if (size() < n)
+			{
+				reserve(n);
+				pointer it = _data_start;
+				while (it != _data_start + n)
+					_alloc.destroy(it++);
+				std::uninitialized_copy(first, last, _data_start);
+				_data_end = _data_start + n;
+			}
+		};
+
+		iterator insert(iterator pos, const value_type& value)
 		{
 			const size_type distance = pos - _data_start; // necessary when reallocating is necessary
 			insert(pos, 1, value);
 			return _data_start + distance;
 		};
 
-		void insert(iterator pos, size_type count, const T& value)
+		void insert(iterator pos, size_type count, const value_type& value)
 		{
+			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
+			{
+				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
+				{
+					pointer end = _data_end;
+					while (end-- >= pos)
+					{
+						std::uninitialized_fill_n((end + count), 1, *end);
+						_alloc.destroy(end);
+					}
+				}
+				std::uninitialized_fill_n(pos , count, value);
+				_data_end += count;
+			}
+			else if (count && size() && size() + count > capacity())
+			{
+				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
+				{
+					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
+					pointer new_data_start = _alloc.allocate(total_size);
+					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
+					std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
+					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+					_delete();
+					_data_start = new_data_start;
+					_data_end = new_data_end;
+					_data_max = new_data_start + total_size;
+				}
+			}
+			else if (count && size() == 0)
+				push_back(value);
+			return ;
+		};
+
+
+		template<InputIterator>
+		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		{
+			const size_type count = last - first;
 			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
 				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
@@ -248,28 +335,28 @@ namespace ft
 		void push_back(const_reference val)
 		{
 			if (_data_end == _data_max)
-				reserve(capacity() * 2);
+				reserve(capacity() ? capacity() * 2 : 1);
 			_alloc.construct(_data_end, val);
 			_data_end++;
 		};
 		//
 		void pop_back(void)
 		{
-			if (_data_end)
+			if (_data_end != _data_start)
 			{
 				_alloc.destroy(_data_end - 1);
 				if (_data_end - 1 != _data_start)
 					_data_end--;
-				else _data_end = _data_start = 0;
+				else _data_end = _data_start;
 			}
 		}
 
 		reference &operator[](size_type i) {return _data_start[i];};
 		const_reference &operator[](size_type i) const {return _data_start[i];};
-		reference front() { return &(*_data_start); };
-		const_reference front() const { return &(*_data_start); };
-		reference back() { return &(*(_data_end - 1)); };
-		const_reference back() const { return &(*(_data_end - 1)); };
+		reference front() { return (*_data_start); };
+		const_reference front() const { return (*_data_start); };
+		reference back() { return (*(_data_end - 1)); };
+		const_reference back() const { return (*(_data_end - 1)); };
 
 		reference &at(size_type i)
 		{
@@ -340,5 +427,20 @@ namespace ft
 	//
 	//
 	// };
-
+	template <class T, class Alloc>
+		bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
+		{
+			if (lhs.size() != rhs.size())
+				return (false);
+			typename ft::vector<T>::const_iterator first1 = lhs.begin();
+			typename ft::vector<T>::const_iterator first2 = rhs.begin();
+			while (first1 != lhs.end())
+			{
+				if (first2 == rhs.end() || *first1 != *first2)
+					return (false);
+				++first1;
+				++first2;
+			}
+			return (true);
+		}
 }

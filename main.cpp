@@ -230,7 +230,21 @@ std::string vector_empty_ft(void)
 	out << vec3.empty() << endl;
 	vec3.clear();
 	out << vec3.empty() << endl;
+	{
+		vector<int> myvector;
+		int sum (0);
 
+		for (int i=1;i<=10;i++) myvector.push_back(i);
+
+		while (!myvector.empty())
+		{
+		   sum += myvector.back();
+		   myvector.pop_back();
+		}
+
+		out << "total: " << sum << '\n';
+
+	}
 	res = out.str();
 	return res;
 }
@@ -253,7 +267,21 @@ std::string vector_empty_std(void)
 	out << vec3.empty() << endl;
 	vec3.clear();
 	out << vec3.empty() << endl;
+	{
+		vector<int> myvector;
+		int sum (0);
 
+		for (int i=1;i<=10;i++) myvector.push_back(i);
+
+		while (!myvector.empty())
+		{
+		   sum += myvector.back();
+		   myvector.pop_back();
+		}
+
+		out << "total: " << sum << '\n';
+
+	}
 	res = out.str();
 	return res;
 }
@@ -870,6 +898,8 @@ int main(void)
 	assert(clear_test.is_same());
 
 	Test empty_test(&vector_empty_ft, &vector_empty_std);
+	empty_test.printAll();
+
 	assert(empty_test.is_same());
 
 	Test at_test(&vector_at_ft, &vector_at_std);

@@ -354,20 +354,20 @@ namespace ft
 			}
 		}
 
-		reference &operator[](size_type i) {return _data_start[i];};
-		const_reference &operator[](size_type i) const {return _data_start[i];};
+		reference operator[](size_type i) {return _data_start[i];};
+		const_reference operator[](size_type i) const {return _data_start[i];};
 		reference front() { return (*_data_start); };
 		const_reference front() const { return (*_data_start); };
 		reference back() { return (*(_data_end - 1)); };
 		const_reference back() const { return (*(_data_end - 1)); };
 
-		reference &at(size_type i)
+		reference at(size_type i)
 		{
 			if (i >= static_cast<size_type>(_data_end - _data_start))
 				throw std::out_of_range(_range_err_message(i));
 			return _data_start[i];
 		};
-		const_reference &at(size_type i) const
+		const_reference at(size_type i) const
 		{
 			if (i >= static_cast<size_type>(_data_end - _data_start))
 				throw std::out_of_range(_range_err_message(i));

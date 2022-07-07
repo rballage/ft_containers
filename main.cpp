@@ -491,6 +491,19 @@ std::string vector_size_ft(void)
 
     vec.pop_back();
 	out << "3. size: " << vec.size() << '\n';
+	{
+		vector<int> myints;
+		out << "0. size: " << myints.size() << '\n';
+
+		for (int i=0; i<10; i++) myints.push_back(i);
+		out << "1. size: " << myints.size() << '\n';
+
+		myints.insert (myints.end(),10,100);
+		out << "2. size: " << myints.size() << '\n';
+
+		myints.pop_back();
+		out << "3. size: " << myints.size() << '\n';
+	}
 
 	res = out.str();
 	return res;
@@ -514,6 +527,19 @@ std::string vector_size_std(void)
 
     vec.pop_back();
 	out << "3. size: " << vec.size() << '\n';
+	{
+		vector<int> myints;
+		out << "0. size: " << myints.size() << '\n';
+
+		for (int i=0; i<10; i++) myints.push_back(i);
+		out << "1. size: " << myints.size() << '\n';
+
+		myints.insert (myints.end(),10,100);
+		out << "2. size: " << myints.size() << '\n';
+
+		myints.pop_back();
+		out << "3. size: " << myints.size() << '\n';
+	}
 
 	res = out.str();
 	return res;
@@ -789,36 +815,6 @@ std::string vector_erase_ft(void)
 		}
 		out << endl;
 	}
-	// {// should segfault
-	// 	vector<int> vec; 	//vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
-	//
-	// 	out << "erase first elem \nsize: "<< vec.size() << endl;
-	// 	vec.erase(vec.begin());
-	// 	out << "size after erase: "<< vec.size() << endl;
-	// 	vector<int>::iterator it = vec.begin();
-	// 	vector<int>::iterator end = vec.end();
-	// 	out << "vec: ";
-	//
-	// 	while (it != end) {
-	// 		out << ", " << *it++;
-	// 	}
-	// 	out << endl;
-	// }
-	// {// must segfault
-	// 	vector<int> vec; 	vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(4);vec.push_back(5);vec.push_back(6);vec.push_back(7);vec.push_back(8);vec.push_back(9);vec.push_back(10);
-	//
-	// 	out << "erase end elem \nsize: "<< vec.size() << endl;
-	// 	vec.erase(vec.end());
-	// 	out << "size after erase: "<< vec.size() << endl;
-	// 	vector<int>::iterator it = vec.begin();
-	// 	vector<int>::iterator end = vec.end();
-	// 	out << "vec: ";
-	//
-	// 	while (it != end) {
-	// 		out << " " << *it++;
-	// 	}
-	// 	out << endl;
-	// }
 
 	res = out.str();
 	return res;
@@ -933,50 +929,113 @@ std::string vector_erase_range_std(void)
 	res = out.str();
 	return res;
 }
+std::string vector_strings_general_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using std::vector;
+	using std::endl;
+	{
+		vector<std::string> vec;
+		out<< vec.size()<< endl;
+	}
+	{
+		vector<std::string> vec(10, "hello");
+		out<< vec.size()<< endl;
+		for (size_t i = 0; i < vec.size(); i++) {
+			out << "["<< vec[i] <<"]" <<endl;
+		}
+	}
+	{
+		std::string test("test");
+		vector<std::string> vec(10, test);
+		out<< vec.size()<< endl;
+		for (size_t i = 0; i < vec.size(); i++) {
+			out << "["<< vec[i] <<"]" <<endl;
+		}
+	}
+	res = out.str();
+	return res;
+}
+
+std::string vector_strings_general_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+	{
+		vector<std::string> vec;
+		out<< vec.size()<< endl;
+	}
+	{
+		vector<std::string> vec(10, "hello");
+		out<< vec.size()<< endl;
+		for (size_t i = 0; i < vec.size(); i++) {
+			out << "["<< vec[i] <<"]" <<endl;
+		}
+	}
+	{
+		std::string test("test");
+		vector<std::string> vec(10, test);
+		out<< vec.size()<< endl;
+		for (size_t i = 0; i < vec.size(); i++) {
+			out << "["<< vec[i] <<"]" <<endl;
+		}
+	}
+
+	res = out.str();
+	return res;
+}
+
+
 
 
 int main(void)
 {
-	// Test construction_test(&vector_constructions_ft, &vector_constructions_std);
-	// assert(construction_test.is_same());
-	//
-	// Test clear_test(&vector_clear_ft, &vector_clear_std);
-	// assert(clear_test.is_same());
-	//
-	// Test empty_test(&vector_empty_ft, &vector_empty_std);
-	// empty_test.printAll();
-	//
-	// assert(empty_test.is_same());
-	//
-	// Test at_test(&vector_at_ft, &vector_at_std);
-	// assert(at_test.is_same());
-	//
-	// Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
-	// assert(reserve_test.is_same());
-	//
-	// Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
-	// // push_back_test.printAll();
-	// assert(push_back_test.is_same());
-	//
-	// Test resize_test(&vector_resize_ft, &vector_resize_std);
-	// // resize_test.printAll();
-	// assert(resize_test.is_same());
+	Test construction_test(&vector_constructions_ft, &vector_constructions_std);
+	assert(construction_test.is_same());
+
+	Test clear_test(&vector_clear_ft, &vector_clear_std);
+	assert(clear_test.is_same());
+
+	Test empty_test(&vector_empty_ft, &vector_empty_std);
+	empty_test.printAll();
+
+	assert(empty_test.is_same());
+
+	Test at_test(&vector_at_ft, &vector_at_std);
+	assert(at_test.is_same());
+
+	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
+	assert(reserve_test.is_same());
+
+	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
+	// push_back_test.printAll();
+	assert(push_back_test.is_same());
+
+	Test resize_test(&vector_resize_ft, &vector_resize_std);
+	// resize_test.printAll();
+	assert(resize_test.is_same());
 
 	Test insert_test(&vector_insert_ft, &vector_insert_std);
-	insert_test.printAll();
+	// insert_test.printAll();
 	// assert(insert_test.is_same());
 
-	// Test erase_test(&vector_erase_ft, &vector_erase_std);
-	// // erase_test.printAll();
-	// assert(erase_test.is_same());
-	//
-	// Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
-	// // erase_range_test.printAll();
-	// assert(erase_range_test.is_same());
-	//
-	// Test size_test(&vector_size_ft, &vector_size_std);
-	// // size_test.printAll();
-	// assert(size_test.is_same());
+	Test erase_test(&vector_erase_ft, &vector_erase_std);
+	// erase_test.printAll();
+	assert(erase_test.is_same());
+
+	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
+	// erase_range_test.printAll();
+	assert(erase_range_test.is_same());
+
+	Test size_test(&vector_size_ft, &vector_size_std);
+	// size_test.printAll();
+	assert(size_test.is_same());
+	Test strings_general_test(&vector_strings_general_ft, &vector_strings_general_std);
+	strings_general_test.printAll();
+	assert(strings_general_test.is_same());
 
 	// at_test.printAll();
 

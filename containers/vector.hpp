@@ -23,6 +23,8 @@ namespace ft
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef pointer										iterator;
 		typedef const_pointer 								const_iterator;
+		typedef pointer										reverse_iterator;
+		typedef const_pointer 								reverse_const_iterator;
 
 	private:
 		pointer _data_start, _data_max, _data_end;
@@ -100,8 +102,8 @@ namespace ft
 		const_iterator begin() const {return _data_start;};
 		iterator end() {return _data_end;};
 		const_iterator end() const {return _data_end;};
-		iterator rend() {return _data_start - 1;};
-		const_iterator rend() const {return _data_start - 1;};
+		iterator rend() {return _data_start ;};
+		const_iterator rend() const {return _data_start;};
 		iterator rbegin() {return _data_end - 1;};
 		const_iterator rbegin() const {return _data_end - 1;};
 
@@ -259,22 +261,22 @@ namespace ft
 		{
 			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
-				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
-				{
+				// if (!(_data_start == _data_end))
+				// {
 					pointer end = _data_end;
 					while (end-- >= pos) // make place
 					{
 						std::uninitialized_fill_n((end + count), 1, *end);
 						_alloc.destroy(end);
 					}
-				}
+				// }
 				std::uninitialized_fill_n(pos , count, value);
 				_data_end += count;
 			}
 			else if (count && size() && size() + count > capacity())
 			{
-				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
-				{
+				// if (!(_data_start == _data_end))
+				// {
 					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
 					pointer new_data_start = _alloc.allocate(total_size);
 					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
@@ -284,11 +286,16 @@ namespace ft
 					_data_start = new_data_start;
 					_data_end = new_data_end;
 					_data_max = new_data_start + total_size;
-				}
+				// }
 			}
 			else if (count && size() == 0)
-				push_back(value);
-			return ;
+			{
+				(void)pos;
+				if (count > capacity())
+					reserve(count);
+				std::uninitialized_fill_n(_data_start, count, value);
+				_data_end = _data_start + count;
+			}
 		};
 
 
@@ -298,22 +305,22 @@ namespace ft
 			const size_type count = last - first;
 			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
-				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
-				{
+				// if (!(_data_start == _data_end)
+				// {
 					pointer end = _data_end;
 					while (end-- >= pos) // make place
 					{
 						std::uninitialized_fill_n((end + count), 1, *end);
 						_alloc.destroy(end);
 					}
-				}
+				// }
 				std::uninitialized_copy(first , last, pos);
 				_data_end += count;
 			}
 			else if (count && size() && size() + count > capacity())
 			{
-				if (!(_data_start == _data_end || static_cast<pointer>(pos) == _data_end))
-				{
+				// if (!(_data_start == _data_end)
+				// {
 					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
 					pointer new_data_start = _alloc.allocate(total_size);
 					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
@@ -323,11 +330,12 @@ namespace ft
 					_data_start = new_data_start;
 					_data_end = new_data_end;
 					_data_max = new_data_start + total_size;
-				}
+				// }
 			}
 			else if (count && size() == 0)
 			{
-				reserve(count);
+				if (count > capacity())
+					reserve(count);
 				std::uninitialized_copy(first, last, _data_start);
 				_data_end = _data_start + count;
 			}
@@ -377,7 +385,20 @@ namespace ft
 		{
 			return allocator_type();
 		};
+		void swap(vector &other)
+		{
+			ft::swap(_alloc, other._alloc);
+			ft::swap(_data_start, other._data_start);
+			ft::swap(_data_end, other._data_end);
+			ft::swap(_data_max, other._data_max);
+		};
 	};
+
+template <class T, class Alloc>
+void swap (vector<T,Alloc> &x, vector<T,Alloc> &y)
+{
+	x.swap(y);
+};
 	// template <class T>
 	// class vector<T>::iterator
 	// {

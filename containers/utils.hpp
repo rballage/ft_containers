@@ -8,20 +8,26 @@ namespace ft
 // L'expression std::enable_if<true,T>::type équivaut à T
 // L'expression std::enable_if<false,T>::type est indéfinie (le type résultant est incomplet), ce qui peut (selon les circonstances) éliminer un template de ceux
 // examinés pour la génération du code ou tout simplement bloquer la compilation
-
+	template <class T>
+	void swap(T &a, T &b)
+	{
+		T	tmp(a);
+		a = b;
+		b = tmp;
+	};
 
 	template<bool condition, class T = void>
-		struct enable_if {};
+	struct enable_if {};
 
 	template<class T>
-		struct enable_if<true, T> { typedef T type; };
+	struct enable_if<true, T> { typedef T type; };
 
 	template <bool is_integral, typename T>
-		struct is_integral_struct
-		{
-			typedef T type;
-			static const bool value = is_integral;
-		};
+	struct is_integral_struct
+	{
+		typedef T type;
+		static const bool value = is_integral;
+	};
 
 /*
 ** default template of the structure is_integral_type.

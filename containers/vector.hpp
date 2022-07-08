@@ -43,7 +43,7 @@ namespace ft
 			_data_start = _data_max = _data_end = 0;
 		};
 
-		std::string _range_err_message(size_type val)
+		const std::string _range_err_message(size_type val) const
 		{
 			std::string message;
 			std::ostringstream out;
@@ -86,8 +86,9 @@ namespace ft
 		{
 			if (x == *this)
 				return (*this);
-			clear();
-			_data_end = std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
+			_delete();
+			_data_start = _alloc.allocate(x.size());
+			_data_max = _data_end = std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
 			return (*this);
 		}
 
@@ -174,10 +175,10 @@ namespace ft
 
 		iterator erase(iterator pos)
 		{
-			// if (pos == _data_end || _data_start == _data_end)
-			// 	return end();
+			if (pos == _data_end || _data_start == _data_end)
+				return end();
 			_alloc.destroy(pos);
-			iterator ret = ++pos;
+			iterator ret = pos++;
 			while (pos != _data_end)
 			{
 				std::uninitialized_copy(pos, pos+1, pos - 1);
@@ -200,11 +201,12 @@ namespace ft
 				pos++;
 			}
 			_data_end = pos - distance;
-			return last + 1;
+			return first;
 		};
 
 		void assign(size_type n, const value_type& value)
 		{
+			clear();
 			if (!n)
 				return;
 			if (size() >= n)
@@ -230,6 +232,7 @@ namespace ft
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			const size_type n = last - first;
+			clear();
 			if (!n)
 				return;
 			if (size() >= n)

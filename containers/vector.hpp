@@ -398,6 +398,43 @@ namespace ft
 	};
 
 template <class T, class Alloc>
+bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+};
+
+template <class T, class Alloc>
+bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return !(std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+};
+
+template <class T, class Alloc>
+bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+};
+
+template <class T, class Alloc>
+bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) || std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+};
+
+template <class T, class Alloc>
+bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+};
+
+template <class T, class Alloc>
+bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	return (std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()) || std::equal(rhs.begin(), rhs.end(), lhs.begin()));
+};
+
+
+template <class T, class Alloc>
 void swap (vector<T,Alloc> &x, vector<T,Alloc> &y)
 {
 	x.swap(y);
@@ -454,20 +491,20 @@ void swap (vector<T,Alloc> &x, vector<T,Alloc> &y)
 	//
 	//
 	// };
-	template <class T, class Alloc>
-		bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
-		{
-			if (lhs.size() != rhs.size())
-				return (false);
-			typename ft::vector<T>::const_iterator first1 = lhs.begin();
-			typename ft::vector<T>::const_iterator first2 = rhs.begin();
-			while (first1 != lhs.end())
-			{
-				if (first2 == rhs.end() || *first1 != *first2)
-					return (false);
-				++first1;
-				++first2;
-			}
-			return (true);
-		}
+	// template <class T, class Alloc>
+	// 	bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
+	// 	{
+	// 		if (lhs.size() != rhs.size())
+	// 			return (false);
+	// 		typename ft::vector<T>::const_iterator first1 = lhs.begin();
+	// 		typename ft::vector<T>::const_iterator first2 = rhs.begin();
+	// 		while (first1 != lhs.end())
+	// 		{
+	// 			if (first2 == rhs.end() || *first1 != *first2)
+	// 				return (false);
+	// 			++first1;
+	// 			++first2;
+	// 		}
+	// 		return (true);
+	// 	}
 }

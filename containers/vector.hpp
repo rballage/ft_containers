@@ -13,6 +13,13 @@ namespace ft
 	class vector
 	{
 	public:
+		// class rev_iterator
+		// {
+		// private:
+		// 	T* _current;
+		// public:
+		// 	rev_iterator(const T* ptr) : _current(ptr) {};
+		// }
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
 		typedef std::ptrdiff_t								diff;
@@ -115,8 +122,8 @@ namespace ft
 		const_iterator begin() const {return _data_start;};
 		iterator end() {return _data_end;};
 		const_iterator end() const {return _data_end;};
-		iterator rend() {return _data_start ;};
-		const_iterator rend() const {return _data_start;};
+		iterator rend() {return _data_start - 1;};
+		const_iterator rend() const {return _data_start - 1;};
 		iterator rbegin() {return _data_end - 1;};
 		const_iterator rbegin() const {return _data_end - 1;};
 

@@ -6,20 +6,13 @@
 #include <iostream>
 #include <string>
 #include <exception>
-
+// https://github.com/pmouhali/ft_containers/blob/main/vector.hpp
 namespace ft
 {
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
 	{
 	public:
-		// class rev_iterator
-		// {
-		// private:
-		// 	T* _current;
-		// public:
-		// 	rev_iterator(const T* ptr) : _current(ptr) {};
-		// }
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
 		typedef std::ptrdiff_t								diff;
@@ -28,6 +21,33 @@ namespace ft
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
+
+		// class iterator
+		// {
+		// private:
+		// 	pointer _current;
+		// public:
+		// 	iterator(pointer p) : _current(p) {};
+		// 	iterator() : _current(0) {};
+		// 	iterator(iterator &it) : _current(it.base()) {};
+		// 	ref
+		// };
+		//
+		// class const_iterator;
+		// class reverse_iterator
+		// {
+		// private:
+		// 	pointer _current;
+		// public:
+		// 	iterator(pointer p) : _current(p) {};
+		// 	iterator() : _current(0) {};
+		// 	iterator(iterator &it) : _current(it.base()) {};
+		// 	iterator(reverse_iterator &it) : _current(it.base()) {};
+		// 	ref
+		// };
+		// class reverse_const_iterator;
+
+
 		typedef pointer										iterator;
 		typedef const_pointer 								const_iterator;
 		typedef pointer										reverse_iterator;
@@ -170,13 +190,6 @@ namespace ft
 				std::uninitialized_fill(static_cast<pointer>(end()), _data_max, val);
 				_data_end = _data_max = _data_start + n;
 			}
-		};
-
-	    // Reduces capcity to fit the size
-		void shrink_to_fit(void)
-		{
-			_alloc.deallocate(_data_end, _data_max - _data_end);
-			_data_max = _data_end;
 		};
 
 	    // deconstuct all elements from the vector

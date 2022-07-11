@@ -354,7 +354,7 @@ void	test_vector(int seed)
 {
 	std::srand(seed);
 	void (*array[])(const std::string &, C &, const std::string &, C &) = {
-			&monkey_vector::test_assign,
+			// &monkey_vector::test_assign,
 			&monkey_vector::test_construct,
 			&monkey_vector::test_copy_construct_equal,
 			&monkey_vector::test_at,

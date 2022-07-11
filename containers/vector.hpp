@@ -51,7 +51,7 @@ namespace ft
 		typedef pointer										iterator;
 		typedef const_pointer 								const_iterator;
 		typedef pointer										reverse_iterator;
-		typedef const_pointer 								reverse_const_iterator;
+		typedef const_pointer 								const_reverse_iterator;
 
 	private:
 		pointer _data_start, _data_max, _data_end;
@@ -96,9 +96,7 @@ namespace ft
 				std::uninitialized_fill(_data_start, _data_end, value);
 			}
 			else
-			{
 				_data_max = _data_end = _data_start = 0;
-			}
 		};
 
 		vector(const vector &v, const allocator_type &newAllocator = allocator_type()) :
@@ -113,13 +111,11 @@ namespace ft
 		_alloc(newAllocator)
 		{
 			_data_start = _alloc.allocate(last - first);
-			_data_max = _data_end = std::uninitialized_copy(static_cast<const_iterator>(first), static_cast<const_iterator>(last), _data_start);
+			_data_max = _data_end = std::uninitialized_copy((first), (last), _data_start);
 		};
 
 		vector &operator=(const vector& x)
 		{
-			// if (x == *this)
-			// 	return (*this);
 			_delete();
 			if (x.size())
 			{
@@ -152,8 +148,8 @@ namespace ft
 		size_type capacity() const {return _data_max - _data_start;}
 		size_type max_size(void) const {return allocator_type().max_size();};
 
-	    // Requests a change in capacity
-	    // reserve() will never decrase the capacity.
+		// Requests a change in capacity
+		// reserve() will never decrase the capacity.
 		void reserve(size_type i)
 		{
 			if (!i)
@@ -172,9 +168,9 @@ namespace ft
 			_data_max = new_data_max;
 		};
 
-	    // Changes the vector's size.
-	    // If the newsize is smaller, the last elements will be lost.
-	    // Has a default value param for custom values when resizing.
+		// Changes the vector's size.
+		// If the newsize is smaller, the last elements will be lost.
+		// Has a default value param for custom values when resizing.
 		void resize(size_type n, value_type val = value_type())
 		{
 			if (size() > n)
@@ -192,8 +188,8 @@ namespace ft
 			}
 		};
 
-	    // deconstuct all elements from the vector
-	    // Capacity is not changed.
+		// deconstuct all elements from the vector
+		// Capacity is not changed.
 		void clear(void)
 		{
 			if (_data_start != _data_end)
@@ -294,36 +290,30 @@ namespace ft
 
 		void insert(iterator pos, size_type count, const value_type& value)
 		{
-			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
+			if (count && !empty() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
-				// if (!(_data_start == _data_end))
-				// {
-					pointer end = _data_end;
-					while (end-- >= pos) // make place
-					{
-						std::uninitialized_fill_n((end + count), 1, *end);
-						_alloc.destroy(end);
-					}
-				// }
+				pointer end = _data_end;
+				while (end-- >= pos) // make place
+				{
+					std::uninitialized_fill_n((end + count), 1, *end);
+					_alloc.destroy(end);
+				}
 				std::uninitialized_fill_n(pos , count, value);
 				_data_end += count;
 			}
-			else if (count && size() && size() + count > capacity())
+			else if (count && !empty() && size() + count > capacity()) // if it doesnt but not emppty
 			{
-				// if (!(_data_start == _data_end))
-				// {
-					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
-					pointer new_data_start = _alloc.allocate(total_size);
-					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
-					std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
-					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
-					_delete();
-					_data_start = new_data_start;
-					_data_end = new_data_end;
-					_data_max = new_data_start + total_size;
-				// }
+				const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
+				pointer new_data_start = _alloc.allocate(total_size);
+				pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
+				std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
+				new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+				_delete();
+				_data_start = new_data_start;
+				_data_end = new_data_end;
+				_data_max = new_data_start + total_size;
 			}
-			else if (count && size() == 0)
+			else if (count && empty())
 			{
 				(void)pos;
 				if (count > capacity())
@@ -338,36 +328,30 @@ namespace ft
 		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			const size_type count = last - first;
-			if (count && size() && size() + count <= capacity()) // if the container has enough space for insertion
+			if (count && !empty() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
-				// if (!(_data_start == _data_end)
-				// {
-					pointer end = _data_end;
-					while (end-- >= pos) // make place
-					{
-						std::uninitialized_fill_n((end + count), 1, *end);
-						_alloc.destroy(end);
-					}
-				// }
+				pointer end = _data_end;
+				while (end-- >= pos) // make place
+				{
+					std::uninitialized_fill_n((end + count), 1, *end);
+					_alloc.destroy(end);
+				}
 				std::uninitialized_copy(first , last, pos);
 				_data_end += count;
 			}
-			else if (count && size() && size() + count > capacity())
+			else if (count && !empty() && size() + count > capacity())
 			{
-				// if (!(_data_start == _data_end)
-				// {
-					const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
-					pointer new_data_start = _alloc.allocate(total_size);
-					pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
-					std::uninitialized_copy(first , last, new_data_start + (pos - _data_start));
-					new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
-					_delete();
-					_data_start = new_data_start;
-					_data_end = new_data_end;
-					_data_max = new_data_start + total_size;
-				// }
+				const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
+				pointer new_data_start = _alloc.allocate(total_size);
+				pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
+				std::uninitialized_copy(first , last, new_data_start + (pos - _data_start));
+				new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+				_delete();
+				_data_start = new_data_start;
+				_data_end = new_data_end;
+				_data_max = new_data_start + total_size;
 			}
-			else if (count && size() == 0)
+			else if (count && empty())
 			{
 				if (count > capacity())
 					reserve(count);

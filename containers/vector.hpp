@@ -84,11 +84,16 @@ namespace ft
 
 		vector &operator=(const vector& x)
 		{
-			if (x == *this)
-				return (*this);
+			// if (x == *this)
+			// 	return (*this);
 			_delete();
-			_data_start = _alloc.allocate(x.size());
-			_data_max = _data_end = std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
+			if (x.size())
+			{
+				_data_start = _alloc.allocate(x.size());
+				std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
+				_data_max = _data_end = _data_start + x.size();
+			}
+			else _data_max = _data_end = _data_start = 0;
 			return (*this);
 		}
 

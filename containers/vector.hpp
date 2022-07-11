@@ -161,7 +161,7 @@ namespace ft
 			{
 				reserve(n);
 				std::uninitialized_fill(static_cast<pointer>(end()), _data_max, val);
-				_data_end = _data_max = _data_start + capacity();
+				_data_end = _data_max = _data_start + n;
 			}
 		};
 
@@ -412,13 +412,24 @@ namespace ft
 template <class T, class Alloc>
 bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
-	return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+	if (lhs.size() != rhs.size())
+	return (false);
+	typename ft::vector<T>::const_iterator first1 = lhs.begin();
+	typename ft::vector<T>::const_iterator first2 = rhs.begin();
+	while (first1 != lhs.end())
+	{
+		if (first2 == rhs.end() || *first1 != *first2)
+			return (false);
+		++first1;
+		++first2;
+	}
+	return (true);
 };
 
 template <class T, class Alloc>
 bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
-	return !(std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	return (!(lhs == rhs));
 };
 
 template <class T, class Alloc>

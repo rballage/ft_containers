@@ -1733,38 +1733,60 @@ std::string vector_resize2_ft(void)
 	using std::endl;
 	vector<int> vec(4);
 	vector<int> vec2(4);
-	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
-	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
-	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
-	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
-	// vector<int>::iterator it = vec.begin();
-	// vector<int>::iterator end = vec.end();
+	vector<int>::iterator it = vec.begin();
+	vector<int>::iterator end = vec.end();
+	vector<int>::iterator it2 = vec2.begin();
+	vector<int>::iterator end2 = vec2.end();
+
 	// while (it != end) {
 	// 	out << "vec: "<< *it << endl; it++;
 	// }
-	vec.resize(10);
-	// it = vec.begin();
-	// end = vec.end();
-	// while (it != end) {
-	// 	out << "vec2: " << *it << endl; it++;
+	// while (it2 != end2) {
+	// 	out << "vec2: "<< *it2 << endl; it2++;
 	// }
+	//
+	// out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	// out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	// out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	// out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	vec.resize(6);
+	it = vec.begin();
+	end = vec.end();
+	it2 = vec2.begin();
+	end2 = vec2.end();
+	while (it != end) {
+		out << "vec: "<< *it << endl; it++;
+	}
+	while (it2 != end2) {
+		out << "vec2: "<< *it2 << endl; it2++;
+	}
 	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
 	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
 	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
 	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
 
 	vec2[2] = 42;
 
-	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
-	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
-	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
-	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	// out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	// out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	// out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	// out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	it = vec.begin();
+	end = vec.end();
+	it2 = vec2.begin();
+	end2 = vec2.end();
+	while (it != end) {
+		out << "vec: "<< *it << endl; it++;
+	}
+	while (it2 != end2) {
+		out << "vec2: "<< *it2 << endl; it2++;
+	}
 	res = out.str();
 	return res;
 }
@@ -1772,35 +1794,65 @@ std::string vector_resize2_std(void)
 {
 	std::string res;
 	std::ostringstream out;
-	using ft::vector;
+	using std::vector;
 	using std::endl;
 	vector<int> vec(4);
 	vector<int> vec2(4);
+	vector<int>::iterator it = vec.begin();
+	vector<int>::iterator end = vec.end();
+	vector<int>::iterator it2 = vec2.begin();
+	vector<int>::iterator end2 = vec2.end();
+
+	// while (it != end) {
+	// 	out << "vec: "<< *it << endl; it++;
+	// }
+	// while (it2 != end2) {
+	// 	out << "vec2: "<< *it2 << endl; it2++;
+	// }
+	// out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	// out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	// out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	// out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+
+	vec.resize(6);
+
+	it = vec.begin();
+	end = vec.end();
+	it2 = vec2.begin();
+	end2 = vec2.end();
+	while (it != end) {
+		out << "vec: "<< *it << endl; it++;
+	}
+	while (it2 != end2) {
+		out << "vec2: "<< *it2 << endl; it2++;
+	}
 	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
 	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
 	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
 	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
-
-	vec.resize(10);
-
-	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
-	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
-	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
-	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
 
 	vec2[2] = 42;
 
-	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
-	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
-	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
-	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
-	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
-	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
-	// vec
+	// out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	// out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	// out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	// out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	// out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	// out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	it = vec.begin();
+	end = vec.end();
+	it2 = vec2.begin();
+	end2 = vec2.end();
+	while (it != end) {
+		out << "vec: "<< *it << endl; it++;
+	}
+	while (it2 != end2) {
+		out << "vec2: "<< *it2 << endl; it2++;
+	}
 	res = out.str();
 	return res;
 }

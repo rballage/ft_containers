@@ -21,8 +21,8 @@ int		main(void)
 	std::cout << *ite++ << std::endl;
 	std::cout << *++ite << std::endl;
 
-	it->m();
-	ite->m();
+	// it->m();
+	// ite->m();
 
 	std::cout << *(++it) << std::endl;
 	std::cout << *(it++) << std::endl;
@@ -34,8 +34,8 @@ int		main(void)
 	std::cout << *--ite << std::endl;
 	std::cout << *ite-- << std::endl;
 
-	(*it).m();
-	(*ite).m();
+	// (*it).m();
+	// (*ite).m();
 
 	std::cout << *(--it) << std::endl;
 	std::cout << *(it--) << std::endl;

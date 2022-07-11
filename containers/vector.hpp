@@ -62,9 +62,16 @@ namespace ft
 		explicit vector(size_type s, const value_type &value = value_type(), const allocator_type &newAllocator = allocator_type()) :
 		_alloc(newAllocator)
 		{
-			_data_start = _alloc.allocate(s);
-			_data_max = _data_end = _data_start + s;
-			std::uninitialized_fill(_data_start, _data_end, value);
+			if (s)
+			{
+				_data_start = _alloc.allocate(s);
+				_data_max = _data_end = _data_start + s;
+				std::uninitialized_fill(_data_start, _data_end, value);
+			}
+			else
+			{
+				_data_max = _data_end = _data_start = 0;
+			}
 		};
 
 		vector(const vector &v, const allocator_type &newAllocator = allocator_type()) :
@@ -154,7 +161,7 @@ namespace ft
 			{
 				reserve(n);
 				std::uninitialized_fill(static_cast<pointer>(end()), _data_max, val);
-				_data_end = _data_start + n;
+				_data_end = _data_max = _data_start + capacity();
 			}
 		};
 

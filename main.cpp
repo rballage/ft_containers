@@ -479,7 +479,7 @@ std::string vector_size_ft(void)
 	using ft::vector;
 	using std::endl;
 
-		vector<int> vec(0);
+		vector<int> vec(1);
 	// vec.clear();
     out << "0. size: " << vec.size() << '\n';
 
@@ -515,7 +515,7 @@ std::string vector_size_std(void)
 	using ft::vector;
 	using std::endl;
 
-	vector<int> vec(0);
+	vector<int> vec(1);
 	// vec.clear();
     out << "0. size: " << vec.size() << '\n';
 
@@ -1725,7 +1725,85 @@ std::string vector__std(void)
 }
 
 
+std::string vector_resize2_ft(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+	vector<int> vec(4);
+	vector<int> vec2(4);
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	// vector<int>::iterator it = vec.begin();
+	// vector<int>::iterator end = vec.end();
+	// while (it != end) {
+	// 	out << "vec: "<< *it << endl; it++;
+	// }
+	vec.resize(10);
+	// it = vec.begin();
+	// end = vec.end();
+	// while (it != end) {
+	// 	out << "vec2: " << *it << endl; it++;
+	// }
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
 
+	vec2[2] = 42;
+
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	res = out.str();
+	return res;
+}
+std::string vector_resize2_std(void)
+{
+	std::string res;
+	std::ostringstream out;
+	using ft::vector;
+	using std::endl;
+	vector<int> vec(4);
+	vector<int> vec2(4);
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+
+	vec.resize(10);
+
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+
+	vec2[2] = 42;
+
+	out << "==: " << (vec == vec2) << " | !=: " << (vec != vec2) << std::endl;
+	out << "<: " << (vec <  vec2) << " | <=: " << (vec <= vec2) << std::endl;
+	out << ">: " << (vec >  vec2) << " | >=: " << (vec >= vec2) << std::endl;
+	out << "==: " << (vec2 == vec) << " | !=: " << (vec2 != vec) << std::endl;
+	out << "<: " << (vec2 <  vec) << " | <=: " << (vec2 <= vec) << std::endl;
+	out << ">: " << (vec2 >  vec) << " | >=: " << (vec2 >= vec) << std::endl;
+	// vec
+	res = out.str();
+	return res;
+}
 
 int main(void)
 {
@@ -1736,7 +1814,7 @@ int main(void)
 	assert(clear_test.is_same());
 
 	Test empty_test(&vector_empty_ft, &vector_empty_std);
-	empty_test.printAll();
+	// empty_test.printAll();
 
 	assert(empty_test.is_same());
 
@@ -1773,8 +1851,11 @@ int main(void)
 	// strings_general_test.printAll();
 	assert(strings_general_test.is_same());
 	Test vector_test(&vector__ft, &vector__std);
-	vector_test.printAll();
+	// vector_test.printAll();
 	assert(vector_test.is_same());
+	Test vector_test_weird(&vector_resize2_ft, &vector_resize2_std);
+	vector_test_weird.printAll();
+	assert(vector_test_weird.is_same());
 
 	// at_test.printAll();
 

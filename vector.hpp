@@ -443,78 +443,9 @@ bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()) || std::equal(rhs.begin(), rhs.end(), lhs.begin()));
 };
 
-
 template <class T, class Alloc>
 void swap (vector<T,Alloc> &x, vector<T,Alloc> &y)
 {
 	x.swap(y);
 };
-	// template <class T>
-	// class vector<T>::iterator
-	// {
-	// private:
-	// 	T *_curr;
-	// public:
-	// 	iterator(T *p) : _curr(p)
-	// 	{
-	// 	}
-	//
-	// 	iterator &operator++(void) // pre-incrementation
-	// 	{
-	// 		_curr++;
-	// 		return *this;
-	// 	}
-	//
-	// 	iterator &operator--(void) // pre-decrementation
-	// 	{
-	// 		_curr--;
-	// 		return *this;
-	// 	}
-	// 	iterator &operator++(int)// post-incrementation
-	// 	{
-	// 		iterator tmp(&_curr);
-	// 		_curr++;
-	// 		return tmp;
-	// 	}
-	//
-	// 	iterator &operator--(int)// post-decrementation
-	// 	{
-	// 		iterator tmp(&_curr);
-	// 		_curr--;
-	// 		return tmp;
-	// 	}
-	//
-	// 	T &operator*()
-	// 	{
-	// 		return *_curr;
-	// 	}
-	//
-	// 	bool operator==(const iterator &b) const
-	// 	{
-	// 		return *_curr == *b._curr;
-	// 	}
-	//
-	// 	bool operator!=(const iterator &b) const
-	// 	{
-	// 		return *_curr != *b._curr;
-	// 	}
-	//
-	//
-	// };
-	// template <class T, class Alloc>
-	// 	bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
-	// 	{
-	// 		if (lhs.size() != rhs.size())
-	// 			return (false);
-	// 		typename ft::vector<T>::const_iterator first1 = lhs.begin();
-	// 		typename ft::vector<T>::const_iterator first2 = rhs.begin();
-	// 		while (first1 != lhs.end())
-	// 		{
-	// 			if (first2 == rhs.end() || *first1 != *first2)
-	// 				return (false);
-	// 			++first1;
-	// 			++first2;
-	// 		}
-	// 		return (true);
-	// 	}
 }

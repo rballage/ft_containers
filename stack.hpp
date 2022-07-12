@@ -1,4 +1,4 @@
-template<class T, class Container = std::deque<T> >
+template<class T, class Container = ft::vector<T> >
 class stack
 {
 private:
@@ -12,8 +12,8 @@ public:
 	typedef typename container_type::reference			reference;
 	typedef typename container_type::const_reference	const_reference;
 
-	explicit stack(const Container& cont = Container()) {};
-	stack(const stack& other) {};
+	explicit stack(const Container& cont = Container()) : c(cont) {};
+	stack(const stack& other) : c(other.c) {};
 	~stack() {};
 	stack &operator=( const stack& other ) {};
 
@@ -29,4 +29,11 @@ public:
 	bool operator>( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ) {return lhs.c > rhs.c;};
 	template< class T, class Container >
 	bool operator>=( const std::stack<T,Container>& lhs, const std::stack<T,Container>& rhs ) {return lhs.c >= rhs.c;};
+
+	size_type size() const {return (c.size());};
+	bool empty() const {return (c.empty());};
+	value_type &top() {return (c.back());};
+	const value_type &top() const {return (c.back());};
+	void push(const value_type &val) {c.push_back(val);};
+	void pop(void) {c.pop_back();};
 };

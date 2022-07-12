@@ -36,9 +36,10 @@ int		main(void)
 		it[i] = (size - i) * 5;
 	prepost_incdec(vct);
 
-	it = it + 5;
-	it = 1 + it;
-	it = it - 4;
+	it = it + 1;
+	// it = 1 + it;
+	// it = it - 5;
+
 	std::cout << *(it += 2) << std::endl;
 	std::cout << *(it -= 1) << std::endl;
 

@@ -10,10 +10,14 @@ int		main(void)
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(it_);
 
 	for (int i = 0; i < size; ++i)
-		vct[i] = (i + 1) * 5;
+		vct[i] = i;
 	printSize(vct);
-
-	std::cout << (it_ == it.base()) << std::endl;
+	it = it + 5;
+	it = 1 + it;
+	it = it - 4;
+	std::cout << (*it_ == *it) << std::endl;
+	std::cout << *it << std::endl;
+	std::cout << *it_ << std::endl;
 	std::cout << (it_ == (it + 3).base()) << std::endl;
 
 	std::cout << *(it.base() + 1) << std::endl;

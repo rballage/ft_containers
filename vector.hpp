@@ -2,10 +2,12 @@
 #include <memory>
 #include <exception>
 #include "utils.hpp"
+#include "iterators.hpp"
 #include <sstream>
 #include <iostream>
 #include <string>
 #include <exception>
+#include <vector>
 // https://github.com/pmouhali/ft_containers/blob/main/vector.hpp
 namespace ft
 {
@@ -21,37 +23,10 @@ namespace ft
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-
-		// class iterator
-		// {
-		// private:
-		// 	pointer _current;
-		// public:
-		// 	iterator(pointer p) : _current(p) {};
-		// 	iterator() : _current(0) {};
-		// 	iterator(iterator &it) : _current(it.base()) {};
-		// 	ref
-		// };
-		//
-		// class const_iterator;
-		// class reverse_iterator
-		// {
-		// private:
-		// 	pointer _current;
-		// public:
-		// 	iterator(pointer p) : _current(p) {};
-		// 	iterator() : _current(0) {};
-		// 	iterator(iterator &it) : _current(it.base()) {};
-		// 	iterator(reverse_iterator &it) : _current(it.base()) {};
-		// 	ref
-		// };
-		// class reverse_const_iterator;
-
-
-		typedef pointer										iterator;
-		typedef const_pointer 								const_iterator;
-		typedef pointer										reverse_iterator;
-		typedef const_pointer 								const_reverse_iterator;
+		typedef typename ft::random_access_iterator<value_type>			iterator;
+		typedef typename ft::random_access_iterator<const value_type> 	const_iterator;
+		typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
 	private:
 		pointer _data_start, _data_max, _data_end;
@@ -78,6 +53,17 @@ namespace ft
 			message = out.str();
 			return message;
 		};
+		template<class Iterator>
+		size_type _distance(Iterator first, Iterator last) const
+		{
+			size_type len = 0;
+			while (first != last)
+			{
+				first++;
+				len++;
+			}
+			return len;
+		};
 
 	public:
 		explicit vector(const allocator_type &newAllocator = allocator_type()) :
@@ -103,14 +89,14 @@ namespace ft
 		_alloc(newAllocator)
 		{
 			_data_start = _alloc.allocate(v.end() - v.begin());
-			_data_max = _data_end = std::uninitialized_copy(static_cast<const_pointer>(v.begin()), static_cast<const_pointer>(v.end()), _data_start);
+			_data_max = _data_end = std::uninitialized_copy(v.begin(), v.end(), _data_start);
 		};
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
 		_alloc(newAllocator)
 		{
-			_data_start = _alloc.allocate(last - first);
+			_data_start = _alloc.allocate(&(*last) - &(*first));
 			_data_max = _data_end = std::uninitialized_copy((first), (last), _data_start);
 		};
 
@@ -120,7 +106,7 @@ namespace ft
 			if (x.size())
 			{
 				_data_start = _alloc.allocate(x.size());
-				std::uninitialized_copy(static_cast<const_pointer>(x.begin()), static_cast<const_pointer>(x.end()), _data_start);
+				std::uninitialized_copy(x.begin(), x.end(), _data_start);
 				_data_max = _data_end = _data_start + x.size();
 			}
 			else _data_max = _data_end = _data_start = 0;
@@ -134,14 +120,14 @@ namespace ft
 		T *data(void) {return static_cast<T*>(_data_start);};
 		const T *data(void) const {return static_cast<T*>(_data_start);};
 
-		iterator begin() {return _data_start;};
-		const_iterator begin() const {return _data_start;};
-		iterator end() {return _data_end;};
-		const_iterator end() const {return _data_end;};
-		iterator rend() {return _data_start - 1;};
-		const_iterator rend() const {return _data_start - 1;};
-		iterator rbegin() {return _data_end - 1;};
-		const_iterator rbegin() const {return _data_end - 1;};
+		iterator begin() {return iterator(_data_start);};
+		const_iterator begin() const {return iterator(_data_start);};
+		iterator end() {return iterator(_data_end);};
+		const_iterator end() const {return iterator(_data_end);};
+		reverse_iterator rend() {return reverse_iterator(_data_start);};
+		const_reverse_iterator rend() const {return const_reverse_iterator(_data_start);};
+		reverse_iterator rbegin() {return reverse_iterator(_data_end);};
+		const_reverse_iterator rbegin() const {return const_reverse_iterator(_data_end);};
 
 		bool empty() const {return !(_data_end - _data_start);};
 		size_type size() const {return _data_end - _data_start;};
@@ -160,7 +146,7 @@ namespace ft
 				throw(std::length_error("vector::reserve"));
 
 			pointer new_data_start = _alloc.allocate(i);
-			pointer new_data_end = std::uninitialized_copy(static_cast<const_pointer>(begin()), static_cast<const_pointer>(end()), new_data_start);
+			pointer new_data_end = std::uninitialized_copy(begin(), end(), new_data_start);
 			pointer new_data_max = new_data_start + i;
 			_delete();
 			_data_start = new_data_start;
@@ -183,7 +169,7 @@ namespace ft
 			else if (size() < n)
 			{
 				reserve(n);
-				std::uninitialized_fill(static_cast<pointer>(end()), _data_max, val);
+				std::uninitialized_fill(_data_end, _data_max, val);
 				_data_end = _data_max = _data_start + n;
 			}
 		};
@@ -203,16 +189,17 @@ namespace ft
 
 		iterator erase(iterator pos)
 		{
-			if (pos == _data_end || _data_start == _data_end)
+			if (&(*pos) == _data_end || _data_start == _data_end)
 				return end();
-			_alloc.destroy(pos);
+			_alloc.destroy(&(*pos));
 			iterator ret = pos++;
-			while (pos != _data_end)
+			while (&(*pos) != _data_end)
 			{
-				std::uninitialized_copy(pos, pos+1, pos - 1);
-				_alloc.destroy(pos++);
+				std::uninitialized_copy(&(*pos), &(*(pos+1)), &(*(pos-1)));
+				_alloc.destroy(&(*pos));
+				pos++;
 			}
-			_data_end = pos - 1;
+			_data_end = &(*(pos-1));
 			return ret;
 		};
 
@@ -221,14 +208,17 @@ namespace ft
 			iterator pos = first;
 			std::ptrdiff_t distance = last - first;
 			while (pos < last)
-				_alloc.destroy(pos++);
-			while (pos < _data_end)
 			{
-				std::uninitialized_copy(pos, pos+1, pos - distance);
-				_alloc.destroy(pos);
+				_alloc.destroy(&(*pos));
 				pos++;
 			}
-			_data_end = pos - distance;
+			while (&(*pos) < _data_end)
+			{
+				std::uninitialized_copy(pos, pos+1, pos - distance);
+				_alloc.destroy(&(*pos));
+				pos++;
+			}
+			_data_end = &(*(pos - distance));
 			return first;
 		};
 
@@ -259,7 +249,7 @@ namespace ft
 		template<class InputIterator>
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			const size_type n = last - first;
+			const size_type n = _distance(first, last);
 			clear();
 			if (!n)
 				return;
@@ -283,7 +273,7 @@ namespace ft
 
 		iterator insert(iterator pos, const value_type& value)
 		{
-			const size_type distance = pos - _data_start; // necessary when reallocating is necessary
+			const size_type distance = &(*pos) - _data_start; // necessary when reallocating is necessary
 			insert(pos, 1, value);
 			return _data_start + distance;
 		};
@@ -292,13 +282,13 @@ namespace ft
 		{
 			if (count && !empty() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
-				pointer end = _data_end;
+				iterator end = _data_end;
 				while (end-- >= pos) // make place
 				{
-					std::uninitialized_fill_n((end + count), 1, *end);
-					_alloc.destroy(end);
+					std::uninitialized_fill_n(&(*(end + count)), 1, *end);
+					_alloc.destroy(&(*end));
 				}
-				std::uninitialized_fill_n(pos , count, value);
+				std::uninitialized_fill_n(&(*pos) , count, value);
 				_data_end += count;
 			}
 			else if (count && !empty() && size() + count > capacity()) // if it doesnt but not emppty
@@ -306,8 +296,8 @@ namespace ft
 				const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
 				pointer new_data_start = _alloc.allocate(total_size);
 				pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
-				std::uninitialized_fill_n(new_data_start + (pos - _data_start), count, value);
-				new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+				std::uninitialized_fill_n(new_data_start + (&(*pos) - _data_start), count, value);
+				new_data_end = std::uninitialized_copy(&(*pos), _data_end, new_data_end);
 				_delete();
 				_data_start = new_data_start;
 				_data_end = new_data_end;
@@ -327,11 +317,11 @@ namespace ft
 		template<class InputIterator>
 		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			const size_type count = last - first;
+			const size_type count = _distance(first, last);
 			if (count && !empty() && size() + count <= capacity()) // if the container has enough space for insertion
 			{
 				pointer end = _data_end;
-				while (end-- >= pos) // make place
+				while (end-- >= &(*pos)) // make place
 				{
 					std::uninitialized_fill_n((end + count), 1, *end);
 					_alloc.destroy(end);
@@ -344,8 +334,8 @@ namespace ft
 				const size_type total_size = ((count + size() > size() * 2) ? count + size() : size() * 2);
 				pointer new_data_start = _alloc.allocate(total_size);
 				pointer new_data_end = std::uninitialized_copy(begin(), pos, new_data_start) + count;
-				std::uninitialized_copy(first , last, new_data_start + (pos - _data_start));
-				new_data_end = std::uninitialized_copy(pos, _data_end, new_data_end);
+				std::uninitialized_copy(first , last, new_data_start + (&(*pos) - _data_start));
+				new_data_end = std::uninitialized_copy(&(*pos), _data_end, new_data_end);
 				_delete();
 				_data_start = new_data_start;
 				_data_end = new_data_end;

@@ -3,7 +3,6 @@
 // 3	Forward Iterator			Can scan the container forward multiple times, can read and write the value it points to;
 // 4	Bidirectional Iterator		Same as previous one but can scan the container back and forth;
 // 5	Random Access Iterator		Same as previous one but can access the container also non-sequentially (i.e. by jumping around);
-// 6								Contiguous Iterator	Same as previous one, with the addition that logically adjacent elements are also physically adjacent in memory.
 
 
 namespace ft
@@ -43,43 +42,13 @@ namespace ft
 	};
 
 	template <class cat, class T, class dist = std::ptrdiff_t, class ptr = T*, class ref = T&>
-	class iterator
+	struct iterator
 	{
-	public:
-
-		typedef typename cat iterator_category;
-		typedef typename T value_type;
-		typedef typename dist difference_type;
-		typedef typename ptr pointer;
-		typedef typename ref reference;
-
-		iterator();
-		iterator(const iterator&);
-		~iterator();
-
-		iterator& operator=(const iterator&);
-		bool operator==(const iterator&) const;
-		bool operator!=(const iterator&) const;
-		bool operator<(const iterator&) const; //optional
-		bool operator>(const iterator&) const; //optional
-		bool operator<=(const iterator&) const; //optional
-		bool operator>=(const iterator&) const; //optional
-
-		iterator& operator++();
-		iterator operator++(int); //optional
-		iterator& operator--(); //optional
-		iterator operator--(int); //optional
-		iterator& operator+=(size_type); //optional
-		iterator operator+(size_type) const; //optional
-		friend iterator operator+(size_type, const iterator&); //optional
-		friend iterator operator-(size_type, const iterator&); //optional
-		iterator& operator-=(size_type); //optional
-		iterator operator-(size_type) const; //optional
-		difference_type operator-(iterator) const; //optional
-
-		reference operator*() const;
-		pointer operator->() const;
-		reference operator[](size_type) const; //optional
+		typedef T value_type;
+		typedef ptr pointer;
+		typedef ref reference;
+		typedef cat iterator_category;
+		typedef dist difference_type;
 	};
 
 	template <class T>

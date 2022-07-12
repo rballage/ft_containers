@@ -45,7 +45,7 @@ namespace ft
 ** If the type given in argument is from the list, the structure
 ** will be overiden by nexts, according to it's type.
 ** If the type given argument isn't in this list,
-** is_integral_struct::value will be false aka it's not a integral type.
+** is_integral_struct::value will be false if it's not an integral type.
 */
 
 	template <typename> struct is_integral_type : public is_integral_struct<false, bool> {};

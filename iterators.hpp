@@ -13,14 +13,14 @@ namespace ft
 	struct bidirectional_iterator_tag : public forward_iterator_tag {};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-	template <class it>
+	template <class Iterator>
 	struct iterator_traits
 	{
-		typedef typename it::iterator_category iterator_category;
-		typedef typename it::value_type value_type;
-		typedef typename it::difference_type difference_type;
-		typedef typename it::pointer pointer;
-		typedef typename it::reference reference;
+		typedef typename Iterator::iterator_category iterator_category;
+		typedef typename Iterator::value_type value_type;
+		typedef typename Iterator::difference_type difference_type;
+		typedef typename Iterator::pointer pointer;
+		typedef typename Iterator::reference reference;
 	};
 	template <class T>
 	struct iterator_traits<T*>
@@ -257,7 +257,7 @@ namespace ft
 		reverse_iterator operator++(int)
 		{
 			reverse_iterator tmp = *this;
-			--(*this);
+			--_current;
 			return tmp;
 		};
 		pointer operator->() const { return &(operator*()); };
@@ -269,7 +269,7 @@ namespace ft
 		reverse_iterator operator--(int)
 		{
 			reverse_iterator tmp = *this;
-			++(*this);
+			++_current;
 			return tmp;
 		};
 		reverse_iterator operator+(difference_type i) const {return reverse_iterator(base()-i);};

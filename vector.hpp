@@ -96,7 +96,7 @@ namespace ft
 		vector(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
 		_alloc(newAllocator)
 		{
-			_data_start = _alloc.allocate(&(*last) - &(*first));
+			_data_start = _alloc.allocate(_distance(first, last));
 			_data_max = _data_end = std::uninitialized_copy((first), (last), _data_start);
 		};
 

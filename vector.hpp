@@ -1,13 +1,6 @@
 #pragma once
-#include <memory>
-#include <exception>
+
 #include "utils.hpp"
-#include "iterators.hpp"
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <exception>
-#include <vector>
 // https://github.com/pmouhali/ft_containers/blob/main/vector.hpp
 namespace ft
 {

@@ -1,3 +1,14 @@
+#pragma once
+
+#include <memory>
+#include <exception>
+#include "iterators.hpp"
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <exception>
+#include <vector>
+
 namespace ft
 {
 

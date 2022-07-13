@@ -1,13 +1,5 @@
-implementer uninitialized_copy
-implementer uninitialized_fill
-tester construction vector avec iterator (range)
-tester plus amplement vector::reserve
-tester iterator et reverse iterator
-vector::insert should segfault when passing end passed iterator
-tester iterator avec class genre std::string, besoin d'utiliser std::allocator::construct() ?
-
-https://www.internalpointers.com/post/writing-custom-iterators-modern-cpp
-https://www.fluentcpp.com/2018/04/27/tag-dispatching/
-https://users.cs.northwestern.edu/~riesbeck/programming/c++/stl-iterator-define.html
-https://h-deb.clg.qc.ca/Sujets/TrucsScouts/Comprendre_enable_if.html
-https://web.stanford.edu/class/cs107l/handouts/04-Custom-Iterators.pdf
+INorder traversal
+suffix traversal
+preffix traversal
+https://cplusplus.com/reference/memory/allocator/rebind/
+https://stackoverflow.com/questions/14148756/what-does-template-rebind-do

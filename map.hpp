@@ -62,6 +62,11 @@ namespace ft
 		};
 
 	public:
+		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+		template <class InputIterator>
+		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+		map(const map& x);
+
 		explicit map(const allocator_type &newAllocator = allocator_type()) :
 		_alloc(newAllocator)
 		{

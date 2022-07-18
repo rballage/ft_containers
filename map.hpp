@@ -8,10 +8,20 @@ namespace ft
 	class map
 	{
 	public:
-		typedef Alloc										allocator_type;
 		typedef typename Key								key_type;
 		typedef typename T									mapped_type;
-		typedef typename pair<const key_type, T>			value_type;
+		typedef typename pair<const key_type, mapped_type>	value_type;
+	private:
+		typedef struct		_node
+		{
+			value_type		data;
+			struct _node	*parent;
+			struct _node	*left;
+			struct _node	*right;
+			bool			color;
+		}					node;
+	public:
+		typedef typename Alloc::template rebind<node>::other	allocator_type;
 		typedef typename Compare							key_compare;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::reference			reference;
@@ -25,22 +35,9 @@ namespace ft
 		typedef typename iterator_traits<iterator>::difference_type			difference_type;
 
 	private:
-		pointer _data_start, _data_max, _data_end;
-		allocator_type _alloc;
 
-		void _delete(void)
-		{
-			if (_data_start != _data_end)
-			{
-				pointer it = _data_start;
-				while (it != _data_end)
-					_alloc.destroy(it++);
-			}
-			if (_data_max - _data_start)
-				_alloc.deallocate(_data_start, _data_max - _data_start);
-			_data_start = _data_max = _data_end = 0;
-		};
 
+		node *_sentinel = (const node)0;
 		const std::string _range_err_message(size_type val) const
 		{
 			std::string message;
@@ -49,17 +46,7 @@ namespace ft
 			message = out.str();
 			return message;
 		};
-		template<class Iterator>
-		size_type _distance(Iterator first, Iterator last) const
-		{
-			size_type len = 0;
-			while (first != last)
-			{
-				first++;
-				len++;
-			}
-			return len;
-		};
+
 
 	public:
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
@@ -67,52 +54,7 @@ namespace ft
 		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
 		map(const map& x);
 
-		explicit map(const allocator_type &newAllocator = allocator_type()) :
-		_alloc(newAllocator)
-		{
-			_data_start = _data_end = _data_max = 0;
-		};
 
-		explicit map(size_type s, const value_type &value = value_type(), const allocator_type &newAllocator = allocator_type()) :
-		_alloc(newAllocator)
-		{
-			if (s)
-			{
-				_data_start = _alloc.allocate(s);
-				_data_max = _data_end = _data_start + s;
-				std::uninitialized_fill(_data_start, _data_end, value);
-			}
-			else
-				_data_max = _data_end = _data_start = 0;
-		};
-
-		map(const map &v, const allocator_type &newAllocator = allocator_type()) :
-		_alloc(newAllocator)
-		{
-			_data_start = _alloc.allocate(v.end() - v.begin());
-			_data_max = _data_end = std::uninitialized_copy(v.begin(), v.end(), _data_start);
-		};
-
-		template <class InputIterator>
-		map(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
-		_alloc(newAllocator)
-		{
-			_data_start = _alloc.allocate(_distance(first, last));
-			_data_max = _data_end = std::uninitialized_copy((first), (last), _data_start);
-		};
-
-		map &operator=(const map& x)
-		{
-			_delete();
-			if (x.size())
-			{
-				_data_start = _alloc.allocate(x.size());
-				std::uninitialized_copy(x.begin(), x.end(), _data_start);
-				_data_max = _data_end = _data_start + x.size();
-			}
-			else _data_max = _data_end = _data_start = 0;
-			return (*this);
-		}
 
 		~map() {
 			_delete();

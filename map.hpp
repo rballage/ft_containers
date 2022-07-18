@@ -12,14 +12,19 @@ namespace ft
 		typedef typename T									mapped_type;
 		typedef typename pair<const key_type, mapped_type>	value_type;
 	private:
+		typedef enum		_node_color
+		{
+			red, black
+		}					_color;
 		typedef struct		_node
 		{
 			value_type		data;
 			struct _node	*parent;
 			struct _node	*left;
 			struct _node	*right;
-			bool			color;
+			enum _color		color;
 		}					node;
+
 	public:
 		typedef typename Alloc::template rebind<node>::other	allocator_type;
 		typedef typename Compare							key_compare;
@@ -36,8 +41,13 @@ namespace ft
 
 	private:
 
-
+		allocator_type _allocator;
+		key_compare _comparator;
 		node *_sentinel = (const node)0;
+		node *_root;
+		node *_left_most;
+		node *_right_most;
+
 		const std::string _range_err_message(size_type val) const
 		{
 			std::string message;
@@ -46,10 +56,17 @@ namespace ft
 			message = out.str();
 			return message;
 		};
-
+		node *_new_node(void)
+		{
+			node *new_node = _allocator(1);
+			// _allocator.construct(new)
+			return new_node;
+		};
 
 	public:
-		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comparator(comp), _allocator(Alloc) {
+
+		};
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
 		map(const map& x);
@@ -59,9 +76,6 @@ namespace ft
 		~map() {
 			_delete();
 		};
-
-		T *data(void) {return static_cast<T*>(_data_start);};
-		const T *data(void) const {return static_cast<T*>(_data_start);};
 
 		iterator begin() {return iterator(_data_start);};
 		const_iterator begin() const {return iterator(_data_start);};
@@ -74,50 +88,8 @@ namespace ft
 
 		bool empty() const {return !(_data_end - _data_start);};
 		size_type size() const {return _data_end - _data_start;};
-		size_type capacity() const {return _data_max - _data_start;}
 		size_type max_size(void) const {return allocator_type().max_size();};
 
-		// Requests a change in capacity
-		// reserve() will never decrase the capacity.
-		void reserve(size_type i)
-		{
-			if (!i)
-				i = 1;
-			if (i <= capacity())
-				return;
-			if (i > max_size())
-				throw(std::length_error("map::reserve"));
-
-			pointer new_data_start = _alloc.allocate(i);
-			pointer new_data_end = std::uninitialized_copy(begin(), end(), new_data_start);
-			pointer new_data_max = new_data_start + i;
-			_delete();
-			_data_start = new_data_start;
-			_data_end = new_data_end;
-			_data_max = new_data_max;
-		};
-
-		// Changes the map's size.
-		// If the newsize is smaller, the last elements will be lost.
-		// Has a default value param for custom values when resizing.
-		void resize(size_type n, value_type val = value_type())
-		{
-			if (size() > n)
-			{
-				pointer it = _data_start + n;
-				while (it != _data_end)
-					_alloc.destroy(it++);
-				_data_end = _data_start + n;
-			}
-			else if (size() < n)
-			{
-				reserve(n);
-				std::uninitialized_fill(_data_end, _data_max, val);
-				_data_end = _data_max = _data_start + n;
-			}
-		};
-
-		// deconstuct all elements from the map
 		// Capacity is not changed.
 		void clear(void)
 		{
@@ -165,55 +137,6 @@ namespace ft
 			return first;
 		};
 
-		void assign(size_type n, const value_type& value)
-		{
-			clear();
-			if (!n)
-				return;
-			if (size() >= n)
-			{
-				const_pointer end = _data_start + n;
-				pointer it = _data_start;
-				while (it != end)
-					_alloc.destroy(it++);
-				std::uninitialized_fill_n(_data_start, n, value);
-			}
-			else if (size() < n)
-			{
-				reserve(n);
-				pointer it = _data_start;
-				while (it != _data_start + n)
-					_alloc.destroy(it++);
-				std::uninitialized_fill_n(_data_start, n, value);
-				_data_end = _data_start + n;
-			}
-		};
-
-		template<class InputIterator>
-		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
-		{
-			const size_type n = _distance(first, last);
-			clear();
-			if (!n)
-				return;
-			if (size() >= n)
-			{
-				pointer it = _data_start;
-				while (it != _data_start + n)
-					_alloc.destroy(it++);
-				std::uninitialized_copy(first, last, _data_start);
-			}
-			else if (size() < n)
-			{
-				reserve(n);
-				pointer it = _data_start;
-				while (it != _data_start + n)
-					_alloc.destroy(it++);
-				std::uninitialized_copy(first, last, _data_start);
-				_data_end = _data_start + n;
-			}
-		};
-
 		iterator insert(iterator pos, const value_type& value)
 		{
 			const size_type distance = &(*pos) - _data_start; // necessary when reallocating is necessary
@@ -256,7 +179,6 @@ namespace ft
 			}
 		};
 
-
 		template<class InputIterator>
 		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
@@ -292,27 +214,6 @@ namespace ft
 				_data_end = _data_start + count;
 			}
 		};
-		// template<class InputIt>
-		// void insert(iterator pos, InputIt first, InputIt last);
-		// Inserts element at the back
-		void push_back(const_reference val)
-		{
-			if (_data_end == _data_max)
-				reserve(capacity() ? capacity() * 2 : 1);
-			_alloc.construct(_data_end, val);
-			_data_end++;
-		};
-		//
-		void pop_back(void)
-		{
-			if (_data_end != _data_start)
-			{
-				_alloc.destroy(_data_end - 1);
-				if (_data_end - 1 != _data_start)
-					_data_end--;
-				else _data_end = _data_start;
-			}
-		};
 
 		reference operator[](size_type i) {return _data_start[i];};
 		const_reference operator[](size_type i) const {return _data_start[i];};
@@ -339,11 +240,21 @@ namespace ft
 		};
 		void swap(map &other)
 		{
-			ft::swap(_alloc, other._alloc);
-			ft::swap(_data_start, other._data_start);
-			ft::swap(_data_end, other._data_end);
-			ft::swap(_data_max, other._data_max);
+			ft::swap(_allocator, other._allocator);
+			ft::swap(_comparator, other._comparator);
+			ft::swap(_root, other._root);
+			ft::swap(_sentinel, other._sentinel);
+			ft::swap(_left_most, other._left_most);
+			ft::swap(_right_most, other._right_most);
 		};
+
+		size_type count( const Key& key ) const;
+		iterator find( const Key& key );
+		const_iterator find( const Key& key ) const;
+		iterator lower_bound( const Key& key );
+		const_iterator lower_bound( const Key& key ) const;
+		iterator upper_bound( const Key& key );
+		const_iterator upper_bound( const Key& key ) const;
 	};
 
 template <class T, class Alloc>

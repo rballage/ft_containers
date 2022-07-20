@@ -230,6 +230,7 @@ namespace ft
 		void clear()
 		{
 			_delete_all(_root);
+			_root = 0;
 		};
 		// iterator begin() {return iterator(_data_start);};
 		// const_iterator begin() const {return iterator(_data_start);};
@@ -245,16 +246,7 @@ namespace ft
 		size_type max_size(void) const {return allocator_type().max_size();};
 
 		// // Capacity is not changed.
-		// void clear(void)
-		// {
-		// 	if (_data_start != _data_end)
-		// 	{
-		// 		pointer it = _data_end;
-		// 		while (it != _data_start)
-		// 			_alloc.destroy(--it);
-		// 	}
-		// 	_data_end = _data_start;
-		// };
+
 
 		// iterator erase(iterator pos)
 		// {

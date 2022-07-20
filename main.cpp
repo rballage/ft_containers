@@ -1932,7 +1932,13 @@ int main(void)
 	ft::map<int, int> m2(m);
 	std::pair<int, int> p1(20,5);
 	m2.insert(p1);
-	m2.print();
+	m2.insert(std::make_pair<int,int>(100,i));
+	m2.insert(std::make_pair<int,int>(1001,i));
+	m2.insert(std::make_pair<int,int>(22,i));
+	m2.insert(std::make_pair<int,int>(42,i));
+	// m2.print();
+	m = m2;
+	m.print();
 
 	return 0;
 }

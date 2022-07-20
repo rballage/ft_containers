@@ -218,18 +218,16 @@ namespace ft
 		};
 	public:
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
-		_comparator(comp), _allocator(alloc), _root(0)
-		{
-
-			// _nil = _new_node((const node)0);
-		};
+		_comparator(comp), _allocator(alloc), _root(0) {};
 		// template <class InputIterator>
 		// map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-		map(const map& x)
+		map(const map& x) : _root(_deep_copy(x._root, NULL)) {};
+		map& operator=(const map& other)
 		{
-			_root = _deep_copy(x._root, NULL);
+			clear();
+			_root = _deep_copy(other._root, NULL);
+			return *this;
 		};
-
 
 
 		~map()

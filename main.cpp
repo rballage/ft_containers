@@ -1923,14 +1923,16 @@ int main(void)
 	// m.insert(p2);
 	// m.insert(p3);
 	int i = 0;
-	while (++i < 43)
+	while (++i < 13)
 		m.insert(std::make_pair<int,int>(i,i));
 	// m.insert(p);
 	// i = 0;
-	m.clear();
-	std::pair<int, int> p1(2,5);
-	m.insert(p1);
-	m.print();
+	// m.clear();
+	// m.print();
+	ft::map<int, int> m2(m);
+	std::pair<int, int> p1(20,5);
+	m2.insert(p1);
+	m2.print();
 
 	return 0;
 }

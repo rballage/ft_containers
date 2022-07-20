@@ -196,7 +196,7 @@ namespace ft
 			std::cout << n->data.first << ": " << n->data.second << std::endl;
 			_print_inorder(n->right);
 		};
-		void _delete_all(node *n)
+		void _delete_all(node *n) //must pass _root as it recursively erase all nodes
 		{
 			if (!n)
 				return ;
@@ -204,7 +204,23 @@ namespace ft
 			_delete_all(n->right);
 			_allocator.destroy(n);
 			_allocator.deallocate(n, 1);
-			n = NULL;
+			n = 0;
+		};
+		node *_deep_copy(node *n, node *parent)
+		{
+			// base case
+			if (!n)
+				return n;
+			// create a new node with the same data as the root node
+			node* copy = _new_node(n->data);
+
+			// clone the left and right subtree
+			copy->parent = parent;
+			copy->left = _deep_copy(n->left, copy);
+			copy->right = _deep_copy(n->right, copy);
+
+			// return cloned root node
+			return copy;
 		};
 	public:
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
@@ -215,7 +231,10 @@ namespace ft
 		};
 		// template <class InputIterator>
 		// map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-		// map(const map& x);
+		map(const map& x)
+		{
+			_root = _deep_copy(x._root, NULL);
+		};
 
 
 

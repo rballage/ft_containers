@@ -224,6 +224,8 @@ namespace ft
 		map(const map& x) : _root(_deep_copy(x._root, NULL)) {};
 		map& operator=(const map& other)
 		{
+			if ((*this)._root == other._root)
+				return *this;
 			clear();
 			_root = _deep_copy(other._root, NULL);
 			return *this;

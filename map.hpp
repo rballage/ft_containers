@@ -16,14 +16,25 @@ namespace ft
 		{
 			black, red
 		}_color;
-		typedef struct		_node
+		class		node
 		{
+		public:
 			value_type		data;
-			struct _node	*parent;
-			struct _node	*left;
-			struct _node	*right;
-			_color		color;
-		}node;
+			node	*parent;
+			node	*left;
+			node	*right;
+			// _color		color;
+			node(void) : data(0), parent(0), left(0), right(0) {};
+			node(const value_type &d) : data(d), parent(0), left(0), right(0) {};
+			node(const node &n) : data(n.data), parent(0), left(0), right(0) {};
+			~node() {parent = left = right = 0;};
+			node& operator=( const node& other )
+			{
+				(void)other;
+			};
+		private:
+
+		};
 
 	public:
 		typedef typename Alloc::template rebind<node>::other	allocator_type;
@@ -56,10 +67,10 @@ namespace ft
 		// 	message = out.str();
 		// 	return message;
 		// };
-		node *_new_node(node *ref)
+		node *_new_node(const value_type &ref)
 		{
 			node *ptr;
-			_allocator.construct(ptr = _allocator.allocate(1), *ref);
+			_allocator.construct(ptr = _allocator.allocate(1), node(ref));
 			ptr->parent = 0;
 			ptr->left = 0;
 			ptr->right = 0;
@@ -69,8 +80,10 @@ namespace ft
 		{
 			if (!n)
 			{
-				n = _new_node(0);
-				n->data = data;
+				n = _new_node(data);
+				// n->data = data;
+				if (!_root)
+				_root = n;
 				return n;
 			}
 			if (data.first < n->data.first)
@@ -89,8 +102,8 @@ namespace ft
 		{
 			if (!_root)
 			{
-				_root = _new_node(0);
-				_root->data = data;
+				_root = _new_node(data);
+				// _root->data = data;
 				return _root;
 			}
 			return _insert_(_root, data);
@@ -195,8 +208,9 @@ namespace ft
 		};
 	public:
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
-		_comparator(comp), _allocator(alloc)
+		_comparator(comp), _allocator(alloc), _root(0)
 		{
+
 			// _nil = _new_node((const node)0);
 		};
 		// template <class InputIterator>
@@ -205,10 +219,18 @@ namespace ft
 
 
 
-		~map() {
+		~map()
+		{
 			_delete_all(_root);
 		};
-
+		void print()
+		{
+			_print_inorder(_root);
+		};
+		void clear()
+		{
+			_delete_all(_root);
+		};
 		// iterator begin() {return iterator(_data_start);};
 		// const_iterator begin() const {return iterator(_data_start);};
 		// iterator end() {return iterator(_data_end);};
@@ -233,7 +255,7 @@ namespace ft
 		// 	}
 		// 	_data_end = _data_start;
 		// };
-		//
+
 		// iterator erase(iterator pos)
 		// {
 		// 	if (&(*pos) == _data_end || _data_start == _data_end)
@@ -272,7 +294,7 @@ namespace ft
 		void insert(const value_type &value)
 		{
 			// (void)pos;
-			_insert(value);
+			_insert_(_root, value);
 		};
 		//
 		// void insert(iterator pos, size_type count, const value_type& value)

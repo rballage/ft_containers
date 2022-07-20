@@ -8,6 +8,8 @@
 #include <vector>
 #include <sstream>
 #include "map.hpp"
+#include <cstdlib>
+#include <ctime>
 
 std::string vector_reserve_ft()
 {
@@ -1910,11 +1912,22 @@ int main(void)
 	// assert(vector_test_weird.is_same());
 
 	// at_test.printAll();
+	std::srand(std::time(0));
 	ft::map<int, int> m;
-	// std::pair<int, int> p(5,5);
-	std::pair<int, int> p1(2,5);
-	m.insert(p1);
+	// std::pair<int, int> p0(12,5);
+	// std::pair<int, int> p2(4,5);
+	// std::pair<int, int> p3(5,5);
+	// std::pair<int, int> p1(2,5);
+	// m.insert(p0);
+	// m.insert(p1);
+	// m.insert(p2);
+	// m.insert(p3);
+	int i = 0;
+	while (i < 42)
+		m.insert(std::make_pair<int,int>(std::rand(),i++));
 	// m.insert(p);
 	// i = 0;
+	m.print();
+	// m.clear();
 	return 0;
 }

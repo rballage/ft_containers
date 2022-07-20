@@ -208,18 +208,12 @@ namespace ft
 		};
 		node *_deep_copy(node *n, node *parent)
 		{
-			// base case
 			if (!n)
 				return n;
-			// create a new node with the same data as the root node
 			node* copy = _new_node(n->data);
-
-			// clone the left and right subtree
 			copy->parent = parent;
 			copy->left = _deep_copy(n->left, copy);
 			copy->right = _deep_copy(n->right, copy);
-
-			// return cloned root node
 			return copy;
 		};
 	public:

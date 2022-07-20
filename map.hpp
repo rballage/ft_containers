@@ -4,30 +4,30 @@
 // https://github.com/pmouhali/ft_containers/blob/main/map.hpp
 namespace ft
 {
-	template <class Key, class T, class Compare = less<Key>, class Alloc = std::allocator<pair<const Key,T> >
+	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<Key,T> > >
 	class map
 	{
 	public:
-		typedef typename Key								key_type;
-		typedef typename T									mapped_type;
-		typedef typename pair<const key_type, mapped_type>	value_type;
+		typedef  Key								key_type;
+		typedef  T									mapped_type;
+		typedef typename std::pair<key_type, mapped_type>	value_type;
 	private:
 		typedef enum		_node_color
 		{
-			black, red;
-		}					_color;
+			black, red
+		}_color;
 		typedef struct		_node
 		{
 			value_type		data;
 			struct _node	*parent;
 			struct _node	*left;
 			struct _node	*right;
-			enum _color		color;
-		}					node;
+			_color		color;
+		}node;
 
 	public:
 		typedef typename Alloc::template rebind<node>::other	allocator_type;
-		typedef typename Compare							key_compare;
+		typedef  Compare							key_compare;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -41,64 +41,172 @@ namespace ft
 
 	private:
 
-		allocator_type _allocator;
 		key_compare _comparator;
-		node *_nil;
+		allocator_type _allocator;
+		// node *_nil;
 		node *_root;
 		// node *_left_most;
 		// node *_right_most;
 
-		const std::string _range_err_message(size_type val) const
-		{
-			std::string message;
-			std::ostringstream out;
-			out << "map::_M_range_check: __n (which is " << val << ") >= this->size() (which is " << size() << ")";
-			message = out.str();
-			return message;
-		};
+		// const std::string _range_err_message(size_type val) const
+		// {
+		// 	std::string message;
+		// 	std::ostringstream out;
+		// 	out << "map::_M_range_check: __n (which is " << val << ") >= this->size() (which is " << size() << ")";
+		// 	message = out.str();
+		// 	return message;
+		// };
 		node *_new_node(node *ref)
 		{
 			node *ptr;
-			_allocator.construct(ptr = _allocator(1), *ref);
-			*ptr = (const node)0;
-			ptr->parent = _nil;
-			ptr->left = _nil;
-			ptr->right = _nil;
+			_allocator.construct(ptr = _allocator.allocate(1), *ref);
+			ptr->parent = 0;
+			ptr->left = 0;
+			ptr->right = 0;
 			return ptr;
 		};
-		void _insert(reference data)
+		node *_insert_(node *n, const value_type &data)
+		{
+			if (!n)
+			{
+				n = _new_node(0);
+				n->data = data;
+				return n;
+			}
+			if (data.first < n->data.first)
+			{
+				n->left = _insert_(n->left, data);
+				n->left->parent = n;
+			}
+			else if (data.first > n->data.first)
+			{
+				n->right = _insert_(n->right, data);
+				n->right->parent = n;
+			}
+			return n;
+		};
+		node *_insert(const value_type &data)
 		{
 			if (!_root)
 			{
 				_root = _new_node(0);
 				_root->data = data;
+				return _root;
+			}
+			return _insert_(_root, data);
+		};
+
+		node *_min(node* n)
+		{
+			if (n == NULL)
+				return NULL;
+			else if (n->left == NULL)
+				return n;
+			else
+				return _min(n->left);
+		};
+		node *_max(node* n)
+		{
+			if (n == NULL)
+				return NULL;
+			else if (n->right == NULL)
+				return n;
+			else
+				return _max(n->right);
+		};
+		void _delete(node n)
+		{
+			if (!n)
+				return ;
+			if (!n->left && !n->right)
+			{
+				if (n->parent)
+				{
+					if (n->parent->left == n)
+						n->parent->left = NULL;
+					else
+						n->parent->right = NULL;
+				}
+				_allocator.destroy(n);
+				_allocator.deallocate(n, 1);
+				n = NULL;
+			}
+			if ((n->left && !n->right) || (!n->left && n->right))
+			{
+				node *child = n->left ? n->left : n->right;
+				if (n->parent)
+				{
+					if (n->parent->left == n)
+						n->parent->left = child;
+					else
+						n->parent->right = child;
+					child->parent = n->parent;
+				}
+				_allocator.destroy(n);
+				_allocator.deallocate(n, 1);
+				n = NULL;
 			}
 			else
 			{
-
+				node *successor = _min(n->right);
+				successor->left = n->left;
+				successor->parent = n->parent;
+				if (n->parent && n->parent->left == n)
+					n->parent->left = successor;
+				if (n->parent && n->parent->right == n)
+					n->parent->right = successor;
+				_allocator.destroy(n);
+				_allocator.deallocate(n, 1);
+				n = successor;
 			}
+		};
+		void _delete(key_type &key)
+		{
+			node *n = _search(key, _root);
+			if (!n)
+				return ;
+			_delete(n);
 		};
 		node *_search(key_type &key, node *n)
 		{
-			if (!n || !_comparator(key, n->data->key) && !_comparator(n->data->key, key))
+			if (!n || (!_comparator(key, n->data.first) && !_comparator(n->data.first, key)))
 				return n;
-			if (_comparator(key, n->data->key))
+			if (_comparator(key, n->data.first))
 				return _search(key, n->left);
 			return _search(key, n->right);
 		};
+		void _print_inorder(node *n)
+		{
+			if (!n)
+				return ;
+			_print_inorder(n->left);
+			std::cout << n->data.first << ": " << n->data.second << std::endl;
+			_print_inorder(n->right);
+		};
+		void _delete_all(node *n)
+		{
+			if (!n)
+				return ;
+			_delete_all(n->left);
+			_delete_all(n->right);
+			_allocator.destroy(n);
+			_allocator.deallocate(n, 1);
+			n = NULL;
+		};
 	public:
 		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
-		_comparator(comp), _allocator(Alloc), _root(0){
-			_nil = _new_node((const node)0);
+		_comparator(comp), _allocator(alloc)
+		{
+			// _nil = _new_node((const node)0);
 		};
-		template <class InputIterator>
-		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-		map(const map& x);
+		// template <class InputIterator>
+		// map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+		// map(const map& x);
 
 
 
 		~map() {
-			// _delete();
+			_delete_all(_root);
 		};
 
 		// iterator begin() {return iterator(_data_start);};
@@ -161,12 +269,11 @@ namespace ft
 		// 	return first;
 		// };
 		//
-		// iterator insert(iterator pos, const value_type& value)
-		// {
-		// 	const size_type distance = &(*pos) - _data_start; // necessary when reallocating is necessary
-		// 	insert(pos, 1, value);
-		// 	return _data_start + distance;
-		// };
+		void insert(const value_type &value)
+		{
+			// (void)pos;
+			_insert(value);
+		};
 		//
 		// void insert(iterator pos, size_type count, const value_type& value)
 		// {
@@ -335,4 +442,4 @@ namespace ft
 // {
 // 	x.swap(y);
 // };
-}
+};

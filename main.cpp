@@ -1,6 +1,5 @@
 
 // #include "containers/list.hpp"
-// #include "containers/map.hpp"
 // #include "containers/queue.hpp"
 // #include "containers/stack.hpp"
 #include <cassert>
@@ -8,6 +7,7 @@
 #include "Test.hpp"
 #include <vector>
 #include <sstream>
+#include "map.hpp"
 
 std::string vector_reserve_ft()
 {
@@ -1859,58 +1859,62 @@ std::string vector_resize2_std(void)
 
 int main(void)
 {
-	Test construction_test(&vector_constructions_ft, &vector_constructions_std);
-	assert(construction_test.is_same());
-
-	Test clear_test(&vector_clear_ft, &vector_clear_std);
-	assert(clear_test.is_same());
-
-	Test empty_test(&vector_empty_ft, &vector_empty_std);
-	// empty_test.printAll();
-
-	assert(empty_test.is_same());
-
-	Test at_test(&vector_at_ft, &vector_at_std);
-	assert(at_test.is_same());
-
-	Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
-	assert(reserve_test.is_same());
-
-	Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
-	// push_back_test.printAll();
-	assert(push_back_test.is_same());
-
-	Test resize_test(&vector_resize_ft, &vector_resize_std);
-	// resize_test.printAll();
-	assert(resize_test.is_same());
-
-	Test insert_test(&vector_insert_ft, &vector_insert_std);
-	// insert_test.printAll();
-	// assert(insert_test.is_same());
-
-	Test erase_test(&vector_erase_ft, &vector_erase_std);
-	// erase_test.printAll();
-	assert(erase_test.is_same());
-
-	Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
-	// erase_range_test.printAll();
-	assert(erase_range_test.is_same());
-
-	Test size_test(&vector_size_ft, &vector_size_std);
-	// size_test.printAll();
-	assert(size_test.is_same());
-	Test strings_general_test(&vector_strings_general_ft, &vector_strings_general_std);
-	// strings_general_test.printAll();
-	assert(strings_general_test.is_same());
-	Test vector_test(&vector__ft, &vector__std);
-	// vector_test.printAll();
-	assert(vector_test.is_same());
-	Test vector_test_weird(&vector_resize2_ft, &vector_resize2_std);
-	vector_test_weird.printAll();
-	assert(vector_test_weird.is_same());
+	// Test construction_test(&vector_constructions_ft, &vector_constructions_std);
+	// assert(construction_test.is_same());
+	//
+	// Test clear_test(&vector_clear_ft, &vector_clear_std);
+	// assert(clear_test.is_same());
+	//
+	// Test empty_test(&vector_empty_ft, &vector_empty_std);
+	// // empty_test.printAll();
+	//
+	// assert(empty_test.is_same());
+	//
+	// Test at_test(&vector_at_ft, &vector_at_std);
+	// assert(at_test.is_same());
+	//
+	// Test reserve_test(&vector_reserve_ft, &vector_reserve_std);
+	// assert(reserve_test.is_same());
+	//
+	// Test push_back_test(&vector_push_back_ft, &vector_push_back_std);
+	// // push_back_test.printAll();
+	// assert(push_back_test.is_same());
+	//
+	// Test resize_test(&vector_resize_ft, &vector_resize_std);
+	// // resize_test.printAll();
+	// assert(resize_test.is_same());
+	//
+	// Test insert_test(&vector_insert_ft, &vector_insert_std);
+	// // insert_test.printAll();
+	// // assert(insert_test.is_same());
+	//
+	// Test erase_test(&vector_erase_ft, &vector_erase_std);
+	// // erase_test.printAll();
+	// assert(erase_test.is_same());
+	//
+	// Test erase_range_test(&vector_erase_range_ft, &vector_erase_range_std);
+	// // erase_range_test.printAll();
+	// assert(erase_range_test.is_same());
+	//
+	// Test size_test(&vector_size_ft, &vector_size_std);
+	// // size_test.printAll();
+	// assert(size_test.is_same());
+	// Test strings_general_test(&vector_strings_general_ft, &vector_strings_general_std);
+	// // strings_general_test.printAll();
+	// assert(strings_general_test.is_same());
+	// Test vector_test(&vector__ft, &vector__std);
+	// // vector_test.printAll();
+	// assert(vector_test.is_same());
+	// Test vector_test_weird(&vector_resize2_ft, &vector_resize2_std);
+	// vector_test_weird.printAll();
+	// assert(vector_test_weird.is_same());
 
 	// at_test.printAll();
-
-
+	ft::map<int, int> m;
+	// std::pair<int, int> p(5,5);
+	std::pair<int, int> p1(2,5);
+	m.insert(p1);
+	// m.insert(p);
+	// i = 0;
 	return 0;
 }

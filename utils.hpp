@@ -91,7 +91,6 @@ namespace ft
 		second_type second;
 		pair(void) : first(first_type()), second(second_type()) {};
 		pair(const first_type& a, const second_type& b) : first(a), second(b) {};
-		pair(const first_type& a, const second_type& b) : first(a), second(b) {};
 		template<typename U, typename V>
 		pair(const pair<U,V>& x) : first(x.first), second(x.second) {};
 		pair &operator=(const pair& x) {first = x.first; second = x.second; return *this;};

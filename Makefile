@@ -1,4 +1,4 @@
-CPP		= c++
+CPP		= clang++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 LDLIBS =
 

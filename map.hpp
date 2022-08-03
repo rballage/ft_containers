@@ -32,13 +32,56 @@ namespace ft
 			{
 				(void)other;
 			};
+			node* _next(node *n)
+			{
+				if (n->right)
+					return _min(n->right);
+				while (n->parent && n->parent->left != n)
+					n = n->parent;
+				return n->parent ? n->parent : n;
+			};
+			node* _prev(node *n)
+			{
+				if (n->left)
+					return _max(n->left);
+				while (n->parent && n->parent->right != n)
+					n = n->parent;
+				return n->parent ? n->parent : n;
+			};
+			node* operator++()
+			{
+
+				return this;
+			};
+			node* operator++(int)
+			{
+				node *tmp = this;
+				++(*this);
+				return tmp;
+			};
+			bool operator==(const bidirectional_iterator< T >& other) {return (_current == other._current);};
+			bool operator!=(const bidirectional_iterator< T >& other) {return (_current != other._current);};
+			reference operator*() const {return *_current;};
+			pointer operator->() const {return &(operator*());};
+			node& operator--()
+			{
+				--_current;
+				return *this;
+			};
+			node operator--(int)
+			{
+				node tmp = *this;
+				--(*this);
+				return tmp;
+			};
+			pointer const& base() const {return _current;}
 		private:
 
 		};
 
 	public:
 		typedef typename Alloc::template rebind<node>::other	allocator_type;
-		typedef  Compare							key_compare;
+		typedef Compare							key_compare;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;

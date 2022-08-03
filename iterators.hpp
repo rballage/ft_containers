@@ -63,7 +63,7 @@ namespace ft
 		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::pointer pointer;
 		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::reference reference;
 		bidirectional_iterator(pointer ptr = 0) : _current(ptr){};
-		bidirectional_iterator(const bidirectional_iterator& other) : _current(other.ptr){};
+		bidirectional_iterator(const bidirectional_iterator& other) : _current(other._current){};
 		template <class diff>
 		bidirectional_iterator(const bidirectional_iterator< diff >& it) : _current(it.base()) {};
 

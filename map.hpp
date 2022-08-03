@@ -4,7 +4,7 @@
 // https://github.com/pmouhali/ft_containers/blob/main/map.hpp
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<Key,T> > >
+	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
 	class map
 	{
 	public:
@@ -196,6 +196,13 @@ namespace ft
 			std::cout << n->data.first << ": " << n->data.second << std::endl;
 			_print_inorder(n->right);
 		};
+		size_type _size(node *n) const
+		{
+			if (!n)
+				return 0;
+			return 1 + _size(n->left) + _size(n->right);
+		};
+
 		void _delete_all(node *n) //must pass _root as it recursively erase all nodes
 		{
 			if (!n)
@@ -222,6 +229,7 @@ namespace ft
 		// template <class InputIterator>
 		// map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
 		map(const map& x) : _root(_deep_copy(x._root, NULL)) {};
+
 		map& operator=(const map& other)
 		{
 			if ((*this)._root == other._root)
@@ -230,7 +238,6 @@ namespace ft
 			_root = _deep_copy(other._root, NULL);
 			return *this;
 		};
-
 
 		~map()
 		{
@@ -244,6 +251,24 @@ namespace ft
 		{
 			_delete_all(_root);
 			_root = 0;
+		};
+		size_type size(void) const
+		{
+			return _size(_root);
+		};
+		size_type count(const Key& key) const
+		{
+			if (!_root)
+				return 0;
+			return _search(key, _root) ? 1 : 0;
+		};
+		iterator find( const Key& key )
+		{
+			return _search(key, _root);
+		};
+		const_iterator find( const Key& key ) const
+		{
+			return _search(key, _root);
 		};
 		// iterator begin() {return iterator(_data_start);};
 		// const_iterator begin() const {return iterator(_data_start);};

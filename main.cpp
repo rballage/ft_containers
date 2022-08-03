@@ -1913,7 +1913,7 @@ int main(void)
 
 	// at_test.printAll();
 	std::srand(std::time(0));
-	ft::map<int, int> m;
+	ft::map<const int, int> m;
 	// std::pair<int, int> p0(12,5);
 	// std::pair<int, int> p2(4,5);
 	// std::pair<int, int> p3(5,5);
@@ -1924,18 +1924,18 @@ int main(void)
 	// m.insert(p3);
 	int i = 0;
 	while (++i < 13)
-		m.insert(std::make_pair<int,int>(i,i));
+		m.insert(std::make_pair<const int,int>(i,i));
 	// m.insert(p);
 	// i = 0;
 	// m.clear();
 	// m.print();
-	ft::map<int, int> m2(m);
-	std::pair<int, int> p1(20,5);
+	ft::map<const int, int> m2(m);
+	std::pair<const int, int> p1(20,5);
 	m2.insert(p1);
-	m2.insert(std::make_pair<int,int>(100,i));
-	m2.insert(std::make_pair<int,int>(1001,i));
-	m2.insert(std::make_pair<int,int>(22,i));
-	m2.insert(std::make_pair<int,int>(42,i));
+	m2.insert(std::make_pair<const int,int>(100,i));
+	m2.insert(std::make_pair<const int,int>(1001,i));
+	m2.insert(std::make_pair<const int,int>(22,i));
+	m2.insert(std::make_pair<const int,int>(42,i));
 	// m2.print();
 	m = m2;
 	m.print();

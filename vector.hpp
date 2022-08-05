@@ -163,7 +163,7 @@ namespace ft
 			{
 				if (size() *2 < n)
 					reserve(n);
-				else
+				else // need to do stuff with capacity ?
 					reserve(size() * 2);
 				std::uninitialized_fill(_data_end, _data_start + n, val);
 				_data_end = _data_start + n;

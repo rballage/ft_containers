@@ -222,7 +222,7 @@ namespace ft
 				n = _new_node(data);
 				// n->data = data;
 				if (!root)
-				root = n;
+					root = n;
 				return n;
 			}
 			if (data.first < n->data.first)

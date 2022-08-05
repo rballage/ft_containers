@@ -113,7 +113,7 @@ void	resize_tests(void)
 	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
 	test.resize(100);
 	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
-	test.resize(4170);
+	test.resize(200);
 	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
 	test.resize(171, 12);
 	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;

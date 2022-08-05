@@ -4,6 +4,7 @@
 // https://github.com/pmouhali/ft_containers/blob/main/map.hpp
 namespace ft
 {
+
 	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
 	class map
 	{
@@ -15,7 +16,7 @@ namespace ft
 		typedef enum		_node_color
 		{
 			black, red
-		}_color;
+		}t_color;
 		class		node
 		{
 		public:
@@ -23,11 +24,15 @@ namespace ft
 			node	*parent;
 			node	*left;
 			node	*right;
-			// _color		color;
-			node(void) : data(0), parent(0), left(0), right(0) {};
-			node(const value_type &d) : data(d), parent(0), left(0), right(0) {};
-			node(const node &n) : data(n.data), parent(0), left(0), right(0) {};
-			~node() {parent = left = right = 0;};
+			t_color		color;
+			node(void) : data(0), parent(0), left(0), right(0), color(red) {};
+			node(const value_type &d) : data(d), parent(0), left(0), right(0), color(red) {};
+			node(const node &n) : data(n.data), parent(0), left(0), right(0), color(red) {};
+			~node()
+			{
+				parent = left = right = 0;
+				
+			};
 			node& operator=( const node& other )
 			{
 				(void)other;
@@ -51,11 +56,11 @@ namespace ft
 			node* operator++()
 			{
 
-				return this;
+				return _next(&(*this));
 			};
 			node* operator++(int)
 			{
-				node *tmp = this;
+				node tmp = *this;
 				++(*this);
 				return tmp;
 			};
@@ -74,7 +79,6 @@ namespace ft
 				--(*this);
 				return tmp;
 			};
-			pointer const& base() const {return _current;}
 		private:
 
 		};

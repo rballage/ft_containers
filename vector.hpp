@@ -152,14 +152,14 @@ namespace ft
 		// Has a default value param for custom values when resizing.
 		void resize(size_type n, value_type val = value_type())
 		{
-			if (size() > n)
+			if (capacity() > n)
 			{
 				pointer it = _data_start + n;
 				while (it != _data_end)
 					_alloc.destroy(it++);
 				_data_end = _data_start + n;
 			}
-			else if (size() < n)
+			else if (capacity() < n)
 			{
 				reserve(n);
 				std::uninitialized_fill(_data_end, _data_max, val);

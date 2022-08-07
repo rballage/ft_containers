@@ -27,9 +27,9 @@ PURPLE="\033[35m"
 run_tests ()
 {
 	rm logs/"$1"_ft.error.log logs/"$1"_std.error.log
-	clang++ -Werror -Wextra -Werror -std=c++98 -I . -I "$INCLUDES" -I "$INCLUDES"/EMPTY -I ../"$2" -I "$INCLUDES"/EMPTY/JUST_IN_CASE \
+	clang++ -Werror -Wextra -Werror -g3 -std=c++98 -I . -I "$INCLUDES" -I "$INCLUDES"/EMPTY -I ../"$2" -I "$INCLUDES"/EMPTY/JUST_IN_CASE \
 			mains/"$1"_main.cpp -o bin/"$1"_ft 2> logs/"$1"_ft.error.log
-	clang++ -Werror -Wextra -Werror -std=c++98 -D STD -I . -I "$INCLUDES" -I "$INCLUDES"/EMPTY \
+	clang++ -Werror -Wextra -Werror -g3 -std=c++98 -D STD -I . -I "$INCLUDES" -I "$INCLUDES"/EMPTY \
 			-I "$INCLUDES"/EMPTY/JUST_IN_CASE -I ../"$2" mains/"$1"_main.cpp -o bin/"$1"_std 2> logs/"$1"_std.error.log
 
 	if [ $(cat logs/"$1"_std.error.log | wc -c) != "0" ]
@@ -59,7 +59,7 @@ run_tests ()
 			then
 				if [[ "$OSTYPE" == "linux-gnu"* ]]
 				then
-					valgrind --track-origins=yes ./bin/"$1"_ft > /dev/null 2> leak/"$1"_leak
+					valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --verbose ./bin/"$1"_ft > /dev/null 2> leak/"$1"_leak
 					if [ "$(grep "All heap blocks were freed -- no leaks are possible" leak/"$1"_leak)" = "" ]
 					then
 						echo -e "$RED$NOPE\t$1 test seems to leak (shame!), or it crashed (shame shame!)$RESET"

@@ -268,12 +268,17 @@ void	awesome_tests(void)
 	std::cout << "SAME ?" << (test.begin() + 1 == test2.begin() + 1) << std::endl;
 	test.assign(test2.begin(), test2.end());
 	print_vector<Awesome>(test);
+	std::cout << "=operator\n";
 	test = test2;
 	print_vector<Awesome>(test);
 	std::cout << "SAME ?" << (test.begin() + 1 == test2.begin() + 1) << std::endl;
 	test.insert(test.end(), test2.begin(), test2.end());
 	print_vector<Awesome>(test);
+	std::cout << "start insert\n";
+
 	test.insert(test.begin(), test2.begin(), test2.end());
+	std::cout << "end insert\n";
+
 	test2 = test;
 	print_vector<Awesome>(test);
 	std::cout << "end awesome test" << std::endl;

@@ -173,7 +173,7 @@ namespace ft
 		RBTreeIterator& operator--( void)
 		{
 			if (_ptr == _end)
-				_ptr = _maximum(_root);
+				_ptr = _get_max(_root);
 			else
 				_ptr = _get_predecessor(_ptr);
 			return *this;
@@ -216,7 +216,7 @@ namespace ft
 		** Returns the maximum value in a leaf starting from node.
 		*/
 
-		node_pointer _maximum( node_pointer node )
+		node_pointer _get_max( node_pointer node )
 		{
 			while (node->right != _end)
 				node = node->right;
@@ -227,7 +227,7 @@ namespace ft
 		** Returns the minimum value in a leaf starting from node.
 		*/
 
-		node_pointer _minimum( node_pointer node )
+		node_pointer _get_min( node_pointer node )
 		{
 			while (node->left != _end && node != _end)
 				node = node->left;
@@ -243,7 +243,7 @@ namespace ft
 			node_pointer predecessor;
 
 			if (node->left != _end)
-				return _maximum(node->left);
+				return _get_max(node->left);
 			predecessor = node->parent;
 			while (node->parent != 0 && node == predecessor->left)
 			{
@@ -267,7 +267,7 @@ namespace ft
 			if (node == _end)
 				return (_end);
 			if (node->right != _end)
-				return _minimum(node->right);
+				return _get_min(node->right);
 			successor = node->parent;
 			while (node->parent != _end && node == successor->right)
 			{

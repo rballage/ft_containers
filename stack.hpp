@@ -1,6 +1,7 @@
-#pragma once
+#ifndef STACK_HPP
+# define  STACK_HPP
 
-#include "utils.hpp"
+// #include "utils.hpp"
 #include "vector.hpp"
 
 namespace ft
@@ -21,13 +22,13 @@ namespace ft
 
 		explicit stack(const Container& cont = Container()) : c(cont) {};
 		stack(const stack& other) : c(other.c) {};
-		~stack() {c.erase(c.begin(), c.end());};
+		~stack() {return;};
 		stack &operator=( const stack& other ) { c = other.c; return *this;};
 
 		template< class TYPE, class CONT >
-		friend bool operator==( const ft::stack<TYPE, CONT>& left, const ft::stack<TYPE, CONT>& right ) {return left.c == right.c;};
+		friend bool operator==( const stack<TYPE, CONT>& left, const stack<TYPE, CONT>& right );
 		template< class TYPE, class CONT >
-		friend bool operator<( const ft::stack<TYPE, CONT>& left, const ft::stack<TYPE, CONT>& right ) {return left.c < right.c;};
+		friend bool operator<( const stack<TYPE, CONT>& left, const stack<TYPE, CONT>& right );
 
 
 
@@ -38,7 +39,10 @@ namespace ft
 		void push(const value_type &val) {c.push_back(val);};
 		void pop(void) {c.pop_back();};
 	};
-
+	template< class TYPE, class CONT >
+	bool operator==( const stack<TYPE, CONT>& left, const stack<TYPE, CONT>& right ) {return left.c == right.c;};
+	template< class TYPE, class CONT >
+	bool operator<( const stack<TYPE, CONT>& left, const stack<TYPE, CONT>& right ) {return left.c < right.c;};
 	template< class T, class Container >
 	bool operator!=( const ft::stack<T,Container>& left, const ft::stack<T,Container>& right ) {return !(left == right);};
 
@@ -51,3 +55,5 @@ namespace ft
 	template< class T, class Container >
 	bool operator>=( const ft::stack<T,Container>& left, const ft::stack<T,Container>& right ) {return (right < left || right == left);};
 }
+
+#endif

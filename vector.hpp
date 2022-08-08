@@ -1,6 +1,6 @@
-#pragma once
-
-#include "utils.hpp"
+#ifndef VECTOR_HPP
+# define  VECTOR_HPP
+# include "utils.hpp"
 // https://github.com/pmouhali/ft_containers/blob/main/vector.hpp
 namespace ft
 {
@@ -105,6 +105,11 @@ namespace ft
 		vector(const vector &v, const allocator_type &newAllocator = allocator_type()) :
 		_alloc(newAllocator)
 		{
+			if (v.empty())
+			{
+				_data_max = _data_end = _data_start = 0;
+				return;
+			}
 			_data_start = _alloc.allocate(v.end() - v.begin());
 			_data_max = _data_end = _construct_copy(v.begin(), v.end(), _data_start);
 		};
@@ -449,3 +454,5 @@ void swap (vector<T,Alloc> &x, vector<T,Alloc> &y)
 	x.swap(y);
 };
 }
+
+#endif

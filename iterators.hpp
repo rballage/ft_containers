@@ -55,7 +55,7 @@ namespace ft
 	class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
 	private:
-		typename ft::iterator< ft::random_access_iterator_tag, T >::pointer _current;
+		typename ft::iterator< ft::bidirectional_iterator_tag, T >::pointer _current;
 	public:
 		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::iterator_category iterator_category;
 		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::value_type value_type;
@@ -96,12 +96,11 @@ namespace ft
 		pointer const& base() const {return _current;}
 	};
 
-
 	template <class T>
 	class forward_iterator : public ft::iterator<ft::forward_iterator_tag, T>
 	{
 	private:
-		typename ft::iterator< ft::random_access_iterator_tag, T >::pointer _current;
+		typename ft::iterator< ft::forward_iterator_tag, T >::pointer _current;
 	public:
 		typedef typename ft::iterator< ft::forward_iterator_tag, T >::iterator_category iterator_category;
 		typedef typename ft::iterator< ft::forward_iterator_tag, T >::value_type value_type;
@@ -141,9 +140,6 @@ namespace ft
 		};
 		pointer const& base() const {return _current;}
 	};
-
-
-
 
 	template <class T>
 	class random_access_iterator: public ft::iterator< ft::random_access_iterator_tag, T >

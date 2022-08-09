@@ -5,50 +5,125 @@
 
 namespace ft
 {
-
-	enum color
-	{
-		BLACK,
-		RED
-	};
-
-	template<typename Key, typename T>
-	struct node
-	{
-		typedef ft::pair<Key, T>	value_type;
-
-		value_type			content;
-		node*		parent;
-		node*		left;
-		node*		right;
-		color		color;
-
-		node(value_type content) : content(content) {};
-	};
-
-	template<typename Key, typename T, typename Compare = ft::less<Key>,
-		typename Alloc = std::allocator<ft::pair<const Key, T> > >
+	template<typename Key, typename T, typename Compare = ft::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
 	class Tree
 	{
+		enum color
+		{
+			BLACK,
+			RED
+		};
 
+		template<typename Key, typename T>
+		class node
+		{
+			typedef ft::pair<Key, T>	value_type;
+
+			node*		parent;
+			node*		left;
+			node*		right;
+			color		color;
+			value_type	data;
+			node**					_end;
+			node**					_root;
+
+			node(value_type content, node* root, node* end) : data(content), _root(&root), _end(&end) {};
+
+			node* operator++()
+			{
+				if (*this != *_end)
+					*this = _successor(*this);
+				return *this;
+			};
+			node* operator--()
+			{
+				if (*this == *_end)
+					*this = _max(*_root);
+				else
+					*this = _predecessor(*this);
+				return *this;
+			};
+			node* operator++(int)
+			{
+				node tmp = *this;
+				++(*this);
+				return tmp;
+			};
+			node* operator--(int)
+			{
+				node tmp = *this;
+				--(*this);
+				return tmp;
+			};
+		private:
+			node* _max(node* n)
+			{
+				while (n->right != *_end)
+					n = n->right;
+				return n;
+			};
+
+			node* _min(node* n)
+			{
+				while (n->left != *_end && n != *_end)
+					n = n->left;
+				return n;
+			};
+
+			node* _predecessor(node* n)
+			{
+				node* predecessor;
+
+				if (n->left != *_end)
+					return _max(n->left);
+				predecessor = n->parent;
+				while (n->parent != 0 && n == predecessor->left)
+				{
+					n = predecessor;
+					predecessor = predecessor->parent;
+				}
+				if (!predecessor)
+					return *_end;
+				else
+					return predecessor;
+			};
+
+			node* _successor(node* n)
+			{
+				node* successor;
+
+				if (n == *_end)
+					return (*_end);
+				if (n->right != *_end)
+					return _get_min(n->right);
+				successor = n->parent;
+				while (n->parent != *_end && n == successor->right)
+				{
+					n = successor;
+					successor = successor->parent;
+				}
+				if (!successor)
+					return *_end;
+				else
+					return successor;
+			};
+		};
 	public:
-		typedef Key										key_type;
-		typedef T										mapped_type;
-		typedef Compare									key_compare;
-		typedef node<key_type, mapped_type>		node_type;
-		typedef ft::RBTreeIterator<node_type>			iterator;
-		typedef ft::RBTreeIterator<const node_type>		const_iterator;
-		typedef ft::reverse_iterator<iterator>			reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
-		typedef node_type*								pointer;
-		typedef const node_type*						const_pointer;
-		typedef node_type&								reference;
-		typedef const node_type&						const_reference;
-		typedef ft::pair<const Key, T>					value_type;
-		typedef typename Alloc::template rebind
-			<node<key_type, mapped_type> >::other	allocator_type;
-		typedef size_t									size_type;
-
+		typedef Key																		key_type;
+		typedef T																		mapped_type;
+		typedef Compare																	key_compare;
+		typedef node<key_type, mapped_type>												node_type; //might need to change that
+		typedef ft::bidirectional_iterator<node_type>									iterator;
+		typedef ft::bidirectional_iterator<const node_type>								const_iterator;
+		typedef ft::reverse_iterator<iterator>											reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
+		typedef node_type*																pointer;
+		typedef const node_type*														const_pointer;
+		typedef node_type&																reference;
+		typedef const node_type&														const_reference;
+		typedef ft::pair<const Key, T>													value_type;
+		typedef typename Alloc::template rebind<node<key_type, mapped_type> >::other	allocator_type;
+		typedef typename allocator_type::size_type										size_type;
 
 		explicit Tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 			: _root(0), _end(0), _alloc(alloc), _compare(comp), _size(0)
@@ -60,7 +135,8 @@ namespace ft
 		};
 
 		template<typename InputIterator>
-		Tree(InputIterator first, InputIterator last, key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type())
+		Tree(InputIterator first, InputIterator last, key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type(),
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 				: _root(0), _end(0), _alloc(alloc), _compare(comp), _size(0)
 		{
 			_end = _alloc.allocate(1);
@@ -99,8 +175,8 @@ namespace ft
 			return *this;
 		};
 
-		iterator				begin(void) {return (iterator(_get_min(_root), _root, _end));};
-		const_iterator			begin(void) const {return (const_iterator(_get_min(_root), _root, _end));};
+		iterator				begin(void) {return (iterator(_min(_root), _root, _end));};
+		const_iterator			begin(void) const {return (const_iterator(_min(_root), _root, _end));};
 		iterator				end(void) {return (iterator(_end, _root, _end));};
 		const_iterator			end(void) const {return (const_iterator(_end, _root, _end));};
 		reverse_iterator		rbegin(void) {return (reverse_iterator(end()));};
@@ -120,9 +196,9 @@ namespace ft
 			{
 				ft::pair<iterator, bool>	p;
 				p = insert(ft::make_pair(key, mapped_type()));
-				return p.first.get_node()->content.second;
+				return p.first.base()->data.second;
 			}
-			return it.get_node()->content.second;
+			return it.base()->data.second;
 		};
 
 		ft::pair<iterator, bool>	insert(const value_type& val)
@@ -141,13 +217,13 @@ namespace ft
 
 		iterator	insert(iterator pos, const value_type& val)
 		{
-			pointer succ = pos.successor(pos.get_node());
+			pointer succ = pos.successor(pos.base());
 
-			if (_compare(pos->first, val.first) && _compare(val.first, succ->content.first))
+			if (_compare(pos->first, val.first) && _compare(val.first, succ->data.first))
 			{
 				pointer node = _alloc.allocate(1);
 				_alloc.construct(node, node_type(val));
-				pointer new_node = _insert(node, pos.get_node());
+				pointer new_node = _insert(node, pos.base());
 				_size++;
 				return iterator(new_node, _root, _end);
 			}
@@ -156,7 +232,7 @@ namespace ft
 		};
 
 		template<typename InputIterator>
-		void	insert(InputIterator first, InputIterator last)
+		void	insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			while (first != last)
 				insert(*first++);
@@ -166,7 +242,7 @@ namespace ft
 		{
 			if (pos == end())
 				return;
-			_delete_node(pos.get_node());
+			_delete_node(pos.base());
 			_size--;
 		};
 
@@ -194,7 +270,7 @@ namespace ft
 		iterator	lower_bound(const key_type& key)
 		{
 			for (iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.get_node()->content.first, key)))
+				if (!(_compare(it.base()->data.first, key)))
 					return it;
 			return (end());
 		};
@@ -202,7 +278,7 @@ namespace ft
 		const_iterator	lower_bound(const key_type& key) const
 		{
 			for (const_iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.get_node()->content.first, key)))
+				if (!(_compare(it.base()->data.first, key)))
 					return it;
 			return (end());
 		};
@@ -210,7 +286,7 @@ namespace ft
 		iterator	upper_bound(const key_type& key)
 		{
 			for (iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.get_node()->content.first))
+				if (_compare(key, it.base()->data.first))
 					return it;
 			return (end());
 		};
@@ -218,7 +294,7 @@ namespace ft
 		const_iterator	upper_bound(const key_type& key) const
 		{
 			for (const_iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.get_node()->content.first))
+				if (_compare(key, it.base()->data.first))
 					return it;
 			return (end());
 		};
@@ -242,7 +318,7 @@ namespace ft
 			while (x != _end)
 			{
 				y = x;
-				if (_compare(new_node->content.first, x->content.first))
+				if (_compare(new_node->data.first, x->data.first))
 					x = x->left;
 				else
 					x = x->right;
@@ -250,7 +326,7 @@ namespace ft
 			new_node->parent = y;
 			if (y == _end)
 				_root = new_node;
-			else if (_compare(new_node->content.first, y->content.first))
+			else if (_compare(new_node->data.first, y->data.first))
 				y->left = new_node;
 			else
 				y->right = new_node;
@@ -357,14 +433,14 @@ namespace ft
 			y->parent = x;
 		};
 
-		pointer	_get_min(pointer node)
+		pointer	_min(pointer node)
 		{
 			while (node->left != _end && node != _end)
 				node = node->left;
 			return node;
 		};
 
-		pointer	_get_min(pointer node) const
+		pointer	_min(pointer node) const
 		{
 			while (node->left != _end)
 				node = node->left;
@@ -386,9 +462,9 @@ namespace ft
 		{
 			if (node == _end)
 				return iterator(_end, _root, _end);
-			else if (node->content.first == key)
+			else if (node->data.first == key)
 				return iterator(node, _root, _end);
-			if (_compare(node->content.first, key))
+			if (_compare(node->data.first, key))
 				return _find(key, node->right);
 			else
 				return _find(key, node->left);
@@ -412,7 +488,7 @@ namespace ft
 			}
 			else
 			{
-				y = _get_min(z->right);
+				y = _min(z->right);
 				y_orginal_color = y->color;
 				x = y->right;
 				if (y->parent == z)

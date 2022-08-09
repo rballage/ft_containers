@@ -4,13 +4,11 @@ namespace ft
 {
 
 	template <typename T>
-	class RBTreeIterator
+	class tree_iterator
 	{
 
 	public:
-
 		typedef T										value_type;
-		typedef value_type*								node_pointer;
 		typedef typename T::value_type const			data_type;
 		typedef data_type&								reference;
 		typedef data_type const&						const_reference;
@@ -18,229 +16,87 @@ namespace ft
 		typedef data_type const*						const_pointer;
 		typedef typename std::ptrdiff_t					difference_type;
 		typedef ft::bidirectional_iterator_tag			iterator_category;
-
+	protected:
+		value_type*	_current;
+		value_type*	_root;
+		value_type*	_end;
 	public:
+		tree_iterator(void): _current(0), _root(0), _end(0) {};
+		explicit tree_iterator(value_type* ptr, value_type* root, value_type* end) : _current(ptr), _root(root), _end(end) {};
+		tree_iterator(const tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
 
-		/*
-		** Empty Constructor (Default constructor)
-		** Constructs an empty iterator, points to NULL.
-		*/
+		virtual ~tree_iterator(void) {};
 
-		RBTreeIterator( void ): _ptr(0), _root(0), _end(0)
-		{
-			return ;
-		};
-
-		/*
-		** Constructor one element
-		** Constructs an iterator, points to ptr.
-		*/
-
-		explicit RBTreeIterator( node_pointer ptr, node_pointer root,
-			node_pointer end )
-			: _ptr(ptr), _root(root), _end(end)
-		{
-			return ;
-		};
-
-		/*
-		** Copy constructor
-		** Constructs an iterator with a copy of each of the elements in src.
-		*/
-
-		RBTreeIterator( const RBTreeIterator& src )
-			: _ptr(src._ptr), _root(src._root), _end(src._end)
-		{
-			return ;
-		};
-
-		/*
-		** Destructor
-		*/
-
-		virtual ~RBTreeIterator( void )
-		{
-			return ;
-		}
-
-		/*
-		** Assign content
-		** Copies all the elements from rhs into the iterator..
-		*/
-
-		RBTreeIterator &operator=( const RBTreeIterator& rhs )
+		tree_iterator &operator=(const tree_iterator& rhs)
 		{
 			if (this != &rhs)
 			{
-				_ptr = rhs._ptr;
+				_current = rhs._current;
 				_root = rhs._root;
 				_end = rhs._end;
 			}
 			return *this;
-		}
+		};
 
-		/*
-		** Allow a conversion from iterator to const_iterator.
-		*/
+		operator tree_iterator<value_type const>() const {return tree_iterator<value_type const>(_current, _root, _end);};
+		reference operator*(void){return _current->data;};
+		const_reference operator*(void) const {return _current->data;};
+		pointer operator->(void) {return &(operator*());};
+		bool operator==(const tree_iterator& rhs) const {return (_current == rhs._current);};
+		bool operator!=(const tree_iterator& rhs) const {return (_current != rhs._current);};
 
-		operator RBTreeIterator<value_type const>() const
+		tree_iterator& operator++(void)
 		{
-			return RBTreeIterator<value_type const>(_ptr, _root, _end);
-		}
-
-		/*
-		** Returns a reference to the content of the element
-		** pointed to by the iterator.
-		*/
-
-		reference operator*( void )
-		{
-			return _ptr->content;
-		}
-
-		/*
-		** Returns a const reference to the content of the element
-		** pointed to by the iterator.
-		*/
-
-		const_reference operator*( void ) const
-		{
-			return _ptr->content;
-		}
-
-		/*
-		** Returns a pointer to the element pointed to by the iterator.
-		*/
-
-		pointer operator->( void )
-		{
-			return &(operator*());
-		}
-
-		/*
-		** Performs the comparison == operation between the
-		** pointer of this and pointer of rhs.
-		*/
-
-		bool operator==( const RBTreeIterator& rhs ) const
-		{
-			return (_ptr == rhs._ptr);
-		}
-
-		/*
-		** Performs the comparison != operation between the
-		** pointer of this and pointer of rhs.
-		*/
-
-		bool operator!=( const RBTreeIterator& rhs ) const
-		{
-			return (_ptr != rhs._ptr);
-		}
-
-		/*
-		** Pre increment version
-		** Returns an interator to the successor of _ptr.
-		** Changing where _ptr points to.
-		*/
-
-		RBTreeIterator& operator++( void )
-		{
-			if (_ptr != _end)
-				_ptr = _get_successor(_ptr);
-
+			if (_current != _end)
+				_current = _get_successor(_current);
 			return *this;
-		}
+		};
 
-		/*
-		** Post increment version
-		** Returns an interator to the successor of _ptr.
-		** Changing where _ptr points to.
-		*/
-
-		RBTreeIterator operator++( int )
+		tree_iterator operator++(int)
 		{
-			RBTreeIterator tmp(*this);
+			tree_iterator tmp(*this);
 			operator++();
 			return tmp;
-		}
+		};
 
-		/*
-		** Pre decrement version
-		** Returns an interator to the predecessor of _ptr.
-		** Changing where _ptr points to.
-		*/
-
-		RBTreeIterator& operator--( void)
+		tree_iterator& operator--(void)
 		{
-			if (_ptr == _end)
-				_ptr = _get_max(_root);
+			if (_current == _end)
+				_current = _get_max(_root);
 			else
-				_ptr = _get_predecessor(_ptr);
+				_current = _get_predecessor(_current);
 			return *this;
-		}
+		};
 
-		/*
-		** Post decrement version
-		** Returns an interator to the predecessor of _ptr.
-		** Changing where _ptr points to.
-		*/
-
-		RBTreeIterator operator--( int )
+		tree_iterator operator--(int)
 		{
-			RBTreeIterator tmp(*this);
+			tree_iterator tmp(*this);
 			operator--();
 			return tmp;
-		}
+		};
 
-		/*
-		** Returns the pointer whose the iterator points to.
-		*/
+		value_type* base(void) {return _current;};
 
-		node_pointer get_node( void )
-		{
-			return _ptr;
-		}
-
-		/*
-		** Returns the sucessor of node.
-		*/
-
-		node_pointer successor( node_pointer node )
-		{
-			return _get_successor(node);
-		}
+		value_type* successor(value_type* node) {return _get_successor(node);};
 
 	private:
-
-		/*
-		** Returns the maximum value in a leaf starting from node.
-		*/
-
-		node_pointer _get_max( node_pointer node )
+		value_type* _get_max(value_type* node)
 		{
 			while (node->right != _end)
 				node = node->right;
 			return node;
-		}
+		};
 
-		/*
-		** Returns the minimum value in a leaf starting from node.
-		*/
-
-		node_pointer _get_min( node_pointer node )
+		value_type* _get_min(value_type* node)
 		{
 			while (node->left != _end && node != _end)
 				node = node->left;
 			return node;
-		}
+		};
 
-		/*
-		** Returns the predecessor value in a leaf starting from node.
-		*/
-
-		node_pointer _get_predecessor( node_pointer node )
+		value_type* _get_predecessor(value_type* node)
 		{
-			node_pointer predecessor;
+			value_type* predecessor;
 
 			if (node->left != _end)
 				return _get_max(node->left);
@@ -254,15 +110,11 @@ namespace ft
 				return _end;
 			else
 				return predecessor;
-		}
+		};
 
-		/*
-		** Returns the successor value in a leaf starting from node.
-		*/
-
-		node_pointer _get_successor( node_pointer node )
+		value_type* _get_successor(value_type* node)
 		{
-			node_pointer successor;
+			value_type* successor;
 
 			if (node == _end)
 				return (_end);
@@ -278,16 +130,9 @@ namespace ft
 				return _end;
 			else
 				return successor;
-		}
+		};
+	}; // class
 
-	protected:
-
-		node_pointer	_ptr;
-		node_pointer	_root;
-		node_pointer	_end;
-
-	}; // class RBTreeIterator
-
-} // namespace ft
+} // namespace
 
 #endif

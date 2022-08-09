@@ -123,6 +123,10 @@ namespace ft
 	template<typename Key, typename T, typename Compare, typename Alloc>
 	void swap(map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y) {x.swap(y);};
 
+	template<typename Key, typename T, typename Compare, typename Alloc>
+	ft::pair<Key, T>&	ft::map<Key, T, Compare, Alloc>::iterator::operator*(void) {return *_current.data;};
+
+
 } // namespace ft
 
 #endif

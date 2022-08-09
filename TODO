@@ -8,3 +8,10 @@ is_const !!!
 https://algorithmtutor.com/Data-Structures/Tree
 https://github.com/romanbtt/42-Ft_Containers/tree/master/ft_containers
 robedwards youtube
+
+idees probleme de dereferencement des nodes lors de dereferencement d'un iterator (dereferencer iterator d'une map doit renvoier une pair non le node):
+	supprimer tout les dereferencement du code de tree sauf quand le resultat voulu est la pair sous jacente
+	qqch comme ->
+		ft::pair<Key, T>&	ft::map<Key, T, Compare, Alloc>::iterator::operator*(void) {return *_current.data;};
+
+	ou ca: https://github.com/mli42/at42ft_containers/blob/master/mapIte.hpp voir fin fichier

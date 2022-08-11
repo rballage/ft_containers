@@ -235,7 +235,7 @@ namespace ft
 		template<class Iterator >
 		reverse_iterator& operator=(const reverse_iterator<Iterator>& other)
 		{
-			_current = other.base();
+			_current = other.base(); 
 			return *this;
 		};
 		virtual ~reverse_iterator(){};

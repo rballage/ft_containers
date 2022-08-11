@@ -1,4 +1,7 @@
-
+#ifndef ITERATOR_MAP_HPP
+# define ITERATOR_MAP_HPP
+# include "iterators.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -39,9 +42,7 @@ namespace ft
 		};
 
 		operator tree_iterator<value_type const>() const {return tree_iterator<value_type const>(_current, _root, _end);};
-		reference operator*(void){return _current->data;};
-		const_reference operator*(void) const {return _current->data;};
-		pointer operator->(void) {return &(operator*());};
+
 		bool operator==(const tree_iterator& rhs) const {return (_current == rhs._current);};
 		bool operator!=(const tree_iterator& rhs) const {return (_current != rhs._current);};
 
@@ -74,10 +75,12 @@ namespace ft
 			operator--();
 			return tmp;
 		};
-
+		reference operator*(void){return _current->data;};
+		const_reference operator*(void) const {return _current->data;};
+		pointer operator->(void) {return &(operator*());};
 		value_type* base(void) {return _current;};
 
-		value_type* successor(value_type* node) {return _get_successor(node);};
+		// value_type* successor(value_type* node) {return _get_successor(node);};
 
 	private:
 		value_type* _get_max(value_type* node)
@@ -131,8 +134,8 @@ namespace ft
 			else
 				return successor;
 		};
-	}; // class
+	};
 
-} // namespace
+}
 
 #endif

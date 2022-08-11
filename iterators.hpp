@@ -302,4 +302,144 @@ namespace ft
 	// reverse_iterator<Iterator> operator-(typename reverse_iterator<Iterator>::difference_type diff, const reverse_iterator< Iterator >& it) {return reverse_iterator<Iterator>(it.base() + diff);};
 	template <class T1, class T2>
 	typename reverse_iterator< T1 >::difference_type operator-(const reverse_iterator< T2 >& lhs, const reverse_iterator< T1 >& rhs) {return rhs.base() - lhs.base();};
+
+
+	template <typename T>
+	class tree_iterator : public ft::iterator< ft::random_access_iterator_tag, T >
+	{
+
+	public:
+		// typedef T										value_type;
+		// typedef typename T::value_type			data_type;
+		// typedef data_type&								reference;
+		// typedef data_type const&						const_reference;
+		// typedef data_type*								pointer;
+		// typedef data_type const*						const_pointer;
+		// typedef typename std::ptrdiff_t					difference_type;
+		// typedef ft::bidirectional_iterator_tag			iterator_category;
+		typedef typename T::value_type    value_type;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type   difference_type;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer   pointer;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
+	protected:
+		T*	_current;
+		T*	_root;
+		T*	_end;
+	public:
+		tree_iterator(void): _current(0), _root(0), _end(0) {};
+		explicit tree_iterator(T* ptr, T* root, T* end) : _current(ptr), _root(root), _end(end) {};
+		tree_iterator(const tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
+
+		virtual ~tree_iterator(void) {};
+
+		tree_iterator &operator=(const tree_iterator& rhs)
+		{
+			if (this != &rhs)
+			{
+				_current = rhs._current;
+				_root = rhs._root;
+				_end = rhs._end;
+			}
+			return *this;
+		};
+
+		// operator tree_iterator<value_type const>() const {return tree_iterator<value_type const>(_current, _root, _end);};
+
+		bool operator==(const tree_iterator& rhs) const {return (_current == rhs._current);};
+		bool operator!=(const tree_iterator& rhs) const {return (_current != rhs._current);};
+
+		tree_iterator& operator++(void)
+		{
+			if (_current != _end)
+				_current = _get_successor(_current);
+			return *this;
+		};
+
+		tree_iterator operator++(int)
+		{
+			tree_iterator tmp(*this);
+			operator++();
+			return tmp;
+		};
+
+		tree_iterator& operator--(void)
+		{
+			if (_current == _end)
+				_current = _get_max(_root);
+			else
+				_current = _get_predecessor(_current);
+			return *this;
+		};
+
+		tree_iterator operator--(int)
+		{
+			tree_iterator tmp(*this);
+			operator--();
+			return tmp;
+		};
+		value_type& operator*(void) const {return _current->data;};
+		// const_reference operator*(void) const {return _current->data;};
+		// pointer operator->(void) const {return &_current->data;};
+		value_type* operator->(void) const {return &_current->data;};
+		// const_pointer operator->(void) const {return &(operator*());};
+		// pointer base(void) {return _current->data;};
+		T * base() const {return (_current);}
+
+		// value_type* successor(value_type* node) {return _get_successor(node);};
+
+	private:
+		T* _get_max(T* node)
+		{
+			while (node->right != _end)
+				node = node->right;
+			return node;
+		};
+
+		T* _get_min(T* node)
+		{
+			while (node->left != _end && node != _end)
+				node = node->left;
+			return node;
+		};
+
+		T* _get_predecessor(T* node)
+		{
+			T* predecessor;
+
+			if (node->left != _end)
+				return _get_max(node->left);
+			predecessor = node->parent;
+			while (node->parent != 0 && node == predecessor->left)
+			{
+				node = predecessor;
+				predecessor = predecessor->parent;
+			}
+			if (!predecessor)
+				return _end;
+			else
+				return predecessor;
+		};
+
+		T* _get_successor(T* node)
+		{
+			T* successor;
+
+			if (node == _end)
+				return (_end);
+			if (node->right != _end)
+				return _get_min(node->right);
+			successor = node->parent;
+			while (node->parent != _end && node == successor->right)
+			{
+				node = successor;
+				successor = successor->parent;
+			}
+			if (!successor)
+				return _end;
+			else
+				return successor;
+		};
+	};
+
 }

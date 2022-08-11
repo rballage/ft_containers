@@ -1,11 +1,12 @@
-
+#ifndef _TREE_HPP
+# define _TREE_HPP
 
 # include <memory>
-# include "iterator_map.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
-	template<typename Key, typename T, typename Compare = ft::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
+	template<typename Key, typename T, typename Compare = std::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
 	class Tree
 	{
 		enum color
@@ -14,122 +15,123 @@ namespace ft
 			RED
 		};
 
-		template<typename Key, typename T>
+		template<typename k, typename t>
 		class node
 		{
-			typedef ft::pair<Key, T>	value_type;
+		public:
+			typedef ft::pair<k, t>	value_type;
 
 			node*		parent;
 			node*		left;
 			node*		right;
 			color		color;
 			value_type	data;
-			node**					_end;
-			node**					_root;
+			// node**					_end;
+			// node**					_root;
 
-			node(value_type content, node* root, node* end) : data(content), _root(&root), _end(&end) {};
-
-			node* operator++()
-			{
-				if (*this != *_end)
-					*this = _successor(*this);
-				return *this;
-			};
-			node* operator--()
-			{
-				if (*this == *_end)
-					*this = _max(*_root);
-				else
-					*this = _predecessor(*this);
-				return *this;
-			};
-			node* operator++(int)
-			{
-				node tmp = *this;
-				++(*this);
-				return tmp;
-			};
-			node* operator--(int)
-			{
-				node tmp = *this;
-				--(*this);
-				return tmp;
-			};
+			node(value_type content) : data(content) {};
+			~node(void) {};
 		private:
-			node* _max(node* n)
-			{
-				while (n->right != *_end)
-					n = n->right;
-				return n;
-			};
-
-			node* _min(node* n)
-			{
-				while (n->left != *_end && n != *_end)
-					n = n->left;
-				return n;
-			};
-
-			node* _predecessor(node* n)
-			{
-				node* predecessor;
-
-				if (n->left != *_end)
-					return _max(n->left);
-				predecessor = n->parent;
-				while (n->parent != 0 && n == predecessor->left)
-				{
-					n = predecessor;
-					predecessor = predecessor->parent;
-				}
-				if (!predecessor)
-					return *_end;
-				else
-					return predecessor;
-			};
-
-			node* _successor(node* n)
-			{
-				node* successor;
-
-				if (n == *_end)
-					return (*_end);
-				if (n->right != *_end)
-					return _get_min(n->right);
-				successor = n->parent;
-				while (n->parent != *_end && n == successor->right)
-				{
-					n = successor;
-					successor = successor->parent;
-				}
-				if (!successor)
-					return *_end;
-				else
-					return successor;
-			};
+			// node* operator++()
+			// {
+			// 	if (*this != *_end)
+			// 		*this = _successor(*this);
+			// 	return *this;
+			// };
+			// node* operator--()
+			// {
+			// 	if (*this == *_end)
+			// 		*this = _max(*_root);
+			// 	else
+			// 		*this = _predecessor(*this);
+			// 	return *this;
+			// };
+			// node* operator++(int)
+			// {
+			// 	node tmp = *this;
+			// 	++(*this);
+			// 	return tmp;
+			// };
+			// node* operator--(int)
+			// {
+			// 	node tmp = *this;
+			// 	--(*this);
+			// 	return tmp;
+			// };
+			// node* _max(node* n)
+			// {
+			// 	while (n->right != *_end)
+			// 		n = n->right;
+			// 	return n;
+			// };
+			//
+			// node* _min(node* n)
+			// {
+			// 	while (n->left != *_end && n != *_end)
+			// 		n = n->left;
+			// 	return n;
+			// };
+			//
+			// node* _predecessor(node* n)
+			// {
+			// 	node* predecessor;
+			//
+			// 	if (n->left != *_end)
+			// 		return _max(n->left);
+			// 	predecessor = n->parent;
+			// 	while (n->parent != 0 && n == predecessor->left)
+			// 	{
+			// 		n = predecessor;
+			// 		predecessor = predecessor->parent;
+			// 	}
+			// 	if (!predecessor)
+			// 		return *_end;
+			// 	else
+			// 		return predecessor;
+			// };
+			//
+			// node* _successor(node* n)
+			// {
+			// 	node* successor;
+			//
+			// 	if (n == *_end)
+			// 		return (*_end);
+			// 	if (n->right != *_end)
+			// 		return _get_min(n->right);
+			// 	successor = n->parent;
+			// 	while (n->parent != *_end && n == successor->right)
+			// 	{
+			// 		n = successor;
+			// 		successor = successor->parent;
+			// 	}
+			// 	if (!successor)
+			// 		return *_end;
+			// 	else
+			// 		return successor;
+			// };
 		};
 	public:
 		typedef Key																		key_type;
 		typedef T																		mapped_type;
 		typedef Compare																	key_compare;
-		typedef node<key_type, mapped_type>												node_type; //might need to change that
-		typedef ft::bidirectional_iterator<node_type>									iterator;
-		typedef ft::bidirectional_iterator<const node_type>								const_iterator;
+		typedef node<key_type, mapped_type>												t_node; //might need to change that
+		typedef ft::tree_iterator<t_node>											iterator;
+		typedef ft::tree_iterator< t_node>										const_iterator;
 		typedef ft::reverse_iterator<iterator>											reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
-		typedef node_type*																pointer;
-		typedef const node_type*														const_pointer;
-		typedef node_type&																reference;
-		typedef const node_type&														const_reference;
-		typedef ft::pair<const Key, T>													value_type;
+		typedef t_node*																pointer;
+		typedef const t_node*														const_pointer;
+		typedef t_node&																reference;
+		typedef const t_node&														const_reference;
+		typedef typename ft::pair<const Key, T>													value_type;
 		typedef typename Alloc::template rebind<node<key_type, mapped_type> >::other	allocator_type;
 		typedef typename allocator_type::size_type										size_type;
 
 		explicit Tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-			: _root(0), _end(0), _alloc(alloc), _compare(comp), _size(0)
+			:  _alloc(alloc), _compare(comp), _size(0)
 		{
 			_end = _alloc.allocate(1);
-			_alloc.construct(_end, node_type(value_type()));
+			_alloc.construct(_end, t_node(value_type()));
 			_root = _end;
 			_end->color = BLACK;
 		};
@@ -137,20 +139,20 @@ namespace ft
 		template<typename InputIterator>
 		Tree(InputIterator first, InputIterator last, key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
-				: _root(0), _end(0), _alloc(alloc), _compare(comp), _size(0)
+				:  _alloc(alloc), _compare(comp), _size(0)
 		{
 			_end = _alloc.allocate(1);
-			_alloc.construct(_end, node_type(value_type()));
+			_alloc.construct(_end, t_node(value_type()));
 			_end->color = BLACK;
 			_root = _end;
 			insert(first, last);
 		};
 
 		Tree(const Tree& src)
-			: _root(0), _end(0), _alloc(src._alloc), _compare(src._compare), _size(0)
+			:  _alloc(src._alloc), _compare(src._compare), _size(0)
 		{
 			_end = _alloc.allocate(1);
-			_alloc.construct(_end, node_type(value_type()));
+			_alloc.construct(_end, t_node(value_type()));
 			_end->color = BLACK;
 			_root = _end;
 			*this = src;
@@ -208,7 +210,7 @@ namespace ft
 			if (it != end())
 				return ft::make_pair(it, false);
 			pointer node = _alloc.allocate(1);
-			_alloc.construct(node, node_type(val));
+			_alloc.construct(node, t_node(val));
 			pointer new_node = _insert(node, _root);
 			it = iterator(new_node, _root, _end);
 			_size++;
@@ -217,12 +219,13 @@ namespace ft
 
 		iterator	insert(iterator pos, const value_type& val)
 		{
-			pointer succ = pos.successor(pos.base());
+			iterator pos2 = pos;
+			pointer succ = (++pos2).base();
 
 			if (_compare(pos->first, val.first) && _compare(val.first, succ->data.first))
 			{
 				pointer node = _alloc.allocate(1);
-				_alloc.construct(node, node_type(val));
+				_alloc.construct(node, t_node(val));
 				pointer new_node = _insert(node, pos.base());
 				_size++;
 				return iterator(new_node, _root, _end);
@@ -506,7 +509,7 @@ namespace ft
 			}
 			if (y_orginal_color == BLACK)
 				_delete_fix(x);
-			_delete_node(z);
+			_delete_one_node(z);
 		};
 
 		void	_delete_fix(pointer x)
@@ -602,13 +605,14 @@ namespace ft
 			v->parent = u->parent;
 		};
 
-		void	_delete_node(pointer node)
+		void	_delete_one_node(pointer node)
 		{
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);
 		};
 	};
 } // namespace ft
+#endif
 
 /*
 ** Until x != root and x is BLACK, we need to operate few operation in

@@ -2,13 +2,13 @@
 # define MAP_H
 
 # include "utils.hpp"
-# include "tree.hpp"
-# include "iterator_map.hpp"
+# include "_tree.hpp"
+// # include "iterators.hpp"
 
 namespace ft
 {
 
-	template<typename Key, typename T, typename Compare = ft::less<Key>, typename Alloc = std::allocator<ft::pair<Key const, T> > >
+	template<typename Key, typename T, typename Compare = std::less<Key>, typename Alloc = std::allocator<ft::pair<Key const, T> > >
 	class map
 	{
 	public:
@@ -17,6 +17,7 @@ namespace ft
 		typedef T										mapped_type;
 		typedef ft::pair<const key_type, mapped_type>	value_type;
 		typedef	Compare									key_compare;
+		typedef Alloc																			allocator_type;
 
 		class value_compare : public std::binary_function<value_type, value_type, bool>
 		{
@@ -29,16 +30,17 @@ namespace ft
 			value_compare(Compare c): comp(c) {};
 			bool operator()(const value_type& lhs, const value_type& rhs) const {return (comp(lhs.first, rhs.first));};
 		};
-
-		typedef Alloc																			allocator_type;
+	private:
+		typedef typename ft::Tree<Key, T, key_compare, allocator_type> t_tree;
+	public:
 		typedef value_type&																		reference;
 		typedef const value_type&																const_reference;
 		typedef value_type*																		pointer;
 		typedef const value_type*																const_pointer;
-		typedef typename ft::Tree<Key, T, key_compare, allocator_type>::iterator				iterator;
-		typedef typename ft::Tree<Key, T, key_compare, allocator_type>::const_iterator			const_iterator;
-		typedef typename ft::Tree<Key, T, key_compare, allocator_type>::reverse_iterator		reverse_iterator;
-		typedef typename ft::Tree<Key, T, key_compare, allocator_type>::const_reverse_iterator	const_reverse_iterator;
+		typedef typename t_tree::iterator				iterator;
+		typedef typename t_tree::const_iterator			const_iterator;
+		typedef typename t_tree::reverse_iterator		reverse_iterator;
+		typedef typename t_tree::const_reverse_iterator	const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type							difference_type;
 		typedef typename allocator_type::size_type												size_type;
 
@@ -103,7 +105,7 @@ namespace ft
 	};//map
 
 	template<typename Key, typename T, typename Compare, typename Alloc>
-	bool operator==(const map<Key, T, Compare, Alloc>& x, const map<Key, T, Compare, Alloc>& y) {return ((x.size() == y.size()) && ft::equal(x.begin(), x.end(), y.begin()));};
+	bool operator==(const map<Key, T, Compare, Alloc>& x, const map<Key, T, Compare, Alloc>& y) {return ((x.size() == y.size()) && std::equal(x.begin(), x.end(), y.begin()));};
 
 	template<typename Key, typename T, typename Compare, typename Alloc>
 	bool operator<(const map<Key, T, Compare, Alloc>& x, const map<Key, T, Compare, Alloc>& y) {return (ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()));};
@@ -122,9 +124,9 @@ namespace ft
 
 	template<typename Key, typename T, typename Compare, typename Alloc>
 	void swap(map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y) {x.swap(y);};
-
-	template<typename Key, typename T, typename Compare, typename Alloc>
-	ft::pair<Key, T>&	ft::map<Key, T, Compare, Alloc>::iterator::operator*(void) {return *_current.data;};
+	//
+	// template<typename Key, typename T, typename Compare, typename Alloc>
+	// ft::pair<Key, T>&	ft::map<Key, T, Compare, Alloc>::iterator::operator*(void) {return *_current.data;};
 
 
 } // namespace ft

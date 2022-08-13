@@ -116,7 +116,7 @@ namespace ft
 		typedef Compare																	key_compare;
 		typedef node<key_type, mapped_type>												t_node; //might need to change that
 		typedef ft::tree_iterator<t_node>											iterator;
-		typedef ft::tree_iterator< t_node>										const_iterator;
+		typedef ft::tree_iterator<node< key_type,  mapped_type> >										const_iterator; // need const expr ?
 		typedef ft::reverse_iterator<iterator>											reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 		typedef t_node*																pointer;

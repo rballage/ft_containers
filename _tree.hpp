@@ -187,7 +187,7 @@ namespace ft
 			return *this;
 		};
 
-		iterator				begin(void) {return empty() ? iterator(_end, _root, _end) : (iterator(_min(_root), _root, _end));};
+		iterator				begin(void) {return (iterator(_min(_root), _root, _end));};
 		const_iterator			begin(void) const {return (const_iterator(_min(_root), _root, _end));};
 		iterator				end(void) {return (iterator(_end, _root, _end));};
 		const_iterator			end(void) const {return (const_iterator(_end, _root, _end));};
@@ -477,6 +477,8 @@ namespace ft
 
 		pointer	_min(pointer node)
 		{
+			if (empty())
+				return _end;
 			if (!node)
 				return node;
 			while (node->left != _end && node != _end)

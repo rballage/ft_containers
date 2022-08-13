@@ -38,6 +38,7 @@ int		main(void)
 
 	mp2.clear();
 	is_empty(mp2);
+	std::cout << "couocu\n";
 	printSize(mp2);
 	return (0);
 }

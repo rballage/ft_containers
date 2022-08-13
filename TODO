@@ -15,3 +15,6 @@ idees probleme de dereferencement des nodes lors de dereferencement d'un iterato
 		ft::pair<Key, T>&	ft::map<Key, T, Compare, Alloc>::iterator::operator*(void) {return *_current.data;};
 
 	ou ca: https://github.com/mli42/at42ft_containers/blob/master/mapIte.hpp voir fin fichier
+
+map
+	ite

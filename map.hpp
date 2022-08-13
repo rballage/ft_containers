@@ -53,7 +53,7 @@ namespace ft
 
 		map	&operator=(const map& rhs) {_tree = rhs._tree; return (*this);};
 
-		virtual ~map(void) {clear();};
+		virtual ~map(void) {};
 
 		iterator begin(void) {return (_tree.begin());};
 		const_iterator begin(void) const {return (_tree.begin());};
@@ -83,7 +83,12 @@ namespace ft
 		void erase(iterator first, iterator last) {_tree.erase(first, last);};
 		void clear(void) {_tree.clear();};
 
-		void swap(map& other) {ft::swap(*this, other);};
+		void swap(map& other)
+		{
+			if (this == &other)
+				return;
+			_tree.swap(other._tree);
+		};
 
 		key_compare key_comp(void) const {return (_tree.key_comp());};
 		value_compare value_comp(void) const {return (value_compare(key_compare()));};

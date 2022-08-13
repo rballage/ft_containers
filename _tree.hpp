@@ -149,18 +149,21 @@ namespace ft
 		};
 
 		Tree(const Tree& src)
-			:  _alloc(src._alloc), _compare(src._compare), _size(0)
+			:  _alloc(src._alloc), _compare(src._compare), _size(src.size())
 		{
 			_end = _alloc.allocate(1);
 			_alloc.construct(_end, t_node(value_type()));
 			_end->color = BLACK;
 			_root = _end;
-			*this = src;
+			// *this = src;
+			if (!src.empty())
+				insert(src.begin(), src.end());
 		};
 
 		virtual	~Tree(void)
 		{
-			clear();
+			if (!empty())
+				clear();
 			_alloc.destroy(_end);
 			_alloc.deallocate(_end, 1);
 		};
@@ -170,14 +173,21 @@ namespace ft
 			if (this != &rhs)
 			{
 				clear();
+				_alloc.destroy(_end);
+				_alloc.deallocate(_end, 1);
 				_alloc = rhs._alloc;
 				_compare = rhs._compare;
-				insert(rhs.begin(), rhs.end());
+				_end = _alloc.allocate(1);
+				_alloc.construct(_end, t_node(value_type()));
+				_end->color = BLACK;
+				_root = _end;
+				if (!rhs.empty())
+					insert(rhs.begin(), rhs.end());
 			}
 			return *this;
 		};
 
-		iterator				begin(void) {return (iterator(_min(_root), _root, _end));};
+		iterator				begin(void) {return empty() ? iterator(_end, _root, _end) : (iterator(_min(_root), _root, _end));};
 		const_iterator			begin(void) const {return (const_iterator(_min(_root), _root, _end));};
 		iterator				end(void) {return (iterator(_end, _root, _end));};
 		const_iterator			end(void) const {return (const_iterator(_end, _root, _end));};
@@ -243,6 +253,11 @@ namespace ft
 
 		void	erase(iterator pos)
 		{
+			if (_root == _end)
+			{
+				(void)pos;
+				return;
+			}
 			if (pos == end())
 				return;
 			_delete_node(pos.base());
@@ -251,6 +266,11 @@ namespace ft
 
 		size_type	erase(const key_type& key)
 		{
+			if (_root == _end)
+			{
+				(void)key;
+				return 0;
+			}
 			iterator it = find(key);
 			if (it == end())
 				return (0);
@@ -260,11 +280,22 @@ namespace ft
 
 		void	erase(iterator first, iterator last)
 		{
+			if (_root == _end)
+			{
+				(void)first;
+				(void)last;
+				return;
+			}
 			while (first != last)
 				erase(first++);
 		};
 
-		void	clear(void) {_clear(_root); _root = _end;};
+		void	clear(void) {
+			if (_root == _end)
+				return;
+			_clear(_root);
+			_root = _end;
+		};
 		key_compare	key_comp(void) const {return key_compare();};
 		iterator	find(const key_type& key) {return iterator(_find(key, _root));};
 		const_iterator	find(const key_type& key) const {return const_iterator(_find(key, _root));};
@@ -304,6 +335,14 @@ namespace ft
 
 		ft::pair<iterator,iterator>	equal_range(const key_type& key) {return ft::pair<iterator, iterator>(lower_bound(key), upper_bound(key));};
 		ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const {return ft::pair<const_iterator, const_iterator>(lower_bound(key), upper_bound(key));};
+		void swap(Tree& other)
+		{
+			Tree tmp(other);
+			other = *this;
+			clear();
+			*this = tmp;
+		};
+
 
 	private:
 
@@ -438,6 +477,8 @@ namespace ft
 
 		pointer	_min(pointer node)
 		{
+			if (!node)
+				return node;
 			while (node->left != _end && node != _end)
 				node = node->left;
 			return node;

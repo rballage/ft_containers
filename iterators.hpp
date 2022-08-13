@@ -228,14 +228,14 @@ namespace ft
 		typedef T iterator_type;
 		iterator_type _current;
 	public:
-		reverse_iterator() : _current(0){};
-		explicit reverse_iterator(iterator_type it) : _current(it){};
+		reverse_iterator() : _current(){};
+		 reverse_iterator(iterator_type it) : _current(it){};
 		template <class Iterator>
 		reverse_iterator(const reverse_iterator< Iterator>& it) : _current(it.base()){};
 		template<class Iterator >
 		reverse_iterator& operator=(const reverse_iterator<Iterator>& other)
 		{
-			_current = other.base(); 
+			_current = other.base();
 			return *this;
 		};
 		virtual ~reverse_iterator(){};
@@ -391,14 +391,14 @@ namespace ft
 	private:
 		T* _get_max(T* node)
 		{
-			while (node->right != _end)
+			while (node->right && node->right != _end)
 				node = node->right;
 			return node;
 		};
 
 		T* _get_min(T* node)
 		{
-			while (node->left != _end && node != _end)
+			while (node->left && node->left != _end && node != _end)
 				node = node->left;
 			return node;
 		};
@@ -407,10 +407,10 @@ namespace ft
 		{
 			T* predecessor;
 
-			if (node->left != _end)
+			if (node->left && node->left != _end)
 				return _get_max(node->left);
 			predecessor = node->parent;
-			while (node->parent != 0 && node == predecessor->left)
+			while (node->parent && node == predecessor->left)
 			{
 				node = predecessor;
 				predecessor = predecessor->parent;

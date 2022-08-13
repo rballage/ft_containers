@@ -158,6 +158,7 @@ namespace ft
 			// *this = src;
 			if (!src.empty())
 				insert(src.begin(), src.end());
+			_size = src.size();
 		};
 
 		virtual	~Tree(void)
@@ -183,6 +184,7 @@ namespace ft
 				_root = _end;
 				if (!rhs.empty())
 					insert(rhs.begin(), rhs.end());
+				_size = rhs.size();
 			}
 			return *this;
 		};
@@ -291,7 +293,7 @@ namespace ft
 		};
 
 		void	clear(void) {
-			if (_root == _end)
+			if (!_size)
 				return;
 			_clear(_root);
 			_root = _end;
@@ -337,10 +339,16 @@ namespace ft
 		ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const {return ft::pair<const_iterator, const_iterator>(lower_bound(key), upper_bound(key));};
 		void swap(Tree& other)
 		{
-			Tree tmp(other);
-			other = *this;
-			clear();
-			*this = tmp;
+			pointer tmp_root, tmp_end;
+			size_type tmp_size = _size;
+			tmp_root = _root;
+			tmp_end = _end;
+			_root = other._root;
+			_end = other._end;
+			_size = other._size;
+			 other._root = tmp_root;
+			other._end = tmp_end;
+			other._size = tmp_size;
 		};
 
 

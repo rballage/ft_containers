@@ -389,21 +389,21 @@ namespace ft
 		// value_type* successor(value_type* node) {return _get_successor(node);};
 
 	private:
-		T* _get_max(T* node)
+		T* _get_max(T* node) const
 		{
 			while (node->right && node->right != _end)
 				node = node->right;
 			return node;
 		};
 
-		T* _get_min(T* node)
+		T* _get_min(T* node) const
 		{
 			while (node->left && node->left != _end && node != _end)
 				node = node->left;
 			return node;
 		};
 
-		T* _get_predecessor(T* node)
+		T* _get_predecessor(T* node) const
 		{
 			T* predecessor;
 
@@ -421,7 +421,7 @@ namespace ft
 				return predecessor;
 		};
 
-		T* _get_successor(T* node)
+		T* _get_successor(T* node) const
 		{
 			T* successor;
 

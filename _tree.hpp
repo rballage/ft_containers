@@ -496,6 +496,10 @@ namespace ft
 
 		pointer	_min(pointer node) const
 		{
+			if (empty())
+				return _end;
+			if (!node)
+				return node;
 			while (node->left != _end)
 				node = node->left;
 			return node;

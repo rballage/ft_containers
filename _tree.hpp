@@ -31,84 +31,7 @@ namespace ft
 
 			node(value_type content) : data(content) {};
 			~node(void) {};
-		private:
-			// node* operator++()
-			// {
-			// 	if (*this != *_end)
-			// 		*this = _successor(*this);
-			// 	return *this;
-			// };
-			// node* operator--()
-			// {
-			// 	if (*this == *_end)
-			// 		*this = _max(*_root);
-			// 	else
-			// 		*this = _predecessor(*this);
-			// 	return *this;
-			// };
-			// node* operator++(int)
-			// {
-			// 	node tmp = *this;
-			// 	++(*this);
-			// 	return tmp;
-			// };
-			// node* operator--(int)
-			// {
-			// 	node tmp = *this;
-			// 	--(*this);
-			// 	return tmp;
-			// };
-			// node* _max(node* n)
-			// {
-			// 	while (n->right != *_end)
-			// 		n = n->right;
-			// 	return n;
-			// };
-			//
-			// node* _min(node* n)
-			// {
-			// 	while (n->left != *_end && n != *_end)
-			// 		n = n->left;
-			// 	return n;
-			// };
-			//
-			// node* _predecessor(node* n)
-			// {
-			// 	node* predecessor;
-			//
-			// 	if (n->left != *_end)
-			// 		return _max(n->left);
-			// 	predecessor = n->parent;
-			// 	while (n->parent != 0 && n == predecessor->left)
-			// 	{
-			// 		n = predecessor;
-			// 		predecessor = predecessor->parent;
-			// 	}
-			// 	if (!predecessor)
-			// 		return *_end;
-			// 	else
-			// 		return predecessor;
-			// };
-			//
-			// node* _successor(node* n)
-			// {
-			// 	node* successor;
-			//
-			// 	if (n == *_end)
-			// 		return (*_end);
-			// 	if (n->right != *_end)
-			// 		return _get_min(n->right);
-			// 	successor = n->parent;
-			// 	while (n->parent != *_end && n == successor->right)
-			// 	{
-			// 		n = successor;
-			// 		successor = successor->parent;
-			// 	}
-			// 	if (!successor)
-			// 		return *_end;
-			// 	else
-			// 		return successor;
-			// };
+
 		};
 	public:
 		typedef Key																		key_type;
@@ -214,6 +137,14 @@ namespace ft
 			}
 			return it.base()->data.second;
 		};
+		mapped_type&	at(const key_type& key) const
+		{
+			iterator it = _find(key, _root);
+
+			if (it == end())
+				throw std::out_of_range("Range error\n");
+			return it.base()->data.second;
+		};
 
 		ft::pair<iterator, bool>	insert(const value_type& val)
 		{
@@ -255,13 +186,11 @@ namespace ft
 
 		void	erase(iterator pos)
 		{
-			if (_root == _end)
+			if (_root == _end || pos == end())
 			{
 				(void)pos;
 				return;
 			}
-			if (pos == end())
-				return;
 			_delete_node(pos.base());
 			_size--;
 		};
@@ -282,7 +211,7 @@ namespace ft
 
 		void	erase(iterator first, iterator last)
 		{
-			if (_root == _end)
+			if (_root == _end || first == last)
 			{
 				(void)first;
 				(void)last;

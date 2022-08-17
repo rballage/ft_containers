@@ -7,11 +7,11 @@
 
 namespace ft
 {
-	struct input_iterator_tag {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag : public input_iterator_tag {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+	// struct input_iterator_tag {};
+	// struct output_iterator_tag {};
+	// struct forward_iterator_tag : public input_iterator_tag {};
+	// struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	// struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	template <class Iterator>
 	struct iterator_traits
@@ -25,7 +25,7 @@ namespace ft
 	template <class T>
 	struct iterator_traits<T*>
 	{
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef T* pointer;
@@ -34,7 +34,7 @@ namespace ft
 	template <class T>
 	struct iterator_traits<const T*>
 	{
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef const T* pointer;
@@ -52,16 +52,16 @@ namespace ft
 	};
 
 	template <class T>
-	class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
+	class bidirectional_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
 	{
 	private:
-		typename ft::iterator< ft::bidirectional_iterator_tag, T >::pointer _current;
+		typename ft::iterator< std::bidirectional_iterator_tag, T >::pointer _current;
 	public:
-		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::iterator_category iterator_category;
-		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::value_type value_type;
-		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::difference_type difference_type;
-		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::pointer pointer;
-		typedef typename ft::iterator< ft::bidirectional_iterator_tag, T >::reference reference;
+		typedef typename ft::iterator< std::bidirectional_iterator_tag, T >::iterator_category iterator_category;
+		typedef typename ft::iterator< std::bidirectional_iterator_tag, T >::value_type value_type;
+		typedef typename ft::iterator< std::bidirectional_iterator_tag, T >::difference_type difference_type;
+		typedef typename ft::iterator< std::bidirectional_iterator_tag, T >::pointer pointer;
+		typedef typename ft::iterator< std::bidirectional_iterator_tag, T >::reference reference;
 		bidirectional_iterator(pointer ptr = 0) : _current(ptr){};
 		bidirectional_iterator(const bidirectional_iterator& other) : _current(other._current){};
 		template <class diff>
@@ -97,16 +97,50 @@ namespace ft
 	};
 
 	template <class T>
-	class forward_iterator : public ft::iterator<ft::forward_iterator_tag, T>
+	class input_iterator : public ft::iterator<std::input_iterator_tag, T>
 	{
 	private:
-		typename ft::iterator< ft::forward_iterator_tag, T >::pointer _current;
+		typename ft::iterator< std::input_iterator_tag, T >::pointer _current;
 	public:
-		typedef typename ft::iterator< ft::forward_iterator_tag, T >::iterator_category iterator_category;
-		typedef typename ft::iterator< ft::forward_iterator_tag, T >::value_type value_type;
-		typedef typename ft::iterator< ft::forward_iterator_tag, T >::difference_type difference_type;
-		typedef typename ft::iterator< ft::forward_iterator_tag, T >::pointer pointer;
-		typedef typename ft::iterator< ft::forward_iterator_tag, T >::reference reference;
+		typedef typename ft::iterator< std::input_iterator_tag, T >::iterator_category iterator_category;
+		typedef typename ft::iterator< std::input_iterator_tag, T >::value_type value_type;
+		typedef typename ft::iterator< std::input_iterator_tag, T >::difference_type difference_type;
+		typedef typename ft::iterator< std::input_iterator_tag, T >::pointer pointer;
+		typedef typename ft::iterator< std::input_iterator_tag, T >::reference reference;
+		input_iterator(pointer ptr = 0) : _current(ptr){};
+		input_iterator(const input_iterator& other) : _current(other.ptr){};
+		template <class diff>
+		input_iterator(const input_iterator< diff >& it) : _current(it.base()) {};
+
+		input_iterator& operator++()
+		{
+			++_current;
+			return *this;
+		};
+		input_iterator operator++(int)
+		{
+			input_iterator tmp = *this;
+			++(*this);
+			return tmp;
+		};
+		bool operator==(const input_iterator< T >& other) {return (_current == other._current);};
+		bool operator!=(const input_iterator< T >& other) {return (_current != other._current);};
+		reference operator*() const {return *_current;};
+		pointer operator->() const {return &(operator*());};
+		pointer const& base() const {return _current;}
+	};
+
+	template <class T>
+	class forward_iterator : public ft::iterator<std::forward_iterator_tag, T>
+	{
+	private:
+		typename ft::iterator< std::forward_iterator_tag, T >::pointer _current;
+	public:
+		typedef typename ft::iterator< std::forward_iterator_tag, T >::iterator_category iterator_category;
+		typedef typename ft::iterator< std::forward_iterator_tag, T >::value_type value_type;
+		typedef typename ft::iterator< std::forward_iterator_tag, T >::difference_type difference_type;
+		typedef typename ft::iterator< std::forward_iterator_tag, T >::pointer pointer;
+		typedef typename ft::iterator< std::forward_iterator_tag, T >::reference reference;
 		forward_iterator(pointer ptr = 0) : _current(ptr){};
 		forward_iterator(const forward_iterator& other) : _current(other.ptr){};
 		template <class diff>
@@ -142,16 +176,16 @@ namespace ft
 	};
 
 	template <class T>
-	class random_access_iterator: public ft::iterator< ft::random_access_iterator_tag, T >
+	class random_access_iterator: public ft::iterator< std::random_access_iterator_tag, T >
 	{
 	public:
-		typedef typename ft::iterator< ft::random_access_iterator_tag, T >::iterator_category iterator_category;
-		typedef typename ft::iterator< ft::random_access_iterator_tag, T >::value_type value_type;
-		typedef typename ft::iterator< ft::random_access_iterator_tag, T >::difference_type difference_type;
-		typedef typename ft::iterator< ft::random_access_iterator_tag, T >::pointer pointer;
-		typedef typename ft::iterator< ft::random_access_iterator_tag, T >::reference reference;
+		typedef typename ft::iterator< std::random_access_iterator_tag, T >::iterator_category iterator_category;
+		typedef typename ft::iterator< std::random_access_iterator_tag, T >::value_type value_type;
+		typedef typename ft::iterator< std::random_access_iterator_tag, T >::difference_type difference_type;
+		typedef typename ft::iterator< std::random_access_iterator_tag, T >::pointer pointer;
+		typedef typename ft::iterator< std::random_access_iterator_tag, T >::reference reference;
 	private:
-		typename ft::iterator< ft::random_access_iterator_tag, T >::pointer _current;
+		typename ft::iterator< std::random_access_iterator_tag, T >::pointer _current;
 	public:
 		random_access_iterator(pointer ptr = 0) : _current(ptr){};
 		random_access_iterator(const random_access_iterator< T >& it) : _current(it._current){};
@@ -305,7 +339,7 @@ namespace ft
 
 
 	template <typename T>
-	class tree_iterator : public ft::iterator< ft::random_access_iterator_tag, T >
+	class tree_iterator : public ft::iterator< std::bidirectional_iterator_tag, T >
 	{
 
 	public:
@@ -318,10 +352,10 @@ namespace ft
 		// typedef typename std::ptrdiff_t					difference_type;
 		// typedef ft::bidirectional_iterator_tag			iterator_category;
 		typedef typename T::value_type    value_type;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type   difference_type;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer   pointer;
-		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
+		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
+		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::difference_type   difference_type;
+		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::pointer   pointer;
+		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::reference reference;
 	protected:
 		T*	_current;
 		T*	_root;

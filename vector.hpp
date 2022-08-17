@@ -94,6 +94,8 @@ namespace ft
 		{
 			if (s)
 			{
+				if (s > max_size())
+					throw(std::length_error("vector::reserve"));
 				_data_start = _alloc.allocate(s);
 				_data_max = _data_end = _data_start + s;
 				_construct_fill(_data_start, _data_end, value);
@@ -118,7 +120,9 @@ namespace ft
 		vector(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
 		_alloc(newAllocator)
 		{
-			_data_start = _alloc.allocate(_distance(first, last));
+			if (_distance(InputIterator(first), last) > max_size())
+				throw(std::length_error("vector::reserve"));
+			_data_start = _alloc.allocate(_distance(InputIterator(first), last));
 			_data_max = _data_end = _construct_copy(first, last, _data_start);
 		};
 
@@ -245,6 +249,8 @@ namespace ft
 
 		iterator erase(iterator first, iterator last)
 		{
+			if (first == last)
+				return first;
 			iterator pos = first;
 			std::ptrdiff_t distance = last - first;
 			while (pos < last)
@@ -276,13 +282,14 @@ namespace ft
 		template<class InputIterator>
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			const size_type n = _distance(first, last);
+			// InputIterator pos(first);
+			const size_type n = _distance(InputIterator(first), last);
 			clear();
 			if (!n)
 				return;
 			if (size() < n)
 				reserve(n);
-			_construct_copy(first, last, _data_start);
+			_construct_copy(InputIterator(first), last, _data_start);
 			_data_end = _data_start + n;
 		};
 
@@ -297,6 +304,8 @@ namespace ft
 		{
 			if (!count)
 				return;
+			if (count > max_size())
+				throw(std::length_error("vector::reserve"));
 			if (empty())
 			{
 				(void)pos;
@@ -322,11 +331,14 @@ namespace ft
 
 
 		template<class InputIterator>
-		void insert(iterator pos, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		void insert(iterator pos, InputIterator p, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			const size_type count = _distance(first, last);
+			InputIterator first(p);
+			const size_type count = _distance(p, last);
 			if (!count)
 				return;
+			// if (count > max_size())
+			// 	throw(std::length_error("vector::reserve"));
 			if (count && empty())
 			{
 				if (count > capacity())
@@ -405,7 +417,9 @@ template <class T, class Alloc>
 bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
 	if (lhs.size() != rhs.size())
-	return (false);
+		return false;
+	if (lhs.empty() && rhs.empty())
+		return true;
 	typename ft::vector<T>::const_iterator first1 = lhs.begin();
 	typename ft::vector<T>::const_iterator first2 = rhs.begin();
 	while (first1 != lhs.end())
@@ -415,7 +429,7 @@ bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 		++first1;
 		++first2;
 	}
-	return (true);
+	return true;
 };
 
 template <class T, class Alloc>
@@ -427,25 +441,37 @@ bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 template <class T, class Alloc>
 bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
+	if ((lhs.empty() && !rhs.empty()))
+		return true;
+	if ((lhs.empty() && rhs.empty()))
+		return false;
 	return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 };
 
 template <class T, class Alloc>
 bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
-	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) || std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	if ((lhs.empty() && !rhs.empty()))
+		return true;
+	return ( ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) || lhs == rhs);
 };
 
 template <class T, class Alloc>
 bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
+	if ((!lhs.empty() && rhs.empty()))
+		return true;
+	if ((lhs.empty() && rhs.empty()))
+		return false;
 	return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
 };
 
 template <class T, class Alloc>
 bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 {
-	return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()) || std::equal(rhs.begin(), rhs.end(), lhs.begin()));
+	if ((!lhs.empty() && rhs.empty()))
+		return true;
+	return ( ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()) || lhs == rhs);
 };
 
 template <class T, class Alloc>

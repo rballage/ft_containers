@@ -15,11 +15,11 @@ namespace ft
 			RED
 		};
 
-		template<typename PAIR>
+		template<typename k, typename t>
 		class node
 		{
 		public:
-			typedef PAIR	value_type;
+			typedef ft::pair<k, t>	value_type;
 
 			node*		parent;
 			node*		left;
@@ -37,9 +37,9 @@ namespace ft
 		typedef Key																		key_type;
 		typedef T																		mapped_type;
 		typedef Compare																	key_compare;
-		typedef node<ft::pair<key_type, mapped_type> >												t_node; //might need to change that
+		typedef node<key_type, mapped_type>												t_node; //might need to change that
 		typedef ft::tree_iterator<t_node>											iterator;
-		typedef ft::tree_iterator<const t_node>										const_iterator; // need const expr ?
+		typedef ft::tree_iterator<t_node>										const_iterator; // need const expr ?
 		typedef ft::reverse_iterator<iterator>											reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 		typedef t_node*																pointer;
@@ -47,7 +47,7 @@ namespace ft
 		typedef t_node&																reference;
 		typedef const t_node&														const_reference;
 		typedef typename ft::pair<const Key, T>													value_type;
-		typedef typename Alloc::template rebind<t_node>::other	allocator_type;
+		typedef typename Alloc::template rebind<node<key_type, mapped_type> >::other	allocator_type;
 		typedef typename allocator_type::size_type										size_type;
 
 		explicit Tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())

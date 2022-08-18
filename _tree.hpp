@@ -20,33 +20,28 @@ namespace ft
 		{
 		public:
 			typedef PAIR	value_type;
-
 			node*		parent;
 			node*		left;
 			node*		right;
 			color		color;
 			value_type	data;
-			// node**					_end;
-			// node**					_root;
-
 			node(value_type content) : data(content) {};
 			~node(void) {};
-
 		};
 	public:
-		typedef Key																		key_type;
-		typedef T																		mapped_type;
-		typedef Compare																	key_compare;
-		typedef node<ft::pair<key_type, mapped_type> >												t_node; //might need to change that
-		typedef ft::tree_iterator<t_node>											iterator;
-		typedef ft::tree_iterator<const t_node>										const_iterator; // need const expr ?
-		typedef ft::reverse_iterator<iterator>											reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
+		typedef Key																	key_type;
+		typedef T																	mapped_type;
+		typedef Compare																key_compare;
+		typedef typename ft::pair<const Key, T>										value_type;
+		typedef node<value_type>													t_node; //might need to change that
+		typedef typename ft::tree_iterator<t_node>									iterator;
+		typedef typename ft::const_tree_iterator< t_node >			const_iterator; // need const expr ?
+		typedef ft::reverse_iterator<iterator>										reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 		typedef t_node*																pointer;
 		typedef const t_node*														const_pointer;
 		typedef t_node&																reference;
 		typedef const t_node&														const_reference;
-		typedef typename ft::pair<const Key, T>													value_type;
 		typedef typename Alloc::template rebind<t_node>::other	allocator_type;
 		typedef typename allocator_type::size_type										size_type;
 

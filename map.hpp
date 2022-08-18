@@ -56,7 +56,7 @@ namespace ft
 		virtual ~map(void) {};
 
 		iterator begin(void) {return (_tree.begin());};
-		const_iterator begin(void) const {return (_tree.begin());};
+		const_iterator begin(void) const {return (const_iterator(_tree.begin()));};
 		iterator end(void) {return (_tree.end());};
 		const_iterator end(void) const {return (_tree.end());};
 		reverse_iterator rbegin(void) {return (_tree.rbegin());};

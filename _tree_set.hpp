@@ -257,8 +257,8 @@ namespace ft
 		};
 	};
 
-	template<typename Key, typename T, typename Compare = std::less<Key>, typename Alloc = std::allocator<ft::pair<const Key, T> > >
-	class Tree
+	template<typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<T> >
+	class TreeSet
 	{
 		enum color
 		{
@@ -266,11 +266,11 @@ namespace ft
 			RED
 		};
 
-		template<typename PAIR>
+		template<typename T>
 		class node
 		{
 		public:
-			typedef PAIR	value_type;
+			typedef T	value_type;
 			node*		parent;
 			node*		left;
 			node*		right;
@@ -280,13 +280,13 @@ namespace ft
 			~node(void) {};
 		};
 	public:
-		typedef Key																	key_type;
+		typedef T																	key_type;
 		typedef T																	mapped_type;
 		typedef Compare																key_compare;
-		typedef typename ft::pair<const Key, T>										value_type;
+		typedef typename T															value_type;
 		typedef node<value_type>													t_node; //might need to change that
-		typedef typename ft::tree_iterator<t_node>									iterator;
-		typedef typename ft::const_tree_iterator< t_node >			const_iterator; // need const expr ?
+		typedef typename ft::const_tree_iterator<t_node>									iterator;
+		typedef typename ft::const_tree_iterator< t_node >							const_iterator; // need const expr ?
 		typedef ft::reverse_iterator<iterator>										reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 		typedef t_node*																pointer;
@@ -370,27 +370,6 @@ namespace ft
 		size_type				max_size(void) const {return _alloc.max_size();};
 		Alloc					get_allocator(void) const {return (Alloc(_alloc));}; // returns the original allocator<ft::pair>
 		bool					empty(void) const {return (_root == _end) ? true : false;};
-
-		mapped_type&	operator[](const key_type& key)
-		{
-			iterator it = _find(key, _root);
-
-			if (it == end())
-			{
-				ft::pair<iterator, bool>	p;
-				p = insert(ft::make_pair(key, mapped_type()));
-				return p.first.base()->data.second;
-			}
-			return it.base()->data.second;
-		};
-		mapped_type&	at(const key_type& key) const
-		{
-			iterator it = _find(key, _root);
-
-			if (it == end())
-				throw std::out_of_range("Range error\n");
-			return it.base()->data.second;
-		};
 
 		ft::pair<iterator, bool>	insert(const value_type& val)
 		{
@@ -833,77 +812,3 @@ namespace ft
 	};
 } // namespace ft
 #endif
-
-/*
-** Until x != root and x is BLACK, we need to operate few operation in
-** order to restablish the RED BLACK properties.
-**
-** First, we need to know if node' is at the left or the right
-** to node's parent.
-**
-** CASE 1 : node's parent is a left leaf.
-** 4 cases are possible :
-** 	Case 1, node's uncle's right (w) is RED :
-** 		Recolor node's uncle and node's parent and
-**      operate a left rotation.
-**		We transformed a case 1 in a case 2, 3 or 4.
-** 	Case 2, node’s sibling w is BLACK,
-**	and both of w’s children are BLACK :
-**		Simply recolor node's sibling ans set node to his parent.
-** 	Case 3, node’s sibling w is BLACK, w’s left child is RED,
-**	and w’s right child is BLACK :
-**		Recolor w's left in BLACK, w in RED
-**		and execute a right rotation.
-**		We set w to node's parent's right.
-**		We now transform case 3 in case 4.
-**	Case 4, node’s sibling w is BLACK, and w’s right child is RED :
-**		We perform a recolor and a left rotation.
-**		Then we set node to root causes the loop to terminate
-**		when it reaches this condition.
-**
-** CASE 2 :node's parent is a right leaf.
-** 4 cases are possible :
-** 	Case 1, node's uncle's left (w) is RED :
-** 		Recolor node's uncle and node's parent and
-**      operate a right rotation.
-**		We transformed a case 1 in a case 2, 3 or 4.
-** 	Case 2, node’s sibling w is BLACK,
-**	and both of w’s children are BLACK :
-**		Simply recolor node's sibling ans set node to his parent.
-** 	Case 3, node’s sibling w is BLACK, w’s right child is RED,
-**	and w’s left child is BLACK :
-**		Recolor w's right in BLACK, w in RED
-**		and execute a left rotation.
-**		We set w to node's parent's left.
-**		We now transform case 3 in case 4.
-**	Case 4, node’s sibling w is BLACK, and w’s left child is RED :
-**		We perform a recolor and a right rotation.
-**		Then we set node to root causes the loop to terminate
-**		when it reaches this condition.
-*/
-
-
-		/*
-		** If the parent of the new node inserted is BLACK, we're all set.
-		** Else and until, node'sp parent is RED :
-		** We need to know if node's parent is at the left or the right
-		** to node's grandparent.
-		**
-		** CASE 1 : node's parent is a left leaf.
-		** 3 cases are possible :
-		** 	Case 1, node's uncle is RED :
-		** 		Recolor and and check with node = node's grandparent.
-		** 	Case 2, node is a right leaf :
-		**		Execute a left rotation, recolor and right rotation.
-		** 	Case 3, node is a left leaf :
-		**		Recolor and execute a right rotation.
-		**
-		** CASE 2 :node's parent is a right leaf.
-		** 3 cases are possible :
-		** 	Case 1, node's uncle is RED :
-		** 		Recolor and and check with node = node's grandparent.
-		** 	Case 2, node is a left leaf :
-		**		Execute a right rotation, recolor and left rotation.
-		** 	Case 3, node is a right leaf :
-		**		Recolor and execute a left rotation.
-		*/

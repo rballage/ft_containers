@@ -1,5 +1,5 @@
 CPP		= clang++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 LDLIBS =
 
 NAME  = tester.out

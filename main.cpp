@@ -1858,7 +1858,7 @@ std::string vector_resize2_std(void)
 	res = out.str();
 	return res;
 }
-
+#include <list>
 int main(void)
 {
 	// Test construction_test(&vector_constructions_ft, &vector_constructions_std);
@@ -1912,33 +1912,57 @@ int main(void)
 	// assert(vector_test_weird.is_same());
 
 	// at_test.printAll();
-	std::srand(std::time(0));
-	ft::map<const int, int> m;
-	// std::pair<int, int> p0(12,5);
-	// std::pair<int, int> p2(4,5);
-	// std::pair<int, int> p3(5,5);
-	// std::pair<int, int> p1(2,5);
-	// m.insert(p0);
-	// m.insert(p1);
-	// m.insert(p2);
-	// m.insert(p3);
-	int i = 0;
-	while (++i < 13)
-		m.insert(std::make_pair<const int,int>(i,i));
-	// m.insert(p);
-	// i = 0;
-	// m.clear();
+	// std::srand(std::time(0));
+	// ft::map<const int, int> m;
+	// // std::pair<int, int> p0(12,5);
+	// // std::pair<int, int> p2(4,5);
+	// // std::pair<int, int> p3(5,5);
+	// // std::pair<int, int> p1(2,5);
+	// // m.insert(p0);
+	// // m.insert(p1);
+	// // m.insert(p2);
+	// // m.insert(p3);
+	// int i = 0;
+	// while (++i < 13)
+	// 	m.insert(std::make_pair<const int,int>(i,i));
+	// // m.insert(p);
+	// // i = 0;
+	// // m.clear();
+	// // m.print();
+	// ft::map<const int, int> m2(m);
+	// std::pair<const int, int> p1(20,5);
+	// m2.insert(p1);
+	// m2.insert(std::make_pair<const int,int>(100,i));
+	// m2.insert(std::make_pair<const int,int>(1001,i));
+	// m2.insert(std::make_pair<const int,int>(22,i));
+	// m2.insert(std::make_pair<const int,int>(42,i));
+	// // m2.print();
+	// m = m2;
 	// m.print();
-	ft::map<const int, int> m2(m);
-	std::pair<const int, int> p1(20,5);
-	m2.insert(p1);
-	m2.insert(std::make_pair<const int,int>(100,i));
-	m2.insert(std::make_pair<const int,int>(1001,i));
-	m2.insert(std::make_pair<const int,int>(22,i));
-	m2.insert(std::make_pair<const int,int>(42,i));
-	// m2.print();
-	m = m2;
-	m.print();
+	std::list<int> lst;
+	std::list<int>::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+	std::cout << "1" << std::endl;
 
+	ft::vector<int> vct(lst.begin(), lst.end());
+	std::cout << vct.capacity() << std::endl;
+	// printSize(vct);
+	std::cout << "2" << std::endl;
+
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+		*lst_it++ = i * 5;
+	std::cout << "3" << std::endl;
+	std::cout << vct.capacity() << std::endl;
+
+	vct.assign(lst.begin(), lst.end());
+	// printSize(vct);
+	std::cout << vct.capacity() << std::endl;
+
+	vct.insert(vct.end(), lst.begin(), lst.end());
+	std::cout << "5" << std::endl;
+
+	// printSize(vct);
 	return 0;
 }

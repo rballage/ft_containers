@@ -82,6 +82,16 @@ namespace ft
 				_alloc.construct(pos++, value);
 			}
 		};
+		template<class InputIterator>
+		vector _temp_copy(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		{
+			vector temp;
+			// temp.reserve(128);
+			while (first != last)
+				temp.push_back(*first++);
+			return temp;
+		};
+
 	public:
 		explicit vector(const allocator_type &newAllocator = allocator_type()) :
 		_alloc(newAllocator)
@@ -120,10 +130,21 @@ namespace ft
 		vector(InputIterator first, InputIterator last, const allocator_type& newAllocator = allocator_type(), typename enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
 		_alloc(newAllocator)
 		{
-			if (_distance(InputIterator(first), last) > max_size())
+			vector temp = _temp_copy(first, last);
+			if (temp.size() > max_size())
 				throw(std::length_error("vector::reserve"));
-			_data_start = _alloc.allocate(_distance(InputIterator(first), last));
-			_data_max = _data_end = _construct_copy(first, last, _data_start);
+			_data_max = _data_end = _data_start = 0;
+			if (temp.size())
+			{
+				_data_start = _data_end = _alloc.allocate(temp.size());
+				_data_max = _data_start + temp.size();
+				// _data_max = _data_end = _construct_copy(first, last, _data_start);
+				// reserve(temp.size());
+				_construct_copy(temp.begin(), temp.end(), _data_start);
+				_data_end = _data_start + temp.size();
+				// *this = temp;
+			}
+			// *this = temp;
 		};
 
 		vector &operator=(const vector& x)
@@ -282,14 +303,14 @@ namespace ft
 		template<class InputIterator>
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			// InputIterator pos(first);
-			const size_type n = _distance(InputIterator(first), last);
+			vector temp = _temp_copy(first, last);
+			const size_type n = temp.size();
 			clear();
 			if (!n)
 				return;
 			if (size() < n)
 				reserve(n);
-			_construct_copy(InputIterator(first), last, _data_start);
+			_construct_copy(temp.begin(), temp.end(), _data_start);
 			_data_end = _data_start + n;
 		};
 
@@ -331,14 +352,16 @@ namespace ft
 
 
 		template<class InputIterator>
-		void insert(iterator pos, InputIterator p, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+		void insert(iterator pos, InputIterator p, InputIterator l, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
-			InputIterator first(p);
-			const size_type count = _distance(p, last);
+			vector temp = _temp_copy(p, l);
+			iterator first = (temp.begin());
+			iterator last = (temp.end());
+			const size_type count = temp.size();
 			if (!count)
 				return;
-			// if (count > max_size())
-			// 	throw(std::length_error("vector::reserve"));
+			if (count + size() > max_size())
+				throw(std::length_error("vector::reserve"));
 			if (count && empty())
 			{
 				if (count > capacity())

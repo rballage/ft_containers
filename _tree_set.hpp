@@ -1,276 +1,26 @@
-#ifndef _TREE_HPP
-# define _TREE_HPP
+#ifndef _TREE_SET_HPP
+# define _TREE_SET_HPP
 
-# include <memory>
 # include "utils.hpp"
+# include "_tree_iterators.hpp"
 
 namespace ft
 {
-	template <typename T>
-	class const_tree_iterator;
-
-	template <typename T>
-	class tree_iterator : public ft::iterator< std::bidirectional_iterator_tag, T >
-	{
-	public:
-		typedef typename T::value_type    value_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::difference_type   difference_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::pointer   pointer;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, value_type>::reference reference;
-	protected:
-		T*	_current;
-		T*	_root;
-		T*	_end;
-	public:
-		friend class const_tree_iterator<T>;
-		tree_iterator(void): _current(0), _root(0), _end(0) {};
-		explicit tree_iterator(T* ptr, T* root, T* end) : _current(ptr), _root(root), _end(end) {};
-		// tree_iterator(const tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
-		tree_iterator(const tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
-		tree_iterator(const const_tree_iterator<T>& src) : _current(src._current), _root(src._root), _end(src._end) {};
-
-		virtual ~tree_iterator(void) {};
-
-		tree_iterator &operator=(const tree_iterator& rhs)
-		{
-			if (this != &rhs)
-			{
-				_current = rhs._current;
-				_root = rhs._root;
-				_end = rhs._end;
-			}
-			return *this;
-		};
-
-		bool operator==(const tree_iterator& rhs) const {return (_current == rhs._current);};
-		bool operator!=(const tree_iterator& rhs) const {return (_current != rhs._current);};
-		tree_iterator& operator++(void)
-		{
-			if (_current != _end)
-				_current = _get_successor(_current);
-			return *this;
-		};
-		tree_iterator operator++(int)
-		{
-			tree_iterator tmp(*this);
-			operator++();
-			return tmp;
-		};
-		tree_iterator& operator--(void)
-		{
-			if (_current == _end)
-				_current = _get_max(_root);
-			else
-				_current = _get_predecessor(_current);
-			return *this;
-		};
-		tree_iterator operator--(int)
-		{
-			tree_iterator tmp(*this);
-			operator--();
-			return tmp;
-		};
-		value_type& operator*(void) const {return _current->data;};
-		// const_reference operator*(void) const {return _current->data;};
-		// pointer operator->(void) const {return &_current->data;};
-		value_type* operator->(void) const {return &_current->data;};
-		// const_pointer operator->(void) const {return &(operator*());};
-		// pointer base(void) {return _current->data;};
-		T * base() const {return (_current);}
-		// value_type* successor(value_type* node) {return _get_successor(node);};
-	private:
-		T* _get_max(T* node) const
-		{
-			while (node->right && node->right != _end)
-				node = node->right;
-			return node;
-		};
-		T* _get_min(T* node) const
-		{
-			while (node->left && node->left != _end && node != _end)
-				node = node->left;
-			return node;
-		};
-		T* _get_predecessor(T* node) const
-		{
-			T* predecessor;
-
-			if (node->left && node->left != _end)
-				return _get_max(node->left);
-			predecessor = node->parent;
-			while (node->parent && node == predecessor->left)
-			{
-				node = predecessor;
-				predecessor = predecessor->parent;
-			}
-			if (!predecessor)
-				return _end;
-			else
-				return predecessor;
-		};
-		T* _get_successor(T* node) const
-		{
-			T* successor;
-
-			if (node == _end)
-				return (_end);
-			if (node->right != _end)
-				return _get_min(node->right);
-			successor = node->parent;
-			while (node->parent != _end && node == successor->right)
-			{
-				node = successor;
-				successor = successor->parent;
-			}
-			if (!successor)
-				return _end;
-			else
-				return successor;
-		};
-	};
-	template <typename T>
-	class const_tree_iterator : public ft::iterator<std::bidirectional_iterator_tag, T>
-	{
-	public:
-		typedef typename T::value_type    value_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, const value_type>::iterator_category iterator_category;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, const value_type>::difference_type   difference_type;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag,  const value_type>::pointer   pointer;
-		typedef typename ft::iterator<std::bidirectional_iterator_tag, const value_type>::reference reference;
-	protected:
-		T*	_current;
-		T*	_root;
-		T*	_end;
-	public:
-		friend class tree_iterator<T>;
-
-		const_tree_iterator(void): _current(0), _root(0), _end(0) {};
-		explicit const_tree_iterator(T* ptr, T* root, T* end) : _current(ptr), _root(root), _end(end) {};
-		// const_tree_iterator(T* ptr, T* root, T* end) : _current(ptr), _root(root), _end(end) {};
-		const_tree_iterator(const const_tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
-		const_tree_iterator(const tree_iterator<T>& src) : _current(src._current), _root(src._root), _end(src._end) {};
-
-		virtual ~const_tree_iterator(void) {};
-
-		const_tree_iterator &operator=(const const_tree_iterator& rhs)
-		{
-			if (this != &rhs)
-			{
-				_current = rhs._current;
-				_root = rhs._root;
-				_end = rhs._end;
-			}
-			return *this;
-		};
-		const_tree_iterator &operator=(const tree_iterator<T>& rhs)
-		{
-			_current = rhs._current;
-			_root = rhs._root;
-			_end = rhs._end;
-			return *this;
-		};
-		bool operator==(const const_tree_iterator& rhs) const {return (_current == rhs._current);};
-		bool operator!=(const const_tree_iterator& rhs) const {return (_current != rhs._current);};
-		const_tree_iterator& operator++(void)
-		{
-			if (_current != _end)
-				_current = _get_successor(_current);
-			return *this;
-		};
-		const_tree_iterator operator++(int)
-		{
-			const_tree_iterator tmp(*this);
-			operator++();
-			return tmp;
-		};
-		const_tree_iterator& operator--(void)
-		{
-			if (_current == _end)
-				_current = _get_max(_root);
-			else
-				_current = _get_predecessor(_current);
-			return *this;
-		};
-		const_tree_iterator operator--(int)
-		{
-			const_tree_iterator tmp(*this);
-			operator--();
-			return tmp;
-		};
-		const value_type& operator*(void) const {return _current->data;};
-		// const_reference operator*(void) const {return _current->data;};
-		// pointer operator->(void) const {return &_current->data;};
-		const value_type* operator->(void) const {return &_current->data;};
-		// const_pointer operator->(void) const {return &(operator*());};
-		// pointer base(void) {return _current->data;};
-		const T * base() const {return (_current);}
-		// value_type* successor(value_type* node) {return _get_successor(node);};
-	private:
-		T* _get_max(T* node) const
-		{
-			while (node->right && node->right != _end)
-				node = node->right;
-			return node;
-		};
-		T* _get_min(T* node) const
-		{
-			while (node->left && node->left != _end && node != _end)
-				node = node->left;
-			return node;
-		};
-		T* _get_predecessor(T* node) const
-		{
-			T* predecessor;
-
-			if (node->left && node->left != _end)
-				return _get_max(node->left);
-			predecessor = node->parent;
-			while (node->parent && node == predecessor->left)
-			{
-				node = predecessor;
-				predecessor = predecessor->parent;
-			}
-			if (!predecessor)
-				return _end;
-			else
-				return predecessor;
-		};
-		T* _get_successor(T* node) const
-		{
-			T* successor;
-
-			if (node == _end)
-				return (_end);
-			if (node->right != _end)
-				return _get_min(node->right);
-			successor = node->parent;
-			while (node->parent != _end && node == successor->right)
-			{
-				node = successor;
-				successor = successor->parent;
-			}
-			if (!successor)
-				return _end;
-			else
-				return successor;
-		};
-	};
-
 	template<typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<T> >
 	class TreeSet
 	{
+	private:
 		enum color
 		{
 			BLACK,
 			RED
 		};
 
-		template<typename T>
+		template<typename TYPE>
 		class node
 		{
 		public:
-			typedef T	value_type;
+			typedef TYPE	value_type;
 			node*		parent;
 			node*		left;
 			node*		right;
@@ -279,16 +29,17 @@ namespace ft
 			node(value_type content) : data(content) {};
 			~node(void) {};
 		};
+
+		typedef node<const T>													t_node; //might need to change that
 	public:
-		typedef T																	key_type;
-		typedef T																	mapped_type;
+		typedef const T																	key_type;
+		typedef const T																	mapped_type;
 		typedef Compare																key_compare;
-		typedef typename T															value_type;
-		typedef node<value_type>													t_node; //might need to change that
-		typedef typename ft::const_tree_iterator<t_node>									iterator;
-		typedef typename ft::const_tree_iterator< t_node >							const_iterator; // need const expr ?
-		typedef ft::reverse_iterator<iterator>										reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>								const_reverse_iterator;
+		typedef typename node<const T>::value_type															value_type;
+		typedef typename  ft::tree_iterator<t_node>									iterator;
+		typedef typename  ft::const_tree_iterator< t_node >							const_iterator; // need const expr ?
+		typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;
 		typedef t_node*																pointer;
 		typedef const t_node*														const_pointer;
 		typedef t_node&																reference;
@@ -296,7 +47,7 @@ namespace ft
 		typedef typename Alloc::template rebind<t_node>::other	allocator_type;
 		typedef typename allocator_type::size_type										size_type;
 
-		explicit Tree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+		explicit TreeSet(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 			:  _alloc(alloc), _compare(comp), _size(0)
 		{
 			_end = _alloc.allocate(1);
@@ -306,7 +57,7 @@ namespace ft
 		};
 
 		template<typename InputIterator>
-		Tree(InputIterator first, InputIterator last, key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type(),
+		TreeSet(InputIterator first, InputIterator last, key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 				:  _alloc(alloc), _compare(comp), _size(0)
 		{
@@ -317,7 +68,7 @@ namespace ft
 			insert(first, last);
 		};
 
-		Tree(const Tree& src)
+		TreeSet(const TreeSet& src)
 			:  _alloc(src._alloc), _compare(src._compare), _size(src.size())
 		{
 			_end = _alloc.allocate(1);
@@ -330,7 +81,7 @@ namespace ft
 			_size = src.size();
 		};
 
-		virtual	~Tree(void)
+		virtual	~TreeSet(void)
 		{
 			if (!empty())
 				clear();
@@ -338,7 +89,7 @@ namespace ft
 			_alloc.deallocate(_end, 1);
 		};
 
-		Tree&	operator=(Tree const &rhs)
+		TreeSet&	operator=(TreeSet const &rhs)
 		{
 			if (this != &rhs)
 			{
@@ -373,7 +124,7 @@ namespace ft
 
 		ft::pair<iterator, bool>	insert(const value_type& val)
 		{
-			iterator it = find(val.first);
+			iterator it = find(val);
 
 			if (it != end())
 				return ft::make_pair(it, false);
@@ -385,12 +136,12 @@ namespace ft
 			return ft::make_pair(it, true);
 		};
 
-		iterator	insert(iterator pos, const value_type& val)
+		iterator	insert(iterator pos, const T& val)
 		{
 			iterator pos2 = pos;
 			pointer succ = (++pos2).base();
 
-			if (_compare(pos->first, val.first) && _compare(val.first, succ->data.first))
+			if (_compare(pos.base()->data, val) && _compare(val, succ->data))
 			{
 				pointer node = _alloc.allocate(1);
 				_alloc.construct(node, t_node(val));
@@ -460,7 +211,7 @@ namespace ft
 		iterator	lower_bound(const key_type& key)
 		{
 			for (iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.base()->data.first, key)))
+				if (!(_compare(it.base()->data, key)))
 					return it;
 			return (end());
 		};
@@ -468,7 +219,7 @@ namespace ft
 		const_iterator	lower_bound(const key_type& key) const
 		{
 			for (const_iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.base()->data.first, key)))
+				if (!(_compare(it.base()->data, key)))
 					return it;
 			return (end());
 		};
@@ -476,7 +227,7 @@ namespace ft
 		iterator	upper_bound(const key_type& key)
 		{
 			for (iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.base()->data.first))
+				if (_compare(key, it.base()->data))
 					return it;
 			return (end());
 		};
@@ -484,14 +235,14 @@ namespace ft
 		const_iterator	upper_bound(const key_type& key) const
 		{
 			for (const_iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.base()->data.first))
+				if (_compare(key, it.base()->data))
 					return it;
 			return (end());
 		};
 
 		ft::pair<iterator,iterator>	equal_range(const key_type& key) {return ft::pair<iterator, iterator>(lower_bound(key), upper_bound(key));};
 		ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const {return ft::pair<const_iterator, const_iterator>(lower_bound(key), upper_bound(key));};
-		void swap(Tree& other)
+		void swap(TreeSet& other)
 		{
 			pointer tmp_root, tmp_end;
 			size_type tmp_size = _size;
@@ -508,21 +259,21 @@ namespace ft
 
 	private:
 
-		pointer			_root;
-		pointer			_end;
+		t_node*			_root;
+		t_node*			_end;
 		allocator_type	_alloc;
 		key_compare		_compare;
 		size_type		_size;
 
-		pointer	_insert(pointer new_node, pointer from)
+		t_node*	_insert(t_node* new_node, t_node* from)
 		{
-			pointer y = _end;
-			pointer x = from;
+			t_node* y = _end;
+			t_node* x = from;
 
 			while (x != _end)
 			{
 				y = x;
-				if (_compare(new_node->data.first, x->data.first))
+				if (_compare(new_node->data, x->data))
 					x = x->left;
 				else
 					x = x->right;
@@ -530,7 +281,7 @@ namespace ft
 			new_node->parent = y;
 			if (y == _end)
 				_root = new_node;
-			else if (_compare(new_node->data.first, y->data.first))
+			else if (_compare(new_node->data, y->data))
 				y->left = new_node;
 			else
 				y->right = new_node;
@@ -541,9 +292,9 @@ namespace ft
 			return (new_node);
 		};
 
-		void	_insert_fix(pointer node)
+		void	_insert_fix(t_node* node)
 		{
-			pointer uncle;
+			t_node* uncle;
 
 			while (node->parent->color == RED)
 			{
@@ -601,9 +352,9 @@ namespace ft
 			_root->color = BLACK;
 		};
 
-		void	_rotate_left(pointer x)
+		void	_rotate_left(t_node* x)
 		{
-			pointer y = x->right;
+			t_node* y = x->right;
 
 			x->right = y->left;
 			if (y->left != _end)
@@ -619,9 +370,9 @@ namespace ft
 			x->parent = y;
 		};
 
-		void	_rotate_right(pointer y)
+		void	_rotate_right(t_node* y)
 		{
-			pointer x = y->left;
+			t_node* x = y->left;
 
 			y->left = x->right;
 			if (x->right != _end)
@@ -637,7 +388,7 @@ namespace ft
 			y->parent = x;
 		};
 
-		pointer	_min(pointer node)
+		t_node*	_min(t_node* node)
 		{
 			if (empty())
 				return _end;
@@ -648,7 +399,7 @@ namespace ft
 			return node;
 		};
 
-		pointer	_min(pointer node) const
+		t_node*	_min(t_node* node) const
 		{
 			if (empty())
 				return _end;
@@ -659,7 +410,7 @@ namespace ft
 			return node;
 		};
 
-		void _clear(pointer node)
+		void _clear(t_node* node)
 		{
 			if (node == _end)
 				return ;
@@ -670,22 +421,22 @@ namespace ft
 			_size--;
 		};
 
-		iterator	_find(const key_type& key, const pointer& node) const
+		iterator	_find(const key_type& key,  t_node* node) const
 		{
 			if (node == _end)
 				return iterator(_end, _root, _end);
-			else if (!_compare(node->data.first, key) && !_compare(key, node->data.first))
+			else if (!_compare(node->data, key) && !_compare(key, node->data))
 				return iterator(node, _root, _end);
-			if (_compare(node->data.first, key))
+			if (_compare(node->data, key))
 				return _find(key, node->right);
 			else
 				return _find(key, node->left);
 		};
 
-		void	_delete_node(pointer z)
+		void	_delete_node(t_node* z)
 		{
-			pointer x = 0;
-			pointer y = z;
+			t_node* x = 0;
+			t_node* y = z;
 			color y_orginal_color = y->color;
 
 			if (z->left == _end)
@@ -721,9 +472,9 @@ namespace ft
 			_delete_one_node(z);
 		};
 
-		void	_delete_fix(pointer x)
+		void	_delete_fix(t_node* x)
 		{
-			pointer w;
+			t_node* w;
 
 			while (x != _root && x->color == BLACK)
 			{
@@ -793,7 +544,7 @@ namespace ft
 			x->color = BLACK;
 		};
 
-		void	_move_subtree(pointer u, pointer v)
+		void	_move_subtree(t_node* u, t_node* v)
 		{
 			if (u->parent == _end)
 				_root = v;
@@ -804,7 +555,7 @@ namespace ft
 			v->parent = u->parent;
 		};
 
-		void	_delete_one_node(pointer node)
+		void	_delete_one_node(t_node* node)
 		{
 			_alloc.destroy(node);
 			_alloc.deallocate(node, 1);

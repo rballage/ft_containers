@@ -60,21 +60,14 @@ namespace ft
 		const_reverse_iterator rbegin(void) const {return (_tree.rbegin());};
 		reverse_iterator rend(void) {return (_tree.rend());};
 		const_reverse_iterator rend(void) const {return (_tree.rend());};
-
 		allocator_type get_allocator(void) const {return (allocator_type(_tree.get_allocator()));};
-
 		bool empty(void) const {return (_tree.empty());};
 		size_type size(void) const {return (_tree.size());};
 		size_type max_size(void) const {return (_tree.max_size());};
-		// mapped_type &operator[](const key_type& key) {return (_tree[key]);};
-		// mapped_type& at(const key_type& key) {return _tree.at(key);};
-		// const mapped_type& at(const key_type& key) const {return _tree.at(key);};
-
 		ft::pair<iterator, bool> insert(const value_type& val) {return (_tree.insert(val));};
 		iterator insert(iterator position, const value_type& val) {return (_tree.insert(position, val));};
 		template<typename InputIterator>
 		void insert(InputIterator first, InputIterator last) {_tree.insert(first, last);};
-
 		void erase(iterator position) {_tree.erase(position);};
 		size_type erase(const key_type& key) {return (_tree.erase(key));};
 		void erase(iterator first, iterator last) {_tree.erase(first, last);};

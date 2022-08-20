@@ -21,6 +21,7 @@ namespace ft
 		typedef typename Iterator::pointer pointer;
 		typedef typename Iterator::reference reference;
 	};
+	
 	template <class T>
 	struct iterator_traits<T*>
 	{

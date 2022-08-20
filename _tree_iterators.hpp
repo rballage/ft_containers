@@ -78,7 +78,7 @@ namespace ft
 		};
 		T* _get_min(T* node) const
 		{
-			while (node->left != _end && node != _end)
+			while (node->left != _end)
 				node = node->left;
 			return node;
 		};
@@ -86,7 +86,7 @@ namespace ft
 		{
 			T* predecessor;
 
-			if (node->left && node->left != _end)
+			if (node->left != _end)
 				return _get_max(node->left);
 			predecessor = node->parent;
 			while (node->parent && node == predecessor->left)
@@ -94,10 +94,7 @@ namespace ft
 				node = predecessor;
 				predecessor = predecessor->parent;
 			}
-			if (!predecessor)
-				return _end;
-			else
-				return predecessor;
+			return predecessor;
 		};
 		T* _get_successor(T* node) const
 		{
@@ -113,10 +110,7 @@ namespace ft
 				node = successor;
 				successor = successor->parent;
 			}
-			if (!successor)
-				return _end;
-			else
-				return successor;
+			return successor;
 		};
 	};
 	template <typename T>
@@ -190,13 +184,13 @@ namespace ft
 	private:
 		T* _get_max(T* node) const
 		{
-			while (node->right && node->right != _end)
+			while (node->right != _end)
 				node = node->right;
 			return node;
 		};
 		T* _get_min(T* node) const
 		{
-			while (node->left && node->left != _end && node != _end)
+			while (node->left != _end)
 				node = node->left;
 			return node;
 		};
@@ -204,7 +198,7 @@ namespace ft
 		{
 			T* predecessor;
 
-			if (node->left && node->left != _end)
+			if (node->left != _end)
 				return _get_max(node->left);
 			predecessor = node->parent;
 			while (node->parent && node == predecessor->left)
@@ -212,10 +206,7 @@ namespace ft
 				node = predecessor;
 				predecessor = predecessor->parent;
 			}
-			if (!predecessor)
-				return _end;
-			else
-				return predecessor;
+			return predecessor;
 		};
 		T* _get_successor(T* node) const
 		{
@@ -231,10 +222,7 @@ namespace ft
 				node = successor;
 				successor = successor->parent;
 			}
-			if (!successor)
-				return _end;
-			else
-				return successor;
+			return successor;
 		};
 	};
 }

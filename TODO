@@ -18,3 +18,4 @@ idees probleme de dereferencement des nodes lors de dereferencement d'un iterato
 
 map
 	ite
+need to store and update (only on tree modification) a private ptr pointing to the minimum/maximum to optimize begin and upper/lower_bound calls

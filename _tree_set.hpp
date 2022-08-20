@@ -212,7 +212,7 @@ namespace ft
 		{
 			iterator last = end();
 			for (iterator it = begin(); it != last; it++)
-				if (!(_compare(it.base()->data, key)))
+				if (!(_compare(*it, key)))
 					return it;
 			return (last);
 		};
@@ -221,7 +221,7 @@ namespace ft
 		{
 			const_iterator last = end();
 			for (const_iterator it = begin(); it != last; it++)
-				if (!(_compare(it.base()->data, key)))
+				if (!(_compare(*it, key)))
 					return it;
 			return (last);
 		};
@@ -230,7 +230,7 @@ namespace ft
 		{
 			iterator last = end();
 			for (iterator it = begin(); it != last; it++)
-				if (_compare(key, it.base()->data))
+				if (_compare(key, *it))
 					return it;
 			return (last);
 		};
@@ -239,7 +239,7 @@ namespace ft
 		{
 			const_iterator last = end();
 			for (const_iterator it = begin(); it != last; it++)
-				if (_compare(key, it.base()->data))
+				if (_compare(key, *it))
 					return it;
 			return (last);
 		};

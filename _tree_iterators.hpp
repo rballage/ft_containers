@@ -72,13 +72,13 @@ namespace ft
 	private:
 		T* _get_max(T* node) const
 		{
-			while (node->right && node->right != _end)
+			while (node->right != _end)
 				node = node->right;
 			return node;
 		};
 		T* _get_min(T* node) const
 		{
-			while (node->left && node->left != _end && node != _end)
+			while (node->left != _end && node != _end)
 				node = node->left;
 			return node;
 		};

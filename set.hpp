@@ -14,19 +14,20 @@ namespace ft
 		typedef T										mapped_type;
 		typedef T	value_type;
 		typedef	Compare									key_compare;
+		typedef	Compare									value_compare;
 		typedef Alloc																			allocator_type;
 
-		class value_compare : public std::binary_function<value_type, value_type, bool>
-		{
-		protected:
-			Compare comp;
-		public:
-			typedef bool		result_type;
-			typedef value_type	first_argument_type;
-			typedef value_type	second_argument_type;
-			value_compare(Compare c): comp(c) {};
-			bool operator()(const value_type& lhs, const value_type& rhs) const {return (comp(lhs, rhs));};
-		};
+		// class value_compare : public std::binary_function<value_type, value_type, bool>
+		// {
+		// protected:
+		// 	key_compare comp;
+		// public:
+		// 	typedef bool		result_type;
+		// 	typedef value_type	first_argument_type;
+		// 	typedef value_type	second_argument_type;
+		// 	value_compare(Compare c): comp(c) {};
+		// 	bool operator()(const value_type& lhs, const value_type& rhs) const {return (comp(lhs, rhs));};
+		// };
 	private:
 		typedef typename ft::TreeSet<T, key_compare, allocator_type> t_tree;
 	public:

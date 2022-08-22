@@ -452,6 +452,18 @@ namespace ft
 				return _find(key, node->left);
 		};
 
+		iterator	_lower_bound(const key_type& key, const pointer& node) const
+		{
+			if (node == _end || (!_compare(node->data.first, key) && !_compare(key, node->data.first) ))
+				return iterator(node, _root, _end);
+			else if (!_compare(node->data.first, key))
+				return iterator(node, _root, _end);
+			if (_compare(node->data.first, key))
+				return _lower_bound(key, node->right);
+			else
+				return _lower_bound(key, node->left);
+		};
+
 		void	_delete_node(pointer z)
 		{
 			pointer x = 0;

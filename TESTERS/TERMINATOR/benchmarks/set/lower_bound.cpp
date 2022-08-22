@@ -18,13 +18,13 @@ int main()
 
     NAMESPACE::set<int> data;
 
-    for (std::size_t i = 0; i < MAXSIZE / 2; ++i) {
+    for (std::size_t i = 0; i < 10000; ++i) {
         data.insert(rand());
     }
 
     timer t;
 
-    for (int i = 0; i < 10000000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
         NAMESPACE::set<int>::iterator it = data.lower_bound(rand());
         if (it != data.end()) {
             (void)*it;

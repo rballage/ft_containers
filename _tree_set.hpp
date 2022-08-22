@@ -36,7 +36,7 @@ namespace ft
 		typedef const T																	mapped_type;
 		typedef Compare																key_compare;
 		typedef typename node<const T>::value_type															value_type;
-		typedef typename  ft::tree_iterator<t_node>									iterator;
+		typedef typename  ft::tree_iterator_set<t_node>									iterator;
 		typedef typename  ft::const_tree_iterator< t_node >							const_iterator; // need const expr ?
 		typedef typename ft::reverse_iterator<iterator>										reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator>								const_reverse_iterator;

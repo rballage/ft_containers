@@ -229,34 +229,21 @@ namespace ft
 
 		iterator	lower_bound(const key_type& key)
 		{
-			for (iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.base()->data.first, key)))
-					return it;
-			return (end());
+			return (iterator(_lower_bound(key), _root, _end));
 		};
 
 		const_iterator	lower_bound(const key_type& key) const
 		{
-			for (const_iterator it = begin(); it != end(); it++)
-				if (!(_compare(it.base()->data.first, key)))
-					return it;
-			return (end());
+			return (const_iterator(_lower_bound(key), _root, _end));
 		};
-
 		iterator	upper_bound(const key_type& key)
 		{
-			for (iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.base()->data.first))
-					return it;
-			return (end());
+			return (iterator(_upper_bound(key), _root, _end));
 		};
 
 		const_iterator	upper_bound(const key_type& key) const
 		{
-			for (const_iterator it = begin(); it != end(); it++)
-				if (_compare(key, it.base()->data.first))
-					return it;
-			return (end());
+			return (const_iterator(_upper_bound(key), _root, _end));
 		};
 
 		ft::pair<iterator,iterator>	equal_range(const key_type& key) {return ft::pair<iterator, iterator>(lower_bound(key), upper_bound(key));};
@@ -283,6 +270,47 @@ namespace ft
 		allocator_type	_alloc;
 		key_compare		_compare;
 		size_type		_size;
+
+		bool _equal(const key_type& left, const key_type& right)
+		{
+			return (!_compare(left, right) && !_compare(right, left));
+		};
+
+		pointer _lower_bound(const key_type& key) const
+		{
+			pointer x = _root;
+			pointer y = _end;
+
+			while (x != _end)
+			{
+				if (!_compare(x->data.first, key))
+				{
+					y = x;
+					x = x->left;
+				}
+				else
+					x = x->right;
+			}
+			return y;
+		};
+
+		pointer _upper_bound(const key_type& key) const
+		{
+			pointer x = _root;
+			pointer y = _end;
+
+			while (x != _end)
+			{
+				if (_compare(key, x->data.first))
+				{
+					y = x;
+					x = x->left;
+				}
+				else
+					x = x->right;
+			}
+			return y;
+		};
 
 		pointer	_insert(pointer new_node, pointer from)
 		{
@@ -440,16 +468,23 @@ namespace ft
 			_size--;
 		};
 
-		iterator	_find(const key_type& key, const pointer& node) const
+		iterator	_find(const key_type& key, const pointer& node)
 		{
-			if (node == _end)
-				return iterator(_end, _root, _end);
-			else if (!_compare(node->data.first, key) && !_compare(key, node->data.first))
-				return iterator(node, _root, _end);
-			if (_compare(node->data.first, key))
-				return _find(key, node->right);
-			else
-				return _find(key, node->left);
+			(void)node;
+			pointer res = _lower_bound(key);
+
+			if (res != _end && _compare(key, res->data.first))
+				res = _end;
+			return (iterator(res, _root, _end));
+		};
+		const_iterator	_find(const key_type& key, const pointer& node) const
+		{
+			(void)node;
+			pointer res = _lower_bound(key);
+
+			if (res != _end && _compare(key, res->data.first))
+				res = _end;
+			return (const_iterator(res, _root, _end));
 		};
 
 		void	_delete_node(pointer z)

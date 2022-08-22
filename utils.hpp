@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include <limits>
 // #include <vector>
 
 namespace ft
@@ -27,49 +28,40 @@ namespace ft
 		b = tmp;
 	};
 
-	template<bool condition, class T = void>
-	struct enable_if {};
+	template <bool B, typename T = void> struct enable_if {};
+	template <typename T> struct enable_if<true, T> {typedef T type;};
 
-	template<class T>
-	struct enable_if<true, T> { typedef T type; };
-
-	template <bool is_integral, typename T>
-	struct is_integral_struct
+	struct true_type
 	{
-		typedef T type;
-		static const bool value = is_integral;
+		static const bool value = true;
+		typedef true_type type;
 	};
 
-/*
-** default template of the structure is_integral_type.
-** If the type given in argument is from the list, the structure
-** will be overiden by nexts, according to it's type.
-** If the type given argument isn't in this list,
-** is_integral_struct::value will be false if it's not an integral type.
-*/
+	struct false_type
+	{
+		static const bool value = false;
+		typedef false_type type;
+	};
 
-	template <typename> struct is_integral_type : public is_integral_struct<false, bool> {};
-	template <> struct is_integral_type<bool> : public is_integral_struct<true, bool> {};
-	template <> struct is_integral_type<char> : public is_integral_struct<true, char> {};
-	template <> struct is_integral_type<signed char> : public is_integral_struct<true, signed char> {};
-	template <> struct is_integral_type<short int> : public is_integral_struct<true, short int> {};
-	template <> struct is_integral_type<int> : public is_integral_struct<true, int> {};
-	template <> struct is_integral_type<long int> : public is_integral_struct<true, long int> {};
-	template <> struct is_integral_type<long long int> : public is_integral_struct<true, long long int> {};
-	template <> struct is_integral_type<unsigned char> : public is_integral_struct<true, unsigned char> {};
-	template <> struct is_integral_type<unsigned short int> : public is_integral_struct<true, unsigned short int> {};
-	template <> struct is_integral_type<unsigned int> : public is_integral_struct<true, unsigned int> {};
-	template <> struct is_integral_type<unsigned long int> : public is_integral_struct<true, unsigned long int> {};
-	template <> struct is_integral_type<unsigned long long int> : public is_integral_struct<true, unsigned long long int> {};
-
-	/*
-	** Gives a structure which contains the
-	** typename given in template param if the type given is integral,
-	*/
-
-	template <typename T>
-	struct is_integral : public is_integral_type<T> { };
-
+	template <typename T> struct remove_const {typedef T type;};
+	template <typename T> struct remove_const<const T> {typedef T type;};
+	template <typename T> struct remove_volatile {typedef T type;};
+	template <typename T> struct remove_volatile<volatile T> {typedef T type;};
+	template <typename T>struct remove_cv {typedef typename remove_volatile<typename remove_const<T>::type>::type type;};
+	template <typename>struct is_integral_base : public false_type {};
+	template <> struct is_integral_base<bool> : public true_type {};
+	template <> struct is_integral_base<char> : public true_type {};
+	template <> struct is_integral_base<signed char> : public true_type {};
+	template <> struct is_integral_base<short int> : public true_type {};
+	template <> struct is_integral_base<int> : public true_type {};
+	template <> struct is_integral_base<long int> : public true_type {};
+	template <> struct is_integral_base<unsigned char> : public true_type {};
+	template <> struct is_integral_base<unsigned short int> : public true_type {};
+	template <> struct is_integral_base<unsigned int> : public true_type {};
+	template <> struct is_integral_base<unsigned long int> : public true_type {};
+	template <typename T> struct is_integral : is_integral_base<typename remove_cv<T>::type> {};
+	template <typename T, typename U> struct is_same : public false_type {};
+	template <typename T> struct is_same<T, T> : public true_type {};
 
 	template<class InputIt1, class InputIt2>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)

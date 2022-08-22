@@ -21,7 +21,7 @@ namespace ft
 		typedef typename Iterator::pointer pointer;
 		typedef typename Iterator::reference reference;
 	};
-	
+
 	template <class T>
 	struct iterator_traits<T*>
 	{
@@ -243,7 +243,7 @@ namespace ft
 	template <class T1, class T2>
 	bool operator>=(const random_access_iterator< T1 >& lhs, const random_access_iterator< T2 >& rhs) {return (lhs.base() >= rhs.base());};
 	template <class Iterator>
-	random_access_iterator<Iterator> operator+(typename random_access_iterator<Iterator>::difference_type diff, const random_access_iterator< Iterator >& n) {return diff + n;};
+	random_access_iterator<Iterator> operator+(typename random_access_iterator<Iterator>::difference_type n, const random_access_iterator< Iterator >& it) {return random_access_iterator<Iterator>(it.base() + n);};
 	template <class T1, class T2>
 	typename random_access_iterator< T1 >::difference_type operator-(const random_access_iterator< T2 >& lhs, const random_access_iterator< T1 >& rhs) {return lhs.base() - rhs.base();};
 

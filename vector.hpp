@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 # define  VECTOR_HPP
 # include "utils.hpp"
-// https://github.com/pmouhali/ft_containers/blob/main/vector.hpp
 namespace ft
 {
 	template <class T, class Alloc = std::allocator<T> >

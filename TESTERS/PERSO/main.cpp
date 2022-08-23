@@ -4,6 +4,6 @@ int main(void) {
 	test_vector();
 	test_map();
 	test_set();
-	test_stack();
+	// test_stack();
 	return 0;
 }

@@ -12,14 +12,14 @@
 #define HUNDRED_THOUSAND 100000
 #define NUM HUNDRED_THOUSAND
 #define PRINT true
-#ifndef NS
+// #ifndef NS
 # define NS ft
 # include "../../utils.hpp"
 # include "../../vector.hpp"
 # include "../../stack.hpp"
 # include "../../map.hpp"
 # include "../../set.hpp"
-#endif
+// #endif
 
 template<typename T>
 void print(T &cont, bool condition)
@@ -39,4 +39,4 @@ void print(T &cont, bool condition)
 void test_map();
 void test_set();
 void test_vector();
-void test_stack();
+// void test_stack();

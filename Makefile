@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 LDLIBS =
 
 NAME  = tester.out
-SRCS	= TESTERS/PERSO/main.cpp TESTERS/PERSO/testvector.cpp TESTERS/PERSO/teststack.cpp TESTERS/PERSO/testset.cpp TESTERS/PERSO/testmap.cpp
+SRCS	= TESTERS/PERSO/main.cpp TESTERS/PERSO/testvector.cpp TESTERS/PERSO/testset.cpp TESTERS/PERSO/testmap.cpp #TESTERS/PERSO/teststack.cpp 
 OBJS := $(SRCS:.cpp=.o)
 DEPS := $(OBJS:.o=.d)
 

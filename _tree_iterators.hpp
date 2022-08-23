@@ -28,7 +28,6 @@ namespace ft
 		tree_iterator(void): _current(0), _root(0), _end(0) {};
 		explicit tree_iterator(T* ptr, T* root, T* end) : _current(ptr), _root(root), _end(end) {};
 		tree_iterator(const tree_iterator& src) : _current(src._current), _root(src._root), _end(src._end) {};
-		// tree_iterator(const const_tree_iterator<T>& src) : _current(src._current), _root(src._root), _end(src._end) {};
 		virtual ~tree_iterator(void) {};
 		tree_iterator &operator=(const tree_iterator& rhs)
 		{

@@ -448,7 +448,7 @@ namespace ft
 			_size--;
 		};
 
-		iterator	_find(const key_type& key, const pointer& node)
+		iterator	_find(const key_type& key, const pointer& node) const
 		{
 			(void)node;
 			pointer res = _lower_bound(key);
@@ -456,15 +456,6 @@ namespace ft
 			if (res != _end && _compare(key, res->data))
 				res = _end;
 			return (iterator(res, _root, _end));
-		};
-		const_iterator	_find(const key_type& key, const pointer& node) const
-		{
-			(void)node;
-			pointer res = _lower_bound(key);
-
-			if (res != _end && _compare(key, res->data))
-				res = _end;
-			return (const_iterator(res, _root, _end));
 		};
 
 		void	_delete_node(t_node* z)

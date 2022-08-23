@@ -86,7 +86,7 @@ namespace ft
 		vector _temp_copy(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			vector temp;
-			// temp.reserve(128);
+			temp.reserve(128);
 			while (first != last)
 				temp.push_back(*first++);
 			return temp;
@@ -138,13 +138,9 @@ namespace ft
 			{
 				_data_start = _data_end = _alloc.allocate(temp.size());
 				_data_max = _data_start + temp.size();
-				// _data_max = _data_end = _construct_copy(first, last, _data_start);
-				// reserve(temp.size());
 				_construct_copy(temp.begin(), temp.end(), _data_start);
 				_data_end = _data_start + temp.size();
-				// *this = temp;
 			}
-			// *this = temp;
 		};
 
 		vector &operator=(const vector& x)

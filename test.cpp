@@ -1,58 +1,33 @@
 #include "vector.hpp"
+#include "stack.hpp"
+#include "map.hpp"
+#include "set.hpp"
 
-#define TESTED_TYPE int
-#define TESTED_NAMESPACE ft
+#define ONE_MILLION 1000000
+#define TEN_MILLION 10000000
+#define HUNDRED_THOUSAND 100000
+#define TYPE int
+#define NS ft
 
-void	prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
+void	insert_map(bool print)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_tmp;
+	NS::map<long> truc;
+	for (long i = 0; i < ONE_MILLION; i++) {
+		truc.insert(i);
+	}
+	if (print)
+	{
+		vec::iterator it = truc.begin();
 
-	std::cout << "Pre inc" << std::endl;
-	it_tmp = ++it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Pre dec" << std::endl;
-	it_tmp = --it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post inc" << std::endl;
-	it_tmp = it++;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post dec" << std::endl;
-	it_tmp = it--;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-	std::cout << "###############################################" << std::endl;
+		while (it != truc.end()) {
+			std::cout << *it++ << " ";
+		}
+		std::cout << std::endl;
+	}
 }
 
 int		main(void)
 {
-	const int size = 5;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
 
-	for (int i = 0; i < size; ++i)
-		it[i] = (size - i) * 5;
-	prepost_incdec(vct);
-
-	it = it + 5;
-	it = 1 + it;
-	it = it - 4;
-	std::cout << *(it += 2) << std::endl;
-	std::cout << *(it -= 1) << std::endl;
-
-	*(it -= 2) = 42;
-	*(it += 2) = 21;
-
-	std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
-	std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
-
-	std::cout << "(it == const_it): " << (ite == it) << std::endl;
-	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
-
-	// printSize(vct, true);
 	return (0);
 }

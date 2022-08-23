@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 LDLIBS =
 
 NAME  = tester.out
-SRCS	= TESTERS/PERSO/main.cpp TESTERS/PERSO/testvector.cpp TESTERS/PERSO/testset.cpp TESTERS/PERSO/testmap.cpp #TESTERS/PERSO/teststack.cpp 
+SRCS	= TESTERS/PERSO/main.cpp TESTERS/PERSO/testvector.cpp TESTERS/PERSO/testset.cpp TESTERS/PERSO/testmap.cpp #TESTERS/PERSO/teststack.cpp
 OBJS := $(SRCS:.cpp=.o)
 DEPS := $(OBJS:.o=.d)
 
@@ -24,6 +24,16 @@ re:		fclean $(NAME)
 
 test:	$(NAME)
 		./$(NAME)
+mli:
+	@ cd TESTERS/MLI && ./do.sh
+
+terminator:
+	@ cd TESTERS/TERMINATOR && ./run_tests.sh
+
+unit_tests:
+	@ cd TESTERS/UNIT_TESTS && ./Run_tests.sh
+
+
 
 -include $(DEPS)
 
